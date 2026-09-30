@@ -8,6 +8,7 @@ import { collectFiles } from "@/features/forms/collect-files";
 import { formDataToAnswers } from "@/features/forms/answers";
 import type { FormDefinition } from "@/features/forms/definition";
 import { DynamicFields } from "@/features/forms/DynamicFields";
+import { validateFiles } from "@/features/forms/files";
 import type { FieldErrors } from "@/lib/result";
 import { createBrowserSupabase } from "@/lib/supabase/browser";
 import { Button } from "@/ui/Button";
@@ -41,9 +42,12 @@ export function ApplyForm({ professionSlug, formId, definition, locale }: Props)
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const files = collectFiles(definition, data);
-    setPhase("sending");
     setFormError(undefined);
     setFieldErrors({});
+    const fileMetas = files.map(({ fieldKey, file }) => ({ fieldKey, name: file.name, type: file.type, size: file.size }));
+    const clientErrors = validateFiles(definition, fileMetas);
+    if (Object.keys(clientErrors).length > 0) return failWith("invalid", clientErrors);
+    setPhase("sending");
 
     try {
       const submitted = await submitApplication({
@@ -53,9 +57,9 @@ export function ApplyForm({ professionSlug, formId, definition, locale }: Props)
         fullName: String(data.get("fullName") ?? ""),
         email: String(data.get("email") ?? ""),
         phone: String(data.get("phone") ?? ""),
-        website: String(data.get("website") ?? ""),
+        hp_field: String(data.get("hp_field") ?? ""),
         answers: formDataToAnswers(definition, data),
-        files: files.map(({ fieldKey, file }) => ({ fieldKey, name: file.name, type: file.type, size: file.size })),
+        files: fileMetas,
       });
       if (!submitted.ok) return failWith(submitted.formError, submitted.fieldErrors);
       // 0 uploads is legitimate (honeypot trap: the server pretends success). Otherwise counts must match.
@@ -102,8 +106,8 @@ export function ApplyForm({ professionSlug, formId, definition, locale }: Props)
         <Field id="field-phone" label={t("phone")} errors={coreErrors("phone")}>
           <Input id="field-phone" name="phone" type="tel" autoComplete="tel" invalid={Boolean(fieldErrors.phone)} aria-describedby={describedBy("phone")} />
         </Field>
-        <div aria-hidden="true" {...stylex.props(styles.honeypot)}>
-          <input name="website" tabIndex={-1} autoComplete="off" />
+        <div aria-hidden="true" inert {...stylex.props(styles.honeypot)}>
+          <input name="hp_field" tabIndex={-1} autoComplete="off" />
         </div>
         <DynamicFields definition={definition} locale={locale} errors={fieldErrors} errorText={errorText} chooseLabel={t("choose")} />
         {formError ? <Text role="alert" tone="danger">{errorText(formError)}</Text> : null}

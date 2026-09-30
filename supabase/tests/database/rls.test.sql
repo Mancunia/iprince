@@ -1,6 +1,6 @@
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(21);
+select plan(22);
 
 -- Fixtures (run as postgres, which bypasses RLS)
 insert into auth.users (id, email) values
@@ -19,6 +19,12 @@ insert into public.profession_forms (id, profession_id, version, schema, publish
   ('30000000-0000-0000-0000-000000000002', '20000000-0000-0000-0000-000000000001', 2, '{"fields":[]}', now());
 update public.professions set current_form_id = '30000000-0000-0000-0000-000000000002'
   where id = '20000000-0000-0000-0000-000000000001';
+insert into public.professions (id, slug, name, is_active) values
+  ('20000000-0000-0000-0000-000000000003', 'test-draft-current', '{"de":"Entwurf","en":""}', true);
+insert into public.profession_forms (id, profession_id, version, schema) values
+  ('30000000-0000-0000-0000-000000000003', '20000000-0000-0000-0000-000000000003', 1, '{"fields":[]}');
+update public.professions set current_form_id = '30000000-0000-0000-0000-000000000003'
+  where id = '20000000-0000-0000-0000-000000000003';
 insert into public.applications (id, profession_id, form_id, full_name, email, locale) values
   ('40000000-0000-0000-0000-000000000001', '20000000-0000-0000-0000-000000000001', '30000000-0000-0000-0000-000000000002', 'A', 'a@test.local', 'en');
 insert into public.blog_posts (slug, title, status) values ('test-draft', '{"de":"Entwurf"}', 'draft');
@@ -29,6 +35,7 @@ select is((select count(*)::int from public.professions where slug = 'test-activ
 select is((select count(*)::int from public.professions where slug = 'test-hidden'), 0, 'anon cannot see inactive profession');
 select is((select count(*)::int from public.profession_forms where id = '30000000-0000-0000-0000-000000000002'), 1, 'anon sees current form');
 select is((select count(*)::int from public.profession_forms where id = '30000000-0000-0000-0000-000000000001'), 0, 'anon cannot see superseded form');
+select is((select count(*)::int from public.profession_forms where id = '30000000-0000-0000-0000-000000000003'), 0, 'anon cannot see a draft form even as current_form_id');
 select is_empty($$select id from public.applications$$, 'anon cannot read applications');
 select throws_ok(
   $$insert into public.applications (profession_id, form_id, full_name, email, locale)

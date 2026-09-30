@@ -10,7 +10,7 @@ Requires Node 22+ and Docker.
 npm install
 npx supabase start          # local Postgres, Auth, Storage (Docker)
 npm run db:env              # writes .env.local from the running stack
-npm run admin:create -- --email you@example.com --password 'choose-one' --role owner --name 'Your Name'
+npm run admin:create -- --email you@example.com --password 'choose-a-long-one' --role owner --name 'Your Name'
 npm run dev                 # http://localhost:3000/en
 ```
 
@@ -23,10 +23,10 @@ npm run dev                 # http://localhost:3000/en
 
 | Script | What it does |
 | --- | --- |
-| `npm run check` | typecheck, lint, unit tests, DB policy tests, production build |
+| `npm run check` | typecheck, lint, unit tests, DB policy tests, production build (needs `npx supabase start` running) |
 | `npm test` | Vitest unit tests (`src/**/*.test.ts`) |
 | `npm run test:db` | pgTAP security-rule tests (`supabase/tests`) |
-| `npm run test:e2e` | Playwright smoke test (needs `supabase start`) |
+| `npm run test:e2e` | Playwright smoke test (needs `npx supabase start`; refuses non-local Supabase URLs) |
 | `npx supabase db reset` | re-apply migrations + `supabase/seed.sql` |
 | `npm run db:types` | regenerate `src/lib/supabase/database.types.ts` after schema changes |
 
@@ -41,3 +41,10 @@ npm run dev                 # http://localhost:3000/en
 ## Production Supabase
 
 Create a project, then run `npx supabase link --project-ref <ref>` and `npx supabase db push`. Put the URL, anon key and service-role key into the hosting environment (see `.env.example`). Disable public sign-ups in Auth settings.
+
+- Bootstrap the first owner by running `admin:create` with the production env vars in a one-off shell (never commit them).
+- Set Auth minimum password length to 12 or more and keep sign-ups disabled.
+- Keep Auth `refresh_token_reuse_interval` above 0 (default 10s); the proxy relies on it (see `src/lib/supabase/proxy.ts`).
+- Confirm table privileges for `anon`, `authenticated` and `service_role`; the migrations rely on Supabase's default grants.
+- The rate limit trusts the first `x-forwarded-for` hop (correct on Vercel; revisit behind other proxies).
+- The Plan 2 cleanup job for abandoned applications and uploads is required before production launch (GDPR).

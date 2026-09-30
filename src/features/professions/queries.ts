@@ -5,12 +5,14 @@ import { createServerSupabase } from "@/lib/supabase/server";
 
 export type ProfessionCard = { slug: string; name: LocalizedText; icon: string; openPositions: number };
 
-/** Active professions visible to the public (RLS: is_active). */
+/** Active professions visible to the public (explicit filters: public reads must not depend on the visitor's session). */
 export async function listActiveProfessions(): Promise<ProfessionCard[]> {
   const supabase = await createServerSupabase();
   const { data, error } = await supabase
     .from("professions")
     .select("slug, name, icon, open_positions")
+    .eq("is_active", true)
+    .not("current_form_id", "is", null)
     .order("is_featured", { ascending: false })
     .order("sort_order");
   if (error) throw error;
@@ -31,6 +33,7 @@ export async function getApplyForm(slug: string): Promise<ApplyFormData | null> 
     .from("professions")
     .select("slug, name, current_form_id")
     .eq("slug", slug)
+    .eq("is_active", true)
     .maybeSingle();
   if (professionError) throw professionError;
   if (!profession?.current_form_id) return null;
@@ -39,6 +42,7 @@ export async function getApplyForm(slug: string): Promise<ApplyFormData | null> 
     .from("profession_forms")
     .select("id, schema")
     .eq("id", profession.current_form_id)
+    .not("published_at", "is", null)
     .maybeSingle();
   if (formError) throw formError;
   if (!form) return null;

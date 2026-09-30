@@ -11,7 +11,7 @@ import { getFormById, getFormForSubmission } from "./queries";
 import { fileMetaFromStorage, finalizeInput, isOwnedPath, submissionInput, type FinalizeInput, type SubmissionInput } from "./submission";
 
 const BUCKET = "applications";
-const RATE_LIMIT = { max: 5, windowSeconds: 3600 };
+const RATE_LIMIT = { max: 20, windowSeconds: 3600 };
 const HONEYPOT_ID = "00000000-0000-0000-0000-000000000000";
 
 /** Best-effort cleanup of uploads belonging to a failed finalize. Never throws. */
@@ -36,9 +36,19 @@ export async function submitApplication(raw: SubmissionInput): Promise<ActionRes
   }
   const input = parsed.data;
   // Bots fill the hidden field. Pretend success so they learn nothing.
-  if (input.website) return ok({ applicationId: HONEYPOT_ID, uploads: [] });
+  if (input.hp_field) return ok({ applicationId: HONEYPOT_ID, uploads: [] });
 
   const supabase = createServiceSupabase();
+  const form = await getFormForSubmission(supabase, input.professionSlug, input.formId);
+  if (!form) return fail("form_unavailable");
+
+  const answers = validateAnswers(form.definition, input.answers);
+  const fileErrors = validateFiles(form.definition, input.files);
+  if (!answers.ok || Object.keys(fileErrors).length > 0) {
+    return fail("invalid", { ...(answers.ok ? {} : answers.fieldErrors), ...fileErrors });
+  }
+
+  // Rate-limit only well-formed submissions: validation failures must not consume quota.
   const ip = (await headers()).get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
   const { data: allowed, error: rateError } = await supabase.rpc("hit_rate_limit", {
     p_bucket: "apply", p_key: ip, p_max: RATE_LIMIT.max, p_window_seconds: RATE_LIMIT.windowSeconds,
@@ -48,15 +58,6 @@ export async function submitApplication(raw: SubmissionInput): Promise<ActionRes
     return fail("server_error");
   }
   if (!allowed) return fail("rate_limited");
-
-  const form = await getFormForSubmission(supabase, input.professionSlug, input.formId);
-  if (!form) return fail("form_unavailable");
-
-  const answers = validateAnswers(form.definition, input.answers);
-  const fileErrors = validateFiles(form.definition, input.files);
-  if (!answers.ok || Object.keys(fileErrors).length > 0) {
-    return fail("invalid", { ...(answers.ok ? {} : answers.fieldErrors), ...fileErrors });
-  }
 
   const { data: application, error } = await supabase
     .from("applications")

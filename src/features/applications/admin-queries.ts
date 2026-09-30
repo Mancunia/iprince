@@ -21,6 +21,8 @@ export type ApplicationRow = {
   professionName: LocalizedText;
 };
 
+export const INBOX_LIMIT = 200;
+
 export async function listApplications(status?: ApplicationStatus): Promise<ApplicationRow[]> {
   const supabase = await createServerSupabase();
   let query = supabase
@@ -28,7 +30,7 @@ export async function listApplications(status?: ApplicationStatus): Promise<Appl
     .select("id, full_name, email, status, submitted_at, profession:professions(name)")
     .not("submitted_at", "is", null)
     .order("submitted_at", { ascending: false })
-    .limit(200);
+    .limit(INBOX_LIMIT);
   if (status) query = query.eq("status", status);
   const { data, error } = await query;
   if (error) throw error;

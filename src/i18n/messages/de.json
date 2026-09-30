@@ -37,6 +37,7 @@
     "applications": "Bewerbungen",
     "allStatuses": "Alle Status",
     "filter": "Filtern",
+    "limitNotice": "Es werden die neuesten {count} Bewerbungen angezeigt. Nutzen Sie den Statusfilter, um die Liste einzugrenzen.",
     "empty": "Noch keine Bewerbungen.",
     "submittedAt": "Eingegangen",
     "profession": "Beruf",

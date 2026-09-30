@@ -37,6 +37,7 @@
     "applications": "Applications",
     "allStatuses": "All statuses",
     "filter": "Filter",
+    "limitNotice": "Showing the latest {count} applications. Use the status filter to narrow the list.",
     "empty": "No applications yet.",
     "submittedAt": "Submitted",
     "profession": "Profession",

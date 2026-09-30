@@ -33,13 +33,15 @@ describe("fileMetaFromStorage", () => {
 describe("submissionInput", () => {
   const base = {
     professionSlug: "pflege", formId: id, locale: "en", fullName: "  Ada Lovelace ", email: "ada@example.com",
-    phone: "", website: "", answers: {}, files: [],
+    phone: "", hp_field: "", answers: {}, files: [],
   };
   it("trims and normalises optional phone", () => {
     const parsed = submissionInput.parse(base);
     expect(parsed.fullName).toBe("Ada Lovelace");
     expect(parsed.phone).toBeUndefined();
   });
+  it("keeps the honeypot value under hp_field", () =>
+    expect(submissionInput.parse({ ...base, hp_field: "bot" }).hp_field).toBe("bot"));
   it("rejects a bad email", () => expect(submissionInput.safeParse({ ...base, email: "nope" }).success).toBe(false));
   it("caps the number of files", () =>
     expect(submissionInput.safeParse({ ...base, files: Array.from({ length: 11 }, () => ({ fieldKey: "cv", name: "a", type: "x", size: 1 })) }).success).toBe(false));

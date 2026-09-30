@@ -2,7 +2,7 @@ import { getFormatter, getTranslations, setRequestLocale } from "next-intl/serve
 import type { Locale } from "@/i18n/config";
 import { Link } from "@/i18n/navigation";
 import { requireAdmin } from "@/features/admin-auth/session";
-import { listApplications } from "@/features/applications/admin-queries";
+import { INBOX_LIMIT, listApplications } from "@/features/applications/admin-queries";
 import { APPLICATION_STATUSES, type ApplicationStatus } from "@/features/applications/review";
 import { localized } from "@/lib/i18n/localized";
 import { Button } from "@/ui/Button";
@@ -33,6 +33,7 @@ export default async function ApplicationsPage({ params, searchParams }: Props) 
         </Stack>
       </form>
       {rows.length === 0 ? <Text tone="muted">{t("empty")}</Text> : null}
+      {rows.length === INBOX_LIMIT ? <Text tone="muted" size="sm">{t("limitNotice", { count: INBOX_LIMIT })}</Text> : null}
       <Stack as="ul" gap="sm">
         {rows.map((row) => (
           <li key={row.id}>

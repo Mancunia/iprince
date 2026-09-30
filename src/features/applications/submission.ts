@@ -9,7 +9,7 @@ export const submissionInput = z.object({
   fullName: z.string().trim().min(2).max(200),
   email: z.email().max(320),
   phone: z.string().trim().max(50).optional().transform((v) => v || undefined),
-  website: z.string().optional(), // honeypot: real users never fill it
+  hp_field: z.string().optional(), // honeypot: real users never fill it
   answers: z.record(z.string(), z.unknown()),
   files: z
     .array(z.object({ fieldKey: z.string().max(40), name: z.string().min(1).max(255), type: z.string().max(255), size: z.number().int() }))
