@@ -29,6 +29,24 @@ describe("validateFiles", () => {
     expect(validateFiles(def, [{ fieldKey: "cv", name: "a.pdf", type: "application/pdf", size: 0 }])).toEqual({ cv: ["too_large"] }));
 });
 
+describe("validateFiles hardening", () => {
+  it("handles prototype-named field keys without throwing", () => {
+    for (const fieldKey of ["__proto__", "constructor", "toString"]) {
+      const errors = validateFiles(def, [
+        { fieldKey, name: "x", type: "text/plain", size: 1 },
+        { fieldKey: "cv", name: "a.pdf", type: "application/pdf", size: 1 },
+      ]);
+      expect(Object.hasOwn(errors, fieldKey)).toBe(true);
+      expect(errors[fieldKey]).toEqual(["unknown_field"]);
+    }
+  });
+  it("rejects non-finite sizes", () => {
+    for (const size of [NaN, undefined as unknown as number, Infinity]) {
+      expect(validateFiles(def, [{ fieldKey: "cv", name: "a.pdf", type: "application/pdf", size }])).toEqual({ cv: ["too_large"] });
+    }
+  });
+});
+
 describe("mimeMatches", () => {
   it("handles wildcards", () => {
     expect(mimeMatches("image/*", "image/png")).toBe(true);

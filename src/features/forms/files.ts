@@ -9,9 +9,10 @@ export function mimeMatches(pattern: string, mime: string): boolean {
 }
 
 export function validateFiles(def: FormDefinition, files: FileMeta[]): FieldErrors {
-  const errors: FieldErrors = {};
+  // Null prototype: fieldKey is client-supplied ("__proto__", "constructor" must be plain keys).
+  const errors: FieldErrors = Object.create(null);
   const add = (key: string, code: string) => {
-    errors[key] = [...new Set([...(errors[key] ?? []), code])];
+    errors[key] = [...new Set([...(Object.hasOwn(errors, key) ? errors[key] : []), code])];
   };
   const fileFields = def.fields.filter((f) => f.type === "file");
 
@@ -24,7 +25,7 @@ export function validateFiles(def: FormDefinition, files: FileMeta[]): FieldErro
     if (mine.length > 1) add(field.key, "too_many");
     const maxBytes = (field.maxSizeMb ?? DEFAULT_MAX_FILE_MB) * 1024 * 1024;
     for (const file of mine) {
-      if (file.size <= 0 || file.size > maxBytes) add(field.key, "too_large");
+      if (!Number.isFinite(file.size) || file.size <= 0 || file.size > maxBytes) add(field.key, "too_large");
       if (field.accept?.length && !field.accept.some((pattern) => mimeMatches(pattern, file.type))) add(field.key, "type_not_allowed");
     }
   }

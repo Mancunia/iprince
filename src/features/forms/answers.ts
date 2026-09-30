@@ -31,6 +31,16 @@ function fieldSchema(field: FormField): z.ZodType {
   }
 }
 
+function isMissing(field: FormField, input: Record<string, unknown>, key: string): boolean {
+  if (!Object.hasOwn(input, key)) return true;
+  const value = input[key];
+  if (value === undefined || value === null) return true;
+  if (typeof value === "string") return value.trim() === "";
+  if (field.type === "checkbox") return value === false;
+  if (field.type === "multiselect") return Array.isArray(value) && value.length === 0;
+  return false;
+}
+
 /** Zod schema for the non-file answers of one form version. */
 export function buildAnswerSchema(def: FormDefinition) {
   const shape: Record<string, z.ZodType> = {};
@@ -44,17 +54,17 @@ export function validateAnswers(
   def: FormDefinition,
   answers: unknown,
 ): { ok: true; data: Record<string, unknown> } | { ok: false; fieldErrors: FieldErrors } {
-  const result = buildAnswerSchema(def).safeParse(answers);
+  // Copy own enumerable properties only, so inherited values are never read as answers.
+  const input: Record<string, unknown> =
+    typeof answers === "object" && answers !== null && !Array.isArray(answers) ? Object.fromEntries(Object.entries(answers)) : {};
+  const result = buildAnswerSchema(def).safeParse(answers === undefined || answers === null ? answers : input);
   if (result.success) return { ok: true, data: result.data };
 
-  const input = (answers ?? {}) as Record<string, unknown>;
-  const fieldErrors: FieldErrors = {};
+  const fieldErrors: FieldErrors = Object.create(null);
   for (const issue of result.error.issues) {
     const key = issue.code === "unrecognized_keys" ? issue.keys[0] : String(issue.path[0] ?? "_form");
     const field = def.fields.find((f) => f.key === key);
-    const missing = input[key] === undefined || (field?.type === "checkbox" && input[key] === false) ||
-      (field?.type === "multiselect" && Array.isArray(input[key]) && (input[key] as unknown[]).length === 0);
-    fieldErrors[key] = [field?.required && missing ? "required" : "invalid"];
+    fieldErrors[key] = [field?.required && isMissing(field, input, key) ? "required" : "invalid"];
   }
   return { ok: false, fieldErrors };
 }

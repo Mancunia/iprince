@@ -60,4 +60,18 @@ describe("validateAnswers", () => {
     const r = validateAnswers(def, { ...valid, hacker: "x" });
     expect(r.ok).toBe(false);
   });
+
+  it("reports blank required text as required, not invalid", () => {
+    const d = formDefinition.parse({ fields: [{ key: "t", type: "text", required: true, label }] });
+    for (const t of ["", "   ", null]) {
+      const r = validateAnswers(d, { t });
+      expect(!r.ok && r.fieldErrors).toEqual({ t: ["required"] });
+    }
+  });
+
+  it("does not read inherited properties as answers", () => {
+    const d = formDefinition.parse({ fields: [{ key: "t", type: "text", required: true, label }] });
+    const r = validateAnswers(d, Object.create({ t: "inherited" }));
+    expect(r.ok).toBe(false);
+  });
 });

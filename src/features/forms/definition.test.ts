@@ -29,4 +29,10 @@ describe("formDefinition", () => {
   it("caps file size at the bucket limit", () => {
     expect(formDefinition.safeParse({ fields: [{ key: "cv", type: "file", label, maxSizeMb: 50 }] }).success).toBe(false);
   });
+
+  it("rejects prototype-polluting keys", () => {
+    for (const key of ["constructor", "__proto__", "prototype"]) {
+      expect(formDefinition.safeParse({ fields: [{ key, type: "text", label }] }).success).toBe(false);
+    }
+  });
 });
