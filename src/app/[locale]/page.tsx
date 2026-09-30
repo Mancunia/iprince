@@ -1,7 +1,33 @@
-import * as stylex from "@stylexjs/stylex";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import type { Locale } from "@/i18n/config";
+import { Link } from "@/i18n/navigation";
+import { listActiveProfessions } from "@/features/professions/queries";
+import { localized } from "@/lib/i18n/localized";
+import { Icon } from "@/ui/Icon";
+import { Stack } from "@/ui/Stack";
+import { Text } from "@/ui/Text";
 
-const styles = stylex.create({ probe: { color: "rgb(200, 0, 0)" } });
+export default async function Home({ params }: { params: Promise<{ locale: Locale }> }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const [t, tMeta, professions] = await Promise.all([getTranslations("site"), getTranslations("metadata"), listActiveProfessions()]);
 
-export default function Home() {
-  return <p {...stylex.props(styles.probe)} data-testid="stylex-probe">StyleX works</p>;
+  return (
+    <Stack gap="lg">
+      <Text as="h1" size="xl">{tMeta("title")}</Text>
+      {professions.length === 0 ? <Text tone="muted">{t("noProfessions")}</Text> : null}
+      <Stack as="ul" gap="sm">
+        {professions.map((p) => (
+          <li key={p.slug}>
+            <Stack direction="row" gap="sm">
+              <Icon name={p.icon} />
+              <Text as="span" size="lg">{localized(p.name, locale)}</Text>
+              <Text as="span" tone="muted">{t("openPositions", { count: p.openPositions })}</Text>
+              <Link href={`/apply/${p.slug}`}>{t("apply")}</Link>
+            </Stack>
+          </li>
+        ))}
+      </Stack>
+    </Stack>
+  );
 }
