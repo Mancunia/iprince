@@ -40,6 +40,13 @@ describe("validateFiles hardening", () => {
       expect(errors[fieldKey]).toEqual(["unknown_field"]);
     }
   });
+  it("returns plain objects with __proto__ as an own property", () => {
+    const errors = validateFiles(def, [{ fieldKey: "__proto__", name: "x", type: "text/plain", size: 1 }, { fieldKey: "cv", name: "a.pdf", type: "application/pdf", size: 1 }]);
+    expect(Object.getPrototypeOf(errors)).toBe(Object.prototype);
+    expect(Object.hasOwn(errors, "__proto__")).toBe(true);
+    expect(Object.getOwnPropertyDescriptor(errors, "__proto__")?.value).toEqual(["unknown_field"]);
+    expect(Object.getPrototypeOf(validateFiles(def, []))).toBe(Object.prototype);
+  });
   it("rejects non-finite sizes", () => {
     for (const size of [NaN, undefined as unknown as number, Infinity]) {
       expect(validateFiles(def, [{ fieldKey: "cv", name: "a.pdf", type: "application/pdf", size }])).toEqual({ cv: ["too_large"] });

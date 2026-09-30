@@ -74,4 +74,15 @@ describe("validateAnswers", () => {
     const r = validateAnswers(d, Object.create({ t: "inherited" }));
     expect(r.ok).toBe(false);
   });
+
+  it("returns a plain-object fieldErrors map", () => {
+    const r = validateAnswers(def, { consent: true, ["__proto__"]: 1 });
+    expect(r.ok).toBe(false);
+    if (!r.ok) expect(Object.getPrototypeOf(r.fieldErrors)).toBe(Object.prototype);
+    const parsed = validateAnswers(def, JSON.parse('{"__proto__":1}'));
+    if (!parsed.ok) {
+      expect(Object.getPrototypeOf(parsed.fieldErrors)).toBe(Object.prototype);
+      expect(Object.hasOwn(parsed.fieldErrors, "__proto__")).toBe(true);
+    }
+  });
 });

@@ -8,6 +8,15 @@ export function mimeMatches(pattern: string, mime: string): boolean {
   return pattern.endsWith("/*") ? mime.startsWith(pattern.slice(0, -1)) : pattern === mime;
 }
 
+/** Plain-object copy (serializable by React); `__proto__` stays an own data property. */
+export function toPlain(map: FieldErrors): FieldErrors {
+  const out: FieldErrors = {};
+  for (const [key, value] of Object.entries(map)) {
+    Object.defineProperty(out, key, { value, enumerable: true, writable: true, configurable: true });
+  }
+  return out;
+}
+
 export function validateFiles(def: FormDefinition, files: FileMeta[]): FieldErrors {
   // Null prototype: fieldKey is client-supplied ("__proto__", "constructor" must be plain keys).
   const errors: FieldErrors = Object.create(null);
@@ -29,7 +38,7 @@ export function validateFiles(def: FormDefinition, files: FileMeta[]): FieldErro
       if (field.accept?.length && !field.accept.some((pattern) => mimeMatches(pattern, file.type))) add(field.key, "type_not_allowed");
     }
   }
-  return errors;
+  return toPlain(errors);
 }
 
 /** `<applicationId>/<fieldKey>/<nonce>-<safe name>`. The prefix is what finalize checks ownership against. */

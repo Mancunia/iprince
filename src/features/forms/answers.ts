@@ -1,5 +1,6 @@
 import { z } from "zod";
 import type { FieldErrors } from "@/lib/result";
+import { toPlain } from "./files";
 import { LANGUAGE_LEVELS, type FormDefinition, type FormField } from "./definition";
 
 function optionalUnless(required: boolean, schema: z.ZodType): z.ZodType {
@@ -66,7 +67,7 @@ export function validateAnswers(
     const field = def.fields.find((f) => f.key === key);
     fieldErrors[key] = [field?.required && isMissing(field, input, key) ? "required" : "invalid"];
   }
-  return { ok: false, fieldErrors };
+  return { ok: false, fieldErrors: toPlain(fieldErrors) };
 }
 
 /** Reads `answers.<key>` inputs from a submitted form. Blank values are omitted. */
