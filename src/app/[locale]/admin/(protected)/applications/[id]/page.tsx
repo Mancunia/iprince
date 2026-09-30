@@ -40,7 +40,7 @@ export default async function ApplicationDetailPage({ params }: { params: Promis
       <Text as="h2" size="lg">{t("documents")}</Text>
       <Stack as="ul" gap="xs">
         {app.files.map((f) => (
-          <li key={f.name}>
+          <li key={f.path}>
             {f.label}: {f.url ? <a href={f.url} target="_blank" rel="noreferrer">{f.name}</a> : f.name}
           </li>
         ))}

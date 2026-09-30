@@ -48,7 +48,7 @@
     "documents": "Dokumente",
     "back": "Zurück zu den Bewerbungen",
     "statuses": { "new": "Neu", "reviewing": "In Prüfung", "contacted": "Kontaktiert", "placed": "Vermittelt", "rejected": "Abgelehnt", "archived": "Archiviert" },
-    "errors": { "invalid_credentials": "E-Mail oder Passwort ist falsch.", "not_admin": "Dieses Konto hat keinen Admin-Zugang.", "invalid": "Bitte prüfen Sie Ihre Eingaben.", "server_error": "Etwas ist schiefgelaufen." }
+    "errors": { "invalid_credentials": "E-Mail oder Passwort ist falsch.", "not_admin": "Dieses Konto hat keinen Admin-Zugang.", "invalid": "Bitte prüfen Sie Ihre Eingaben.", "server_error": "Etwas ist schiefgelaufen.", "not_found": "Diese Bewerbung existiert nicht mehr." }
   },
   "errors": { "notFoundTitle": "Seite nicht gefunden", "genericTitle": "Etwas ist schiefgelaufen", "retry": "Erneut versuchen" }
 }

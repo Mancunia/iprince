@@ -1,9 +1,16 @@
 import "server-only";
+import { z } from "zod";
 import type { Locale } from "@/i18n/config";
 import { formDefinition } from "@/features/forms/definition";
 import { localized, localizedText, type LocalizedText } from "@/lib/i18n/localized";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { describeAnswers, type ApplicationStatus } from "./review";
+
+const FALLBACK_NAME: LocalizedText = { de: "—", en: "" };
+const professionName = (value: unknown): LocalizedText => {
+  const parsed = localizedText.safeParse(value);
+  return parsed.success ? parsed.data : FALLBACK_NAME;
+};
 
 export type ApplicationRow = {
   id: string;
@@ -31,7 +38,7 @@ export async function listApplications(status?: ApplicationStatus): Promise<Appl
     email: row.email,
     status: row.status,
     submittedAt: row.submitted_at!,
-    professionName: localizedText.parse(row.profession?.name),
+    professionName: professionName(row.profession?.name),
   }));
 }
 
@@ -40,7 +47,7 @@ export type ApplicationDetail = ApplicationRow & {
   locale: string;
   adminNotes: string;
   answers: { key: string; label: string; value: string }[];
-  files: { label: string; name: string; url: string | null }[];
+  files: { label: string; name: string; path: string; url: string | null }[];
 };
 
 export async function getApplicationDetail(
@@ -48,8 +55,9 @@ export async function getApplicationDetail(
   locale: Locale,
   yesNo: { yes: string; no: string },
 ): Promise<ApplicationDetail | null> {
+  if (!z.guid().safeParse(id).success) return null;
   const supabase = await createServerSupabase();
-  const { data: row } = await supabase
+  const { data: row, error } = await supabase
     .from("applications")
     .select(
       "id, full_name, email, phone, locale, status, submitted_at, admin_notes, answers, profession:professions(name), form:profession_forms(schema), files:application_files(field_key, storage_path)",
@@ -57,6 +65,7 @@ export async function getApplicationDetail(
     .eq("id", id)
     .not("submitted_at", "is", null)
     .maybeSingle();
+  if (error) throw error;
   if (!row) return null;
 
   const definition = formDefinition.safeParse(row.form?.schema);
@@ -68,10 +77,14 @@ export async function getApplicationDetail(
 
   const files = await Promise.all(
     row.files.map(async (file) => {
-      const { data } = await supabase.storage.from("applications").createSignedUrl(file.storage_path, 600);
-      return { label: fileLabel(file.field_key), name: file.storage_path.split("/").pop()!, url: data?.signedUrl ?? null };
+      const { data, error: signError } = await supabase.storage.from("applications").createSignedUrl(file.storage_path, 600);
+      if (signError) console.error("signed url failed", signError);
+      return { label: fileLabel(file.field_key), name: file.storage_path.split("/").pop()!, path: file.storage_path, url: data?.signedUrl ?? null };
     }),
   );
+
+  const answers =
+    row.answers && typeof row.answers === "object" && !Array.isArray(row.answers) ? (row.answers as Record<string, unknown>) : {};
 
   return {
     id: row.id,
@@ -82,8 +95,8 @@ export async function getApplicationDetail(
     status: row.status,
     submittedAt: row.submitted_at!,
     adminNotes: row.admin_notes,
-    professionName: localizedText.parse(row.profession?.name),
-    answers: definition.success ? describeAnswers(definition.data, row.answers as Record<string, unknown>, locale, yesNo) : [],
+    professionName: professionName(row.profession?.name),
+    answers: definition.success ? describeAnswers(definition.data, answers, locale, yesNo) : [],
     files,
   };
 }

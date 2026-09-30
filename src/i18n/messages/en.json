@@ -48,7 +48,7 @@
     "documents": "Documents",
     "back": "Back to applications",
     "statuses": { "new": "New", "reviewing": "Reviewing", "contacted": "Contacted", "placed": "Placed", "rejected": "Rejected", "archived": "Archived" },
-    "errors": { "invalid_credentials": "Email or password is incorrect.", "not_admin": "This account has no admin access.", "invalid": "Please check your input.", "server_error": "Something went wrong." }
+    "errors": { "invalid_credentials": "Email or password is incorrect.", "not_admin": "This account has no admin access.", "invalid": "Please check your input.", "server_error": "Something went wrong.", "not_found": "This application no longer exists." }
   },
   "errors": { "notFoundTitle": "Page not found", "genericTitle": "Something went wrong", "retry": "Try again" }
 }

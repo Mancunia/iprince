@@ -10,23 +10,24 @@ import { APPLICATION_STATUSES } from "./review";
 
 const updateInput = z.object({
   id: z.guid(),
-  locale: z.enum(locales),
   status: z.enum(APPLICATION_STATUSES),
   adminNotes: z.string().max(10000),
 });
 
 export async function updateApplication(_prev: ActionResult<null> | null, formData: FormData): Promise<ActionResult<null>> {
+  const locale = z.enum(locales).catch("en").parse(formData.get("locale"));
+  await requireAdmin(locale);
   const parsed = updateInput.safeParse(Object.fromEntries(formData));
   if (!parsed.success) return fail("invalid");
-  const { id, locale, status, adminNotes } = parsed.data;
-  await requireAdmin(locale);
+  const { id, status, adminNotes } = parsed.data;
 
   const supabase = await createServerSupabase();
-  const { error } = await supabase.from("applications").update({ status, admin_notes: adminNotes }).eq("id", id);
+  const { data, error } = await supabase.from("applications").update({ status, admin_notes: adminNotes }).eq("id", id).select("id");
   if (error) {
     console.error("update application failed", error);
     return fail("server_error");
   }
+  if (data.length === 0) return fail("not_found");
   revalidatePath(`/${locale}/admin/applications`, "layout");
   return ok(null);
 }
