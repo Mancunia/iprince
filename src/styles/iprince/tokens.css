@@ -1,0 +1,195 @@
+/* iPrince design tokens — imported from the Claude Design project (tokens/colors.css,
+   typography.css, spacing.css). Fonts come from next/font in [locale]/layout.tsx. */
+
+/* Color — iPrince navy (accent) + gold (from the logo) on the Industry light technical ground,
+   plus functional status ramps (success / warning / danger) for validation and admin states only. */
+:root {
+  /* Base */
+  --color-paper: #f2f2f3;
+  --color-white: #fbfbfc;
+  --color-ink: #1d1f20;
+
+  --color-neutral-100: #f5f5f8;
+  --color-neutral-200: #e7e7ea;
+  --color-neutral-300: #d4d4d7;
+  --color-neutral-400: #b7b7ba;
+  --color-neutral-500: #98989b;
+  --color-neutral-600: #7a7a7d;
+  --color-neutral-700: #5d5d60;
+  --color-neutral-800: #424244;
+  --color-neutral-900: #2b2b2d;
+
+  --color-accent-100: #eef2f8;
+  --color-accent-200: #d9e1ee;
+  --color-accent-300: #b3c3dc;
+  --color-accent-400: #8399bd;
+  --color-accent-500: #56709b;
+  --color-accent-600: #36527d;
+  --color-accent-700: #213d66;
+  --color-accent-800: #162c4f;
+  --color-accent-900: #0e1f3a;
+
+  /* Gold — second brand colour from the logo (crown, tie, "i"). Highlights only:
+     employer primary, rules, marks. gold-700+ for text on paper. */
+  --color-gold-100: #fbf5e8;
+  --color-gold-200: #f3e3c0;
+  --color-gold-300: #e7cb8f;
+  --color-gold-400: #d9b366;
+  --color-gold-500: #c69a48;
+  --color-gold-600: #a98033;
+  --color-gold-700: #86642a;
+  --color-gold-800: #654b20;
+  --color-gold-900: #453416;
+
+  /* Functional — never decorative. Always paired with an icon + text. */
+  --color-success-100: #e5f3ea;
+  --color-success-600: #3d8158;
+  --color-success-700: #2c6644;
+  --color-warning-100: #faf0db;
+  --color-warning-600: #a0741c;
+  --color-warning-700: #7a5510;
+  --color-danger-100: #fbe8e6;
+  --color-danger-600: #c0463b;
+  --color-danger-700: #a3342b;
+
+  /* Semantic aliases — components read these; door themes remap them. */
+  --surface-page: var(--color-paper);
+  --surface-input: var(--color-white);
+  --surface-tint: var(--color-accent-100);
+  --surface-hover: color-mix(in srgb, var(--color-ink) 6%, transparent);
+  --surface-pressed: color-mix(in srgb, var(--color-ink) 12%, transparent);
+  --surface-inverse: var(--color-accent-900);
+
+  --text-body: var(--color-ink);
+  --text-muted: var(--color-neutral-700);
+  --text-accent: var(--color-accent-700);
+  --text-highlight: var(--color-gold-700);
+  --brand-gold: var(--color-gold-500);
+  --text-link: var(--color-accent-700);
+  --text-link-hover: var(--color-accent-800);
+  --text-inverse: var(--color-paper);
+  --text-on-primary: var(--color-paper);
+
+  --border-hairline: color-mix(in srgb, var(--color-ink) 16%, transparent);
+  --border-control: var(--color-neutral-600);
+  --border-control-hover: var(--color-neutral-800);
+  --border-focus: var(--color-accent-600);
+  --corner-mark: color-mix(in srgb, var(--color-ink) 55%, transparent);
+
+  --action-primary: var(--color-accent-700);
+  --action-primary-hover: var(--color-accent-800);
+  --action-primary-active: var(--color-accent-900);
+
+  --status-error-text: var(--color-danger-700);
+  --status-error-bg: var(--color-danger-100);
+  --status-success-text: var(--color-success-700);
+  --status-success-bg: var(--color-success-100);
+  --status-warning-text: var(--color-warning-700);
+  --status-warning-bg: var(--color-warning-100);
+}
+
+/* Door themes — one brand, two surfaces.
+   Candidate door: paper ground, tinted guidance, warm step-by-step.
+   Employer door: navy field (accent-900), reversed type, gold primary — concierge. */
+.door-candidate {
+  --surface-page: var(--color-paper);
+  --surface-tint: var(--color-accent-100);
+}
+.door-employer {
+  --surface-page: var(--color-accent-900);
+  --surface-input: color-mix(in srgb, var(--color-paper) 6%, var(--color-accent-900));
+  --surface-tint: var(--color-accent-800);
+  --surface-hover: color-mix(in srgb, var(--color-paper) 8%, transparent);
+  --surface-pressed: color-mix(in srgb, var(--color-paper) 14%, transparent);
+  --text-body: var(--color-paper);
+  --text-muted: color-mix(in srgb, var(--color-paper) 72%, var(--color-accent-900));
+  --text-accent: var(--color-accent-300);
+  --text-highlight: var(--color-gold-400);
+  --text-link: var(--color-accent-300);
+  --text-link-hover: var(--color-accent-200);
+  --text-on-primary: var(--color-accent-900);
+  --border-hairline: color-mix(in srgb, var(--color-paper) 20%, transparent);
+  --border-control: color-mix(in srgb, var(--color-paper) 55%, var(--color-accent-900));
+  --border-control-hover: var(--color-paper);
+  --border-focus: var(--color-accent-300);
+  --corner-mark: var(--color-gold-400);
+  --action-primary: var(--color-gold-400);
+  --action-primary-hover: var(--color-gold-300);
+  --action-primary-active: var(--color-gold-500);
+  --status-error-text: #f4a79f;
+  --status-success-text: #9fd6b3;
+  --status-warning-text: #eccb8a;
+  background: var(--surface-page);
+  color: var(--text-body);
+}
+
+/* Type — Barlow Condensed headings over Barlow body. Mobile-first sizes; display
+   steps grow with clamp(). Body is 16px so iOS never zooms form fields. */
+:root {
+  --font-heading: var(--font-barlow-condensed), "Arial Narrow", system-ui, sans-serif;
+  --font-body: var(--font-barlow), system-ui, sans-serif;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-heading: 600;
+
+  --text-2xs: 11px;
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-base: 16px;
+  --text-lg: 18px;
+  --text-xl: 22px;
+  --text-2xl: 28px;
+  --text-3xl: clamp(32px, 5vw, 44px);
+  --text-4xl: clamp(40px, 7.5vw, 72px);
+
+  --leading-tight: 1.05;
+  --leading-heading: 1.15;
+  --leading-body: 1.55;
+
+  --tracking-heading: -0.01em;
+  --tracking-kicker: 0.12em;
+}
+
+/* Space, radius, elevation, layout, motion. Space keeps Industry's 0.85× density
+   (3.4px unit) and extends it for marketing rhythm. */
+:root {
+  --space-1: 3.4px;
+  --space-2: 6.8px;
+  --space-3: 10.2px;
+  --space-4: 13.6px;
+  --space-5: 17px;
+  --space-6: 20.4px;
+  --space-8: 27.2px;
+  --space-10: 34px;
+  --space-12: 40.8px;
+  --space-16: 54.4px;
+  --space-24: 81.6px;
+
+  /* Blueprint objects are square. Radius exists only for the WhatsApp FAB focus halo. */
+  --radius-none: 0;
+  --radius-sm: 2px;
+
+  --shadow-sm: 0 1px 2px color-mix(in srgb, #2b2b2d 14%, transparent);
+  --shadow-md: 0 3px 10px color-mix(in srgb, #2b2b2d 16%, transparent);
+  --shadow-lg: 0 12px 32px color-mix(in srgb, #2b2b2d 22%, transparent);
+
+  --tap-min: 44px;
+  --control-h: 48px;
+  --control-h-dense: 34px;
+  --container-max: 1200px;
+  --container-form: 760px;
+  --gutter: clamp(16px, 4vw, 40px);
+  --header-h: 64px;
+
+  --z-header: 50;
+  --z-fab: 60;
+  --z-dialog: 100;
+
+  --ease-standard: cubic-bezier(.2, 0, 0, 1);
+  --dur-fast: 120ms;
+  --dur-base: 200ms;
+}
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur-fast: 0ms; --dur-base: 0ms; }
+}
