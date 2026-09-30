@@ -1,30 +1,5 @@
-@import "tailwindcss";
-/* iPrince design system (Claude Design import). Tailwind stays only for legacy pages. */
-@import "../styles/iprince/tokens.css";
-@import "../styles/iprince/base.css";
-@import "../styles/iprince/components.css";
+@stylex;
 
-@theme inline {
-  --color-navy-50: #f0f4f8;
-  --color-navy-100: #d9e2ec;
-  --color-navy-200: #bcccdc;
-  --color-navy-300: #9fb3c8;
-  --color-navy-400: #829ab1;
-  --color-navy-500: #627d98;
-  --color-navy-600: #486581;
-  --color-navy-700: #334e68;
-  --color-navy-800: #243b53;
-  --color-navy-900: #102a43;
-  --color-navy-950: #0a1f33;
-  --color-gold-50: #fffbea;
-  --color-gold-100: #fff3c4;
-  --color-gold-200: #fce588;
-  --color-gold-300: #fadb5f;
-  --color-gold-400: #f7c948;
-  --color-gold-500: #f0b429;
-  --color-gold-600: #de911d;
-  --color-gold-700: #cb6e17;
-  --color-gold-800: #b44d12;
-  --color-gold-900: #8d2b0b;
-  --font-sans: var(--font-barlow);
-}
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body { font-family: system-ui, sans-serif; line-height: 1.5; }

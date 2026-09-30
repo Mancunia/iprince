@@ -1,301 +1,54 @@
 {
-  "metadata": {
-    "home": {
-      "title": "iPrince Personalvermittlung — Home",
-      "description": "iPrince Personalvermittlung connects international skilled workers with employers in Germany – with verified profiles, a transparent process and support with visa, recognition and language."
+  "metadata": { "title": "iPrince Recruiting", "description": "International skilled workers for employers in Germany." },
+  "site": { "skipLink": "Skip to content", "openPositions": "{count, plural, =0 {No open positions} one {# open position} other {# open positions}}", "apply": "Apply", "noProfessions": "No professions are open for applications right now." },
+  "apply": {
+    "title": "Apply: {profession}",
+    "fullName": "Full name",
+    "email": "Email",
+    "phone": "Phone (optional)",
+    "submit": "Send application",
+    "sending": "Sending…",
+    "uploading": "Uploading documents…",
+    "success": "Thank you! Your application has been received. We will get back to you soon.",
+    "requiredHint": "Fields marked * are required.",
+    "yes": "Yes",
+    "no": "No",
+    "choose": "Please choose",
+    "errors": {
+      "required": "This field is required.",
+      "invalid": "Please check this field.",
+      "too_large": "The file is too large.",
+      "too_many": "Only one file is allowed.",
+      "type_not_allowed": "This file type is not allowed.",
+      "unknown_field": "Unexpected file.",
+      "rate_limited": "Too many attempts. Please try again later.",
+      "form_unavailable": "This application form is no longer available. Please reload the page.",
+      "upload_missing": "A document upload did not complete. Please try again.",
+      "upload_failed": "A document could not be uploaded. Please try again.",
+      "server_error": "Something went wrong. Please try again."
     }
   },
-  "common": {
-    "logo": "iPrince Recruiting",
-    "applyNow": "Apply Now",
-    "findJob": "Find a Job",
-    "findStaff": "Find Staff",
-    "viewAll": "View All",
-    "learnMore": "Learn More",
-    "readMore": "Read More",
-    "contactUs": "Contact Us",
-    "submit": "Submit",
-    "loading": "Loading...",
-    "backToHome": "Back to Home"
+  "admin": {
+    "signInTitle": "Admin sign-in",
+    "email": "Email",
+    "password": "Password",
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "applications": "Applications",
+    "allStatuses": "All statuses",
+    "filter": "Filter",
+    "empty": "No applications yet.",
+    "submittedAt": "Submitted",
+    "profession": "Profession",
+    "status": "Status",
+    "notes": "Internal notes",
+    "save": "Save",
+    "saved": "Saved.",
+    "answers": "Answers",
+    "documents": "Documents",
+    "back": "Back to applications",
+    "statuses": { "new": "New", "reviewing": "Reviewing", "contacted": "Contacted", "placed": "Placed", "rejected": "Rejected", "archived": "Archived" },
+    "errors": { "invalid_credentials": "Email or password is incorrect.", "not_admin": "This account has no admin access.", "invalid": "Please check your input.", "server_error": "Something went wrong." }
   },
-  "nav": {
-    "forJobSeekers": "For Job Seekers",
-    "forEmployers": "For Employers",
-    "jobs": "Jobs",
-    "about": "About",
-    "faq": "FAQ",
-    "contact": "Contact",
-    "language": "Language",
-    "switchToGerman": "DE",
-    "switchToEnglish": "EN"
-  },
-  "home": {
-    "hero": {
-      "kicker": "Your path to a successful career in Germany",
-      "title": "Qualified people. Placed with legal certainty.",
-      "lead": "We bring international skilled workers and employers in Germany together – with verified profiles, a transparent process and support with visa, recognition and language.",
-      "apply": "Apply for free",
-      "request": "Request professionals",
-      "photo": "Photo · Professional at work (duotone)"
-    },
-    "trustLabel": "Trust and compliance",
-    "trust": [
-      {
-        "icon": "badge-check",
-        "title": "Licensed agency",
-        "text": "Private employment agency under SGB III"
-      },
-      {
-        "icon": "shield-check",
-        "title": "GDPR-compliant",
-        "text": "Data processed only in the EU"
-      },
-      {
-        "icon": "heart-handshake",
-        "title": "Fair recruitment",
-        "text": "Always free for applicants"
-      },
-      {
-        "icon": "lock",
-        "title": "Encrypted",
-        "text": "TLS transfer for all documents"
-      }
-    ],
-    "professions": {
-      "kicker": "Fields",
-      "title": "Fields we are recruiting for",
-      "open": "{count, plural, one {# open position} other {# open positions}}"
-    },
-    "doors": {
-      "candidate": {
-        "kicker": "For professionals · What we offer",
-        "title": "Your way to Germany – with support at every step",
-        "text": "We are at your side from your first application to your first day at work. Applying is always free.",
-        "items": [
-          {
-            "icon": "briefcase",
-            "title": "Job placement in Germany",
-            "text": "Contact with verified employers in your field."
-          },
-          {
-            "icon": "graduation-cap",
-            "title": "For trainees and experienced workers",
-            "text": "We support you from training to employment."
-          },
-          {
-            "icon": "file-check",
-            "title": "Recognition and documents",
-            "text": "Help with recognising your qualifications and all paperwork."
-          },
-          {
-            "icon": "languages",
-            "title": "Language and integration",
-            "text": "Support while you learn German and settle in."
-          },
-          {
-            "icon": "plane",
-            "title": "Support from the start",
-            "text": "From your home country to your first day at work."
-          }
-        ],
-        "primary": "Apply now for free",
-        "secondary": "View jobs"
-      },
-      "employer": {
-        "kicker": "For employers",
-        "title": "Verified professionals. A legally sound process.",
-        "text": "We handle selection, document checks and coordination with the authorities – discreetly and on schedule.",
-        "items": [
-          {
-            "icon": "scale",
-            "title": "Legal certainty in the fast-track procedure for skilled workers"
-          },
-          {
-            "icon": "file-check",
-            "title": "Qualifications and language certificates checked in advance"
-          },
-          {
-            "icon": "timer",
-            "title": "One dedicated contact and reliable time frames"
-          },
-          {
-            "icon": "handshake",
-            "title": "Integration support after the start date"
-          }
-        ],
-        "primary": "Request staff",
-        "secondary": "Book a consultation"
-      }
-    },
-    "why": {
-      "kicker": "Why iPrince?",
-      "title": "Your reliable partner for a future in Germany",
-      "items": [
-        {
-          "icon": "shield-check",
-          "title": "Reliable, professional support"
-        },
-        {
-          "icon": "handshake",
-          "title": "Strong network in Germany"
-        },
-        {
-          "icon": "user",
-          "title": "Personal guidance"
-        },
-        {
-          "icon": "timer",
-          "title": "Fast, transparent process"
-        }
-      ]
-    },
-    "process": {
-      "kicker": "How it works for professionals",
-      "title": "Four clear steps",
-      "text": "You always know where your application stands and what happens next.",
-      "steps": [
-        {
-          "title": "Apply online",
-          "text": "Fill in the form for your field and upload your documents – from your phone is fine."
-        },
-        {
-          "title": "Personal interview",
-          "text": "We get to know you by video and check your qualifications together."
-        },
-        {
-          "title": "Recognition & visa",
-          "text": "We guide you through recognition, language course and visa application."
-        },
-        {
-          "title": "Start in Germany",
-          "text": "Contract, travel, finding a flat – we stay your contact person."
-        }
-      ]
-    },
-    "testimonials": {
-      "kicker": "References",
-      "title": "Experiences from both sides",
-      "photo": "Photo",
-      "candidate": {
-        "quote": "“I knew what came next at every step. The help with recognition saved me months.”",
-        "name": "Name of professional",
-        "meta": "Field · Country of origin"
-      },
-      "employer": {
-        "quote": "“Complete documents, clear deadlines, one contact person. That is how placement should work.”",
-        "name": "Name, role",
-        "meta": "Company · Location"
-      }
-    },
-    "faq": {
-      "kicker": "Frequently asked questions",
-      "title": "Answers before your first step",
-      "text": "Your question is not here? Write to us on WhatsApp or by e-mail.",
-      "items": [
-        {
-          "q": "Do I have to pay for the placement?",
-          "a": "No. Our placement is completely free for applicants. Employers pay the costs."
-        },
-        {
-          "q": "How much German do I need?",
-          "a": "It depends on your field. The job advert states the required language level. We help you find suitable courses."
-        },
-        {
-          "q": "How long does recognition of my qualification take?",
-          "a": "Usually three to six months. We prepare the documents with you and submit the application to the responsible authority."
-        },
-        {
-          "q": "How is my data protected?",
-          "a": "All documents are transferred encrypted and stored only on servers in the EU. You can ask us to delete them at any time."
-        }
-      ]
-    },
-    "contact": {
-      "kicker": "Contact",
-      "title": "Talk to us",
-      "text": "We will get back to you personally within two working days. WhatsApp is the fastest way to reach us.",
-      "whatsapp": "Write to us on WhatsApp",
-      "form": {
-        "iAm": "I am",
-        "candidate": "Professional",
-        "employer": "Employer",
-        "name": "Name",
-        "email": "E-mail address",
-        "message": "Your message",
-        "consent": "I have read the <link>privacy policy</link> and agree that my details are processed to handle my request.",
-        "submit": "Send message",
-        "security": "Encrypted transfer. Your data is never passed on to third parties."
-      }
-    }
-  },
-  "footer": {
-    "contact": "Contact",
-    "privacy": "Privacy Policy",
-    "cookies": "Cookie Policy",
-    "impressum": "Impressum",
-    "copyright": "© 2024 iPrince Recruiting. All rights reserved.",
-    "social": "Follow Us"
-  },
-  "jobs": {
-    "title": "Job Listings",
-    "search": "Search jobs...",
-    "filters": {
-      "profession": "Profession",
-      "location": "Location",
-      "employmentType": "Employment Type",
-      "experience": "Experience",
-      "language": "Language",
-      "industry": "Industry"
-    },
-    "noResults": "No jobs found matching your criteria.",
-    "viewDetails": "View Details"
-  },
-  "site": {
-    "skipLink": "Skip to content",
-    "whatsappLabel": "Message us on WhatsApp",
-    "legalStrip": {
-      "licensed": "Licensed private employment agency",
-      "gdpr": "GDPR-compliant · Servers in the EU"
-    },
-    "header": {
-      "homeLabel": "iPrince Personalvermittlung – Home",
-      "mainNav": "Main navigation",
-      "language": "Language",
-      "openMenu": "Open menu",
-      "closeMenu": "Close menu",
-      "cta": "Request staff",
-      "nav": {
-        "candidates": "For professionals",
-        "employers": "For employers",
-        "jobs": "Jobs",
-        "process": "How it works",
-        "faq": "FAQ"
-      }
-    },
-    "footer": {
-      "tagline": "Your reliable partner for a successful future in Germany.",
-      "candidates": {
-        "title": "Professionals",
-        "apply": "Apply",
-        "jobs": "Jobs",
-        "process": "How it works"
-      },
-      "employers": {
-        "title": "Employers",
-        "request": "Request staff",
-        "services": "Services",
-        "consult": "Consultation"
-      },
-      "contact": {
-        "title": "Contact"
-      },
-      "legal": {
-        "label": "Legal",
-        "imprint": "Legal notice (Impressum)",
-        "privacy": "Privacy (Datenschutz)",
-        "terms": "Terms (AGB)",
-        "cookies": "Cookie settings"
-      }
-    }
-  }
+  "errors": { "notFoundTitle": "Page not found", "genericTitle": "Something went wrong", "retry": "Try again" }
 }

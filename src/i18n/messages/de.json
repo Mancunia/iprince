@@ -1,301 +1,54 @@
 {
-  "metadata": {
-    "home": {
-      "title": "iPrince Personalvermittlung — Startseite",
-      "description": "iPrince Personalvermittlung bringt internationale Fachkräfte und Arbeitgeber in Deutschland zusammen – mit geprüften Profilen, transparentem Ablauf und Begleitung bei Visum, Anerkennung und Sprache."
+  "metadata": { "title": "iPrince Personalvermittlung", "description": "Internationale Fachkräfte für Arbeitgeber in Deutschland." },
+  "site": { "skipLink": "Zum Inhalt springen", "openPositions": "{count, plural, =0 {Keine offenen Stellen} one {# offene Stelle} other {# offene Stellen}}", "apply": "Bewerben", "noProfessions": "Derzeit sind keine Berufe für Bewerbungen geöffnet." },
+  "apply": {
+    "title": "Bewerbung: {profession}",
+    "fullName": "Vollständiger Name",
+    "email": "E-Mail",
+    "phone": "Telefon (optional)",
+    "submit": "Bewerbung absenden",
+    "sending": "Wird gesendet…",
+    "uploading": "Dokumente werden hochgeladen…",
+    "success": "Vielen Dank! Ihre Bewerbung ist eingegangen. Wir melden uns in Kürze.",
+    "requiredHint": "Mit * markierte Felder sind Pflichtfelder.",
+    "yes": "Ja",
+    "no": "Nein",
+    "choose": "Bitte wählen",
+    "errors": {
+      "required": "Dieses Feld ist erforderlich.",
+      "invalid": "Bitte prüfen Sie dieses Feld.",
+      "too_large": "Die Datei ist zu groß.",
+      "too_many": "Es ist nur eine Datei erlaubt.",
+      "type_not_allowed": "Dieser Dateityp ist nicht erlaubt.",
+      "unknown_field": "Unerwartete Datei.",
+      "rate_limited": "Zu viele Versuche. Bitte später erneut versuchen.",
+      "form_unavailable": "Dieses Formular ist nicht mehr verfügbar. Bitte laden Sie die Seite neu.",
+      "upload_missing": "Ein Dokument wurde nicht vollständig hochgeladen. Bitte erneut versuchen.",
+      "upload_failed": "Ein Dokument konnte nicht hochgeladen werden. Bitte erneut versuchen.",
+      "server_error": "Etwas ist schiefgelaufen. Bitte erneut versuchen."
     }
   },
-  "common": {
-    "logo": "iPrince Personalvermittlung",
-    "applyNow": "Jetzt bewerben",
-    "findJob": "Job finden",
-    "findStaff": "Mitarbeiter finden",
-    "viewAll": "Alle anzeigen",
-    "learnMore": "Mehr erfahren",
-    "readMore": "Weiterlesen",
-    "contactUs": "Kontaktieren Sie uns",
-    "submit": "Absenden",
-    "loading": "Wird geladen...",
-    "backToHome": "Zurück zur Startseite"
+  "admin": {
+    "signInTitle": "Admin-Anmeldung",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "signIn": "Anmelden",
+    "signOut": "Abmelden",
+    "applications": "Bewerbungen",
+    "allStatuses": "Alle Status",
+    "filter": "Filtern",
+    "empty": "Noch keine Bewerbungen.",
+    "submittedAt": "Eingegangen",
+    "profession": "Beruf",
+    "status": "Status",
+    "notes": "Interne Notizen",
+    "save": "Speichern",
+    "saved": "Gespeichert.",
+    "answers": "Antworten",
+    "documents": "Dokumente",
+    "back": "Zurück zu den Bewerbungen",
+    "statuses": { "new": "Neu", "reviewing": "In Prüfung", "contacted": "Kontaktiert", "placed": "Vermittelt", "rejected": "Abgelehnt", "archived": "Archiviert" },
+    "errors": { "invalid_credentials": "E-Mail oder Passwort ist falsch.", "not_admin": "Dieses Konto hat keinen Admin-Zugang.", "invalid": "Bitte prüfen Sie Ihre Eingaben.", "server_error": "Etwas ist schiefgelaufen." }
   },
-  "nav": {
-    "forJobSeekers": "Für Arbeitssuchende",
-    "forEmployers": "Für Arbeitgeber",
-    "jobs": "Jobs",
-    "about": "Über uns",
-    "faq": "FAQ",
-    "contact": "Kontakt",
-    "language": "Sprache",
-    "switchToGerman": "DE",
-    "switchToEnglish": "EN"
-  },
-  "home": {
-    "hero": {
-      "kicker": "Ihr Weg zu einer erfolgreichen Karriere in Deutschland",
-      "title": "Qualifizierte Menschen. Rechtssicher vermittelt.",
-      "lead": "Wir bringen internationale Fachkräfte und Arbeitgeber in Deutschland zusammen – mit geprüften Profilen, transparentem Ablauf und Begleitung bei Visum, Anerkennung und Sprache.",
-      "apply": "Kostenlos bewerben",
-      "request": "Fachkräfte anfragen",
-      "photo": "Foto · Fachkraft am Arbeitsplatz (duotone)"
-    },
-    "trustLabel": "Vertrauen und Compliance",
-    "trust": [
-      {
-        "icon": "badge-check",
-        "title": "Lizenzierte Vermittlung",
-        "text": "Private Arbeitsvermittlung nach SGB III"
-      },
-      {
-        "icon": "shield-check",
-        "title": "DSGVO-konform",
-        "text": "Datenverarbeitung ausschließlich in der EU"
-      },
-      {
-        "icon": "heart-handshake",
-        "title": "Faire Rekrutierung",
-        "text": "Für Bewerbende immer kostenfrei"
-      },
-      {
-        "icon": "lock",
-        "title": "Verschlüsselt",
-        "text": "TLS-Übertragung aller Unterlagen"
-      }
-    ],
-    "professions": {
-      "kicker": "Berufsfelder",
-      "title": "Aktuell gesuchte Fachrichtungen",
-      "open": "{count, plural, one {# offene Stelle} other {# offene Stellen}}"
-    },
-    "doors": {
-      "candidate": {
-        "kicker": "Für Fachkräfte · Unser Angebot",
-        "title": "Ihr Weg nach Deutschland – Schritt für Schritt begleitet",
-        "text": "Wir sind an Ihrer Seite, von der ersten Bewerbung bis zum ersten Arbeitstag. Für Sie entstehen keine Kosten.",
-        "items": [
-          {
-            "icon": "briefcase",
-            "title": "Jobvermittlung in Deutschland",
-            "text": "Kontakt zu geprüften Arbeitgebern in Ihrem Berufsfeld."
-          },
-          {
-            "icon": "graduation-cap",
-            "title": "Für Auszubildende und Berufserfahrene",
-            "text": "Von der Ausbildung bis zur Anstellung begleiten wir Sie."
-          },
-          {
-            "icon": "file-check",
-            "title": "Anerkennung und Dokumente",
-            "text": "Hilfe bei der Anerkennung Ihrer Abschlüsse und allen Formalitäten."
-          },
-          {
-            "icon": "languages",
-            "title": "Sprache und Integration",
-            "text": "Begleitung beim Deutschlernen und beim Ankommen."
-          },
-          {
-            "icon": "plane",
-            "title": "Begleitung von Anfang an",
-            "text": "Vom Heimatland bis zum ersten Arbeitstag."
-          }
-        ],
-        "primary": "Jetzt kostenlos bewerben",
-        "secondary": "Stellen ansehen"
-      },
-      "employer": {
-        "kicker": "Für Arbeitgeber",
-        "title": "Geprüfte Fachkräfte. Rechtssicherer Prozess.",
-        "text": "Wir übernehmen Auswahl, Prüfung der Unterlagen und die Abstimmung mit Behörden – diskret und termingerecht.",
-        "items": [
-          {
-            "icon": "scale",
-            "title": "Rechtssicherheit im beschleunigten Fachkräfteverfahren"
-          },
-          {
-            "icon": "file-check",
-            "title": "Vorab geprüfte Qualifikationen und Sprachnachweise"
-          },
-          {
-            "icon": "timer",
-            "title": "Feste Ansprechperson und planbare Fristen"
-          },
-          {
-            "icon": "handshake",
-            "title": "Begleitung der Integration nach Arbeitsbeginn"
-          }
-        ],
-        "primary": "Personalbedarf anfragen",
-        "secondary": "Beratungstermin vereinbaren"
-      }
-    },
-    "why": {
-      "kicker": "Warum iPrince?",
-      "title": "Ihr verlässlicher Partner für eine Zukunft in Deutschland",
-      "items": [
-        {
-          "icon": "shield-check",
-          "title": "Verlässliche, professionelle Betreuung"
-        },
-        {
-          "icon": "handshake",
-          "title": "Starkes Netzwerk in Deutschland"
-        },
-        {
-          "icon": "user",
-          "title": "Persönliche Beratung"
-        },
-        {
-          "icon": "timer",
-          "title": "Schneller, transparenter Ablauf"
-        }
-      ]
-    },
-    "process": {
-      "kicker": "Ablauf für Fachkräfte",
-      "title": "Transparent in vier Schritten",
-      "text": "Sie wissen jederzeit, wo Ihre Bewerbung steht und was als Nächstes passiert.",
-      "steps": [
-        {
-          "title": "Online bewerben",
-          "text": "Formular für Ihr Berufsfeld ausfüllen und Unterlagen hochladen – auch vom Smartphone."
-        },
-        {
-          "title": "Persönliches Gespräch",
-          "text": "Wir lernen Sie per Video kennen und prüfen gemeinsam Ihre Qualifikationen."
-        },
-        {
-          "title": "Anerkennung & Visum",
-          "text": "Wir begleiten Anerkennungsverfahren, Sprachkurs und Visumsantrag."
-        },
-        {
-          "title": "Start in Deutschland",
-          "text": "Vertrag, Anreise, Wohnungssuche – wir bleiben Ihre Ansprechperson."
-        }
-      ]
-    },
-    "testimonials": {
-      "kicker": "Referenzen",
-      "title": "Erfahrungen aus beiden Richtungen",
-      "photo": "Foto",
-      "candidate": {
-        "quote": "„Ich wusste bei jedem Schritt, was als Nächstes kommt. Die Hilfe bei der Anerkennung hat mir Monate gespart.“",
-        "name": "Name der Fachkraft",
-        "meta": "Berufsfeld · Herkunftsland"
-      },
-      "employer": {
-        "quote": "„Vollständige Unterlagen, klare Fristen, eine Ansprechperson. So stellen wir uns Vermittlung vor.“",
-        "name": "Name, Funktion",
-        "meta": "Unternehmen · Standort"
-      }
-    },
-    "faq": {
-      "kicker": "Häufige Fragen",
-      "title": "Antworten vor dem ersten Schritt",
-      "text": "Ihre Frage ist nicht dabei? Schreiben Sie uns per WhatsApp oder E-Mail.",
-      "items": [
-        {
-          "q": "Muss ich für die Vermittlung etwas bezahlen?",
-          "a": "Nein. Für Bewerberinnen und Bewerber ist unsere Vermittlung vollständig kostenlos. Die Kosten tragen die Arbeitgeber."
-        },
-        {
-          "q": "Welche Deutschkenntnisse brauche ich?",
-          "a": "Das hängt vom Berufsfeld ab. In der Stellenanzeige steht das geforderte Sprachniveau. Wir helfen Ihnen, passende Kurse zu finden."
-        },
-        {
-          "q": "Wie lange dauert die Anerkennung meines Abschlusses?",
-          "a": "In der Regel drei bis sechs Monate. Wir bereiten die Unterlagen mit Ihnen vor und stellen den Antrag bei der zuständigen Stelle."
-        },
-        {
-          "q": "Wie werden meine Daten geschützt?",
-          "a": "Alle Unterlagen werden verschlüsselt übertragen und ausschließlich auf Servern in der EU gespeichert. Sie können die Löschung jederzeit verlangen."
-        }
-      ]
-    },
-    "contact": {
-      "kicker": "Kontakt",
-      "title": "Sprechen Sie mit uns",
-      "text": "Wir melden uns innerhalb von zwei Werktagen persönlich bei Ihnen. Am schnellsten erreichen Sie uns per WhatsApp.",
-      "whatsapp": "Jetzt per WhatsApp schreiben",
-      "form": {
-        "iAm": "Ich bin",
-        "candidate": "Fachkraft",
-        "employer": "Arbeitgeber",
-        "name": "Name",
-        "email": "E-Mail-Adresse",
-        "message": "Ihre Nachricht",
-        "consent": "Ich habe die <link>Datenschutzerklärung</link> gelesen und willige in die Verarbeitung meiner Angaben zur Bearbeitung der Anfrage ein.",
-        "submit": "Nachricht senden",
-        "security": "Verschlüsselte Übertragung. Ihre Daten werden nicht an Dritte weitergegeben."
-      }
-    }
-  },
-  "footer": {
-    "contact": "Kontakt",
-    "privacy": "Datenschutz",
-    "cookies": "Cookie-Richtlinie",
-    "impressum": "Impressum",
-    "copyright": "© 2024 iPrince Personalvermittlung. Alle Rechte vorbehalten.",
-    "social": "Folgen Sie uns"
-  },
-  "jobs": {
-    "title": "Jobangebote",
-    "search": "Jobs suchen...",
-    "filters": {
-      "profession": "Beruf",
-      "location": "Standort",
-      "employmentType": "Beschäftigungsart",
-      "experience": "Erfahrung",
-      "language": "Sprache",
-      "industry": "Branche"
-    },
-    "noResults": "Keine Jobs gefunden, die Ihren Kriterien entsprechen.",
-    "viewDetails": "Details anzeigen"
-  },
-  "site": {
-    "skipLink": "Zum Inhalt springen",
-    "whatsappLabel": "Per WhatsApp schreiben",
-    "legalStrip": {
-      "licensed": "Lizenzierte private Arbeitsvermittlung",
-      "gdpr": "DSGVO-konform · Server in der EU"
-    },
-    "header": {
-      "homeLabel": "iPrince Personalvermittlung – Startseite",
-      "mainNav": "Hauptnavigation",
-      "language": "Sprache",
-      "openMenu": "Menü öffnen",
-      "closeMenu": "Menü schließen",
-      "cta": "Personal anfragen",
-      "nav": {
-        "candidates": "Für Fachkräfte",
-        "employers": "Für Arbeitgeber",
-        "jobs": "Stellenangebote",
-        "process": "Ablauf",
-        "faq": "FAQ"
-      }
-    },
-    "footer": {
-      "tagline": "Ihr verlässlicher Partner für eine erfolgreiche Zukunft in Deutschland.",
-      "candidates": {
-        "title": "Fachkräfte",
-        "apply": "Bewerben",
-        "jobs": "Stellenangebote",
-        "process": "Ablauf"
-      },
-      "employers": {
-        "title": "Arbeitgeber",
-        "request": "Personal anfragen",
-        "services": "Leistungen",
-        "consult": "Beratung"
-      },
-      "contact": {
-        "title": "Kontakt"
-      },
-      "legal": {
-        "label": "Rechtliches",
-        "imprint": "Impressum",
-        "privacy": "Datenschutz",
-        "terms": "AGB",
-        "cookies": "Cookie-Einstellungen"
-      }
-    }
-  }
+  "errors": { "notFoundTitle": "Seite nicht gefunden", "genericTitle": "Etwas ist schiefgelaufen", "retry": "Erneut versuchen" }
 }
