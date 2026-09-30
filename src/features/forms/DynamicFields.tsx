@@ -45,7 +45,7 @@ function DynamicField({ field, locale, errors, chooseLabel }: { field: FormField
 
   if (field.type === "radio" || field.type === "multiselect") {
     return (
-      <fieldset {...stylex.props(styles.group)} aria-invalid={invalid || undefined} aria-describedby={describedBy}>
+      <fieldset {...stylex.props(styles.group)} aria-describedby={describedBy}>
         <legend {...stylex.props(styles.legend)}>
           {label}
           {field.required ? <span aria-hidden="true"> *</span> : null}

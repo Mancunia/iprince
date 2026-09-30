@@ -27,18 +27,20 @@ export type ApplyFormData = { slug: string; name: LocalizedText; formId: string;
 /** Active profession plus its current published form (RLS hides everything else from anon). */
 export async function getApplyForm(slug: string): Promise<ApplyFormData | null> {
   const supabase = await createServerSupabase();
-  const { data: profession } = await supabase
+  const { data: profession, error: professionError } = await supabase
     .from("professions")
     .select("slug, name, current_form_id")
     .eq("slug", slug)
     .maybeSingle();
+  if (professionError) throw professionError;
   if (!profession?.current_form_id) return null;
 
-  const { data: form } = await supabase
+  const { data: form, error: formError } = await supabase
     .from("profession_forms")
     .select("id, schema")
     .eq("id", profession.current_form_id)
     .maybeSingle();
+  if (formError) throw formError;
   if (!form) return null;
 
   const definition = formDefinition.safeParse(form.schema);

@@ -45,35 +45,42 @@ export function ApplyForm({ professionSlug, formId, definition, locale }: Props)
     setFormError(undefined);
     setFieldErrors({});
 
-    const submitted = await submitApplication({
-      professionSlug,
-      formId,
-      locale,
-      fullName: String(data.get("fullName") ?? ""),
-      email: String(data.get("email") ?? ""),
-      phone: String(data.get("phone") ?? ""),
-      website: String(data.get("website") ?? ""),
-      answers: formDataToAnswers(definition, data),
-      files: files.map(({ fieldKey, file }) => ({ fieldKey, name: file.name, type: file.type, size: file.size })),
-    });
-    if (!submitted.ok) return failWith(submitted.formError, submitted.fieldErrors);
+    try {
+      const submitted = await submitApplication({
+        professionSlug,
+        formId,
+        locale,
+        fullName: String(data.get("fullName") ?? ""),
+        email: String(data.get("email") ?? ""),
+        phone: String(data.get("phone") ?? ""),
+        website: String(data.get("website") ?? ""),
+        answers: formDataToAnswers(definition, data),
+        files: files.map(({ fieldKey, file }) => ({ fieldKey, name: file.name, type: file.type, size: file.size })),
+      });
+      if (!submitted.ok) return failWith(submitted.formError, submitted.fieldErrors);
+      // 0 uploads is legitimate (honeypot trap: the server pretends success). Otherwise counts must match.
+      if (submitted.data.uploads.length > 0 && submitted.data.uploads.length !== files.length) return failWith("server_error");
 
-    setPhase("uploading");
-    const supabase = createBrowserSupabase();
-    // uploads[i] corresponds to files[i] (the server preserves order).
-    for (const [i, upload] of submitted.data.uploads.entries()) {
-      const { error } = await supabase.storage
-        .from("applications")
-        .uploadToSignedUrl(upload.path, upload.token, files[i].file, { contentType: files[i].file.type });
-      if (error) return failWith("upload_failed");
+      setPhase("uploading");
+      const supabase = createBrowserSupabase();
+      // uploads[i] corresponds to files[i] (the server preserves order).
+      for (const [i, upload] of submitted.data.uploads.entries()) {
+        const { error } = await supabase.storage
+          .from("applications")
+          .uploadToSignedUrl(upload.path, upload.token, files[i].file, { contentType: files[i].file.type || "application/octet-stream" });
+        if (error) return failWith("upload_failed");
+      }
+
+      const finalized = await finalizeApplication({
+        applicationId: submitted.data.applicationId,
+        paths: submitted.data.uploads.map((u) => u.path),
+      });
+      if (!finalized.ok) return failWith(finalized.formError, finalized.fieldErrors);
+      setPhase("done");
+    } catch (error) {
+      console.error("application submission failed", error);
+      failWith("server_error");
     }
-
-    const finalized = await finalizeApplication({
-      applicationId: submitted.data.applicationId,
-      paths: submitted.data.uploads.map((u) => u.path),
-    });
-    if (!finalized.ok) return failWith(finalized.formError, finalized.fieldErrors);
-    setPhase("done");
   }
 
   if (phase === "done") return <Text role="status" tone="success">{t("success")}</Text>;
@@ -83,7 +90,7 @@ export function ApplyForm({ professionSlug, formId, definition, locale }: Props)
   const describedBy = (key: string) => (fieldErrors[key]?.length ? `field-${key}-error` : undefined);
 
   return (
-    <form onSubmit={handleSubmit} noValidate={false}>
+    <form onSubmit={handleSubmit}>
       <Stack gap="md">
         <Text tone="muted" size="sm">{t("requiredHint")}</Text>
         <Field id="field-fullName" label={t("fullName")} required errors={coreErrors("fullName")}>
