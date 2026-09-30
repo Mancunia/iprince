@@ -6,13 +6,24 @@ import { validateAnswers } from "@/features/forms/answers";
 import { buildStoragePath, validateFiles, type FileMeta } from "@/features/forms/files";
 import { fail, ok, type ActionResult } from "@/lib/result";
 import type { Json } from "@/lib/supabase/database.types";
-import { createServiceSupabase } from "@/lib/supabase/service";
+import { createServiceSupabase, type ServiceClient } from "@/lib/supabase/service";
 import { getFormById, getFormForSubmission } from "./queries";
 import { fileMetaFromStorage, finalizeInput, isOwnedPath, submissionInput, type FinalizeInput, type SubmissionInput } from "./submission";
 
 const BUCKET = "applications";
 const RATE_LIMIT = { max: 5, windowSeconds: 3600 };
 const HONEYPOT_ID = "00000000-0000-0000-0000-000000000000";
+
+/** Best-effort cleanup of uploads belonging to a failed finalize. Never throws. */
+async function discardUploads(supabase: ServiceClient, paths: string[]) {
+  if (paths.length === 0) return;
+  try {
+    const { error } = await supabase.storage.from(BUCKET).remove(paths);
+    if (error) console.error("discard uploads failed", error);
+  } catch (e) {
+    console.error("discard uploads failed", e);
+  }
+}
 
 type Upload = { fieldKey: string; path: string; token: string };
 
@@ -81,7 +92,8 @@ export async function submitApplication(raw: SubmissionInput): Promise<ActionRes
 export async function finalizeApplication(raw: FinalizeInput): Promise<ActionResult<null>> {
   const parsed = finalizeInput.safeParse(raw);
   if (!parsed.success) return fail("invalid");
-  const { applicationId, paths } = parsed.data;
+  const applicationId = parsed.data.applicationId.toLowerCase();
+  const { paths } = parsed.data;
   if (applicationId === HONEYPOT_ID) return ok(null);
   if (!paths.every((path) => isOwnedPath(applicationId, path))) return fail("invalid");
 
@@ -105,31 +117,26 @@ export async function finalizeApplication(raw: FinalizeInput): Promise<ActionRes
       return fail("server_error");
     }
     const file = fileMetaFromStorage(path, meta);
-    if (!file) return fail("upload_missing");
+    if (!file) {
+      await discardUploads(supabase, paths);
+      return fail("upload_missing");
+    }
     files.push({ ...file, path });
   }
 
   const fileErrors = validateFiles(definition, files);
-  if (Object.keys(fileErrors).length > 0) return fail("invalid", fileErrors);
-
-  if (files.length > 0) {
-    const { error } = await supabase.from("application_files").upsert(
-      files.map((f) => ({ application_id: applicationId, field_key: f.fieldKey, storage_path: f.path, mime: f.type, size: f.size })),
-      { onConflict: "storage_path", ignoreDuplicates: true },
-    );
-    if (error) {
-      console.error("insert application_files failed", error);
-      return fail("server_error");
-    }
+  if (Object.keys(fileErrors).length > 0) {
+    await discardUploads(supabase, paths);
+    return fail("invalid", fileErrors);
   }
 
-  const { error } = await supabase
-    .from("applications")
-    .update({ submitted_at: new Date().toISOString() })
-    .eq("id", applicationId)
-    .is("submitted_at", null);
+  // One atomic statement: only the first finalize wins; a concurrent one gets false.
+  const { error } = await supabase.rpc("finalize_application", {
+    p_application_id: applicationId,
+    p_files: files.map((f) => ({ field_key: f.fieldKey, storage_path: f.path, mime: f.type, size: f.size })),
+  });
   if (error) {
-    console.error("finalize application failed", error);
+    console.error("finalize_application failed", error);
     return fail("server_error");
   }
   return ok(null);

@@ -227,7 +227,10 @@ isOneToOne: false
             [_ in never]: never
           }
           Functions: {
-            "hit_rate_limit":
+            "finalize_application":
+{ Args: { "p_application_id": string,"p_files": Json }; Returns: boolean
+                           },
+"hit_rate_limit":
 { Args: { "p_bucket": string,"p_key": string,"p_max": number,"p_window_seconds": number }; Returns: boolean
                            },
 "is_admin":

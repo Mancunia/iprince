@@ -1,6 +1,6 @@
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(16);
+select plan(21);
 
 -- Fixtures (run as postgres, which bypasses RLS)
 insert into auth.users (id, email) values
@@ -37,6 +37,7 @@ select throws_ok(
 select is_empty($$select id from public.blog_posts where slug = 'test-draft'$$, 'anon cannot read draft posts');
 select throws_ok($$select public.hit_rate_limit('t', 'k', 1, 60)$$, '42501', null, 'anon cannot call hit_rate_limit');
 select throws_ok($$select public.storage_object_meta('applications', 'x')$$, '42501', null, 'anon cannot call storage_object_meta');
+select throws_ok($$select public.finalize_application('40000000-0000-0000-0000-000000000001', '[]')$$, '42501', null, 'anon cannot call finalize_application');
 reset role;
 
 -- Signed-in non-admin
@@ -72,6 +73,16 @@ set local role service_role;
 select is(
   array[public.hit_rate_limit('t', 'k', 2, 3600), public.hit_rate_limit('t', 'k', 2, 3600), public.hit_rate_limit('t', 'k', 2, 3600)],
   array[true, true, false], 'rate limit blocks the third hit');
+select is(
+  public.finalize_application('40000000-0000-0000-0000-000000000001',
+    '[{"field_key":"cv","storage_path":"40000000-0000-0000-0000-000000000001/cv/a.pdf","mime":"application/pdf","size":10}]'),
+  true, 'finalize returns true on first call');
+select is((select count(*)::int from public.application_files where application_id = '40000000-0000-0000-0000-000000000001'), 1, 'finalize inserts the file row');
+select is(
+  public.finalize_application('40000000-0000-0000-0000-000000000001',
+    '[{"field_key":"cv","storage_path":"40000000-0000-0000-0000-000000000001/cv/b.pdf","mime":"application/pdf","size":10}]'),
+  false, 'second finalize returns false');
+select is((select count(*)::int from public.application_files where application_id = '40000000-0000-0000-0000-000000000001'), 1, 'second finalize attaches nothing');
 reset role;
 
 select * from finish();
