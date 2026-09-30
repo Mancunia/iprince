@@ -20,9 +20,13 @@ export function Field({ id, label, required, help, errors, children }: Props) {
       </label>
       {help ? <p id={`${id}-help`} {...stylex.props(styles.help)}>{help}</p> : null}
       {children}
-      {errors?.map((message) => (
-        <p key={message} role="alert" {...stylex.props(styles.error)}>{message}</p>
-      ))}
+      {errors && errors.length > 0 ? (
+        <div id={`${id}-error`}>
+          {errors.map((message, index) => (
+            <p key={`${index}-${message}`} role="alert" {...stylex.props(styles.error)}>{message}</p>
+          ))}
+        </div>
+      ) : null}
     </div>
   );
 }
