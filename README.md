@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# iPrince Recruiting
 
-## Getting Started
+Next 16 · React 19 · StyleX · Supabase · next-intl (de/en)
 
-First, run the development server:
+## Local setup
+
+Requires Node 22+ and Docker.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npx supabase start          # local Postgres, Auth, Storage (Docker)
+npm run db:env              # writes .env.local from the running stack
+npm run admin:create -- --email you@example.com --password 'choose-one' --role owner --name 'Your Name'
+npm run dev                 # http://localhost:3000/en
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Apply: `/en/apply/pflege` (seeded sample profession)
+- Admin: `/en/admin`
+- Supabase Studio: http://127.0.0.1:54323
+- Emails (Inbucket): http://127.0.0.1:54324
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Script | What it does |
+| --- | --- |
+| `npm run check` | typecheck, lint, unit tests, DB policy tests, production build |
+| `npm test` | Vitest unit tests (`src/**/*.test.ts`) |
+| `npm run test:db` | pgTAP security-rule tests (`supabase/tests`) |
+| `npm run test:e2e` | Playwright smoke test (needs `supabase start`) |
+| `npx supabase db reset` | re-apply migrations + `supabase/seed.sql` |
+| `npm run db:types` | regenerate `src/lib/supabase/database.types.ts` after schema changes |
 
-## Learn More
+## Architecture
 
-To learn more about Next.js, take a look at the following resources:
+- `src/features/<domain>/`: pure logic (tested), `queries.ts` (server reads), `actions.ts` (server actions returning `ActionResult`).
+- Professions and their application forms are **admin-managed data**. Forms are versioned JSON (`profession_forms`); published versions are immutable.
+- Public submissions go through server actions using the service role after validation, a honeypot and rate limiting. Admin code uses the signed-in user's session, so row-level security applies.
+- `src/proxy.ts` (Next 16's replacement for middleware) handles locale routing, session refresh and an optimistic admin redirect. `requireAdmin()` is the real guard.
+- Design tokens live in `src/ui/tokens.stylex.ts` (placeholders until the design system lands).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Production Supabase
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Create a project, then run `npx supabase link --project-ref <ref>` and `npx supabase db push`. Put the URL, anon key and service-role key into the hosting environment (see `.env.example`). Disable public sign-ups in Auth settings.
