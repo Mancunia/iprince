@@ -13,7 +13,7 @@ export function DeleteEntryForm({ kind, id, locale }: { kind: "lead" | "message"
   const [state, action, pending] = useActionState(kind === "lead" ? deleteLead : deleteMessage, null);
 
   return (
-    <form action={action} className="border-t border-hairline pt-6">
+    <form action={action}>
       <Stack gap="sm">
         <input type="hidden" name="id" value={id} />
         <input type="hidden" name="locale" value={locale} />

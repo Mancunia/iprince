@@ -169,6 +169,8 @@
     "menuOpen": "Open menu",
     "menuClose": "Close menu",
     "statusFilter": "Filter by status",
+    "review": "Review",
+    "dangerZone": "Delete entry",
     "dashboard": {
       "title": "Dashboard",
       "newApplications": "New applications",

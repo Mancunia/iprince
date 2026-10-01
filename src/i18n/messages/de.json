@@ -169,6 +169,8 @@
     "menuOpen": "Menü öffnen",
     "menuClose": "Menü schließen",
     "statusFilter": "Nach Status filtern",
+    "review": "Bearbeitung",
+    "dangerZone": "Eintrag löschen",
     "dashboard": {
       "title": "Übersicht",
       "newApplications": "Neue Bewerbungen",
