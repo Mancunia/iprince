@@ -34,7 +34,7 @@ The table `site_content(key unique, value jsonb, updated_by)` and its public-rea
   - `site_content_public_read` stays.
 - `alter table site_content add constraint site_content_key_known check (key in ('home.hero', 'home.features', 'home.steps', 'home.employers', 'contact', 'photos', 'legal.imprint', 'legal.privacy'))`.
 - Bucket `site`: public, `file_size_limit` 5 MB (5242880), `allowed_mime_types` `{image/jpeg, image/png, image/webp}`. Storage enforces size and type on upload, so no server-side metadata check is needed. Policy `"site bucket: admins write"` mirrors the `blog` one.
-- Insert the two legal drafts (§5) with `on conflict (key) do nothing`. They live in the migration, not `seed.sql`, because production runs `db push` without the seed.
+- A second migration, `20261001000003_legal_drafts.sql`, inserts the two legal drafts (§5) with `on conflict (key) do nothing`. They live in the migration, not `seed.sql`, because production runs `db push` without the seed.
 
 **Keys and value shapes** (`L` = `{de: string (required, trimmed, ≥1), en?: string}`):
 
@@ -57,7 +57,8 @@ Feature/steps image alt texts move from `home.*Alt` into `photos.<slot>.alt`.
 | `content.ts` | zod schema per key (`contentSchemas`), `ContentKey`, `SiteContent` type, `defaults` (built from today's `messages/*.json` copy), `whatsappHref(display)` → `https://wa.me/<digits>`, `hasPlaceholder(body)` |
 | `queries.ts` | `server-only`, `cache()`d `getSiteContent()`: one `select key, value, updated_at` of all rows; each key parsed with its schema, missing/invalid → default; a read error logs (no content) and returns all defaults. `getContentMeta()` for the admin overview (`updated_at` per key) |
 | `form-data.ts` | pure: `parseSectionForm(key, formData)` → `{success, data} \| {success: false, fieldErrors}` |
-| `admin-actions.ts` | `'use server'`: `saveSiteContent`, `resetSiteContent`, `setSitePhoto`, `removeSitePhoto` (§2) |
+| `admin-actions.ts` | `'use server'`: `saveSiteContent`, `resetSiteContent` (§2) |
+| `photo-actions.ts` | `'use server'`: `setSitePhoto`, `removeSitePhoto`, `savePhotoAlts` (§2) |
 | `legal-draft.ts` | the draft markdown; the migration's insert is a literal copy, kept equal by a test (§5) |
 
 `src/features/site/contact.ts` and the `PHOTOS` map in `photos.ts` are removed; `PHOTO_SLOTS` stays.
@@ -68,7 +69,7 @@ Feature/steps image alt texts move from `home.*Alt` into `photos.<slot>.alt`.
 
 **`admin/(protected)/content/page.tsx` (overview).** One `Card` per key: Hero, Features, Steps, Employers, Contact, Photos, Impressum, Datenschutz. Each shows *Default* or *Edited · <date>*, a short German preview (photos: thumbnails) and an Edit link. Legal cards show a danger badge "Contains placeholders" while `hasPlaceholder(de) || hasPlaceholder(en)`. Editors see legal cards with "Only the owner can edit" and no link.
 
-**`admin/(protected)/content/[key]/page.tsx` (edit).** Unknown key → `notFound()`. `legal.*` → `requireOwner(locale)` (editors get the same 404 as Settings), else `requireAdmin(locale)`.
+**`admin/(protected)/content/[section]/page.tsx` (edit).** The segment is a dot-free slug (`hero`, `features`, `steps`, `employers`, `contact`, `photos`, `imprint`, `privacy`), because `src/proxy.ts` skips paths containing a dot. Unknown slug → `notFound()`. `legal.*` → `requireOwner(locale)` (editors get the same 404 as Settings), else `requireAdmin(locale)`.
 - Text sections and contact: de/en inputs side by side, field errors inline (same pattern as `ProfessionForm`), Save, and "Reset to default" (confirm, then `resetSiteContent`).
 - Legal: de/en tabs, markdown `<textarea>`, Preview tab rendering the shared `<Markdown>`, placeholder warning above the editor.
 - Photos: per slot a preview, Replace (file input), Remove, alt text de/en, Save alt texts.
@@ -97,7 +98,7 @@ Feature/steps image alt texts move from `home.*Alt` into `photos.<slot>.alt`.
 **CookieScript banner:** its privacy-policy link is set in the CookieScript dashboard; added to the Phase 3 checklist.
 
 ## 4. i18n
-New `admin.content.*` (overview, section names, field labels, reset/confirm, placeholder badge, owner-only note, photo actions, errors) and `site.imprint`, `site.privacy`, `site.germanOnly`, `site.email`, `site.address` in both `de.json` and `en.json`. Moved copy (hero, features, steps, door texts, `*Alt`) stays in messages as the source of `defaults` until the plan's final step deletes keys no longer read.
+New `admin.content.*` (overview, section names, field labels, reset/confirm, placeholder badge, owner-only note, photo actions, errors) and `site.imprint`, `site.privacy`, `site.germanOnly`, `site.email`, `site.address` in both `de.json` and `en.json`. Moved copy (hero, features, steps, door texts, `*Alt`) stays in messages permanently as the source of `defaults`.
 
 ## 5. Legal drafts and launch gate
 `legal-draft.ts` holds German and English drafts.
@@ -111,7 +112,7 @@ New `admin.content.*` (overview, section names, field labels, reset/confirm, pla
 ## 6. Testing
 - **pgTAP `site_content.test.sql`:** anon reads all rows, cannot insert/update; editor updates `home.hero`, cannot update `legal.privacy`; owner updates both; unknown key rejected; anon cannot upload to `site`; admin can.
 - **Unit:** each schema (valid, missing `de`, too long), `defaults` match `messages/*.json`, invalid stored value → default, `whatsappHref`, `hasPlaceholder`, `parseSectionForm`, photo path regex, `<Markdown>` drops `<script>`, `onerror` and `javascript:` links, retention-number test (§5).
-- **e2e `site-content.spec.ts`:** admin edits the hero title → visible on `/de`; reset → default back; editor gets 404 on `/de/admin/content/legal.privacy`; owner uploads a photo → shown on home; `/de/imprint` and `/en/privacy` render and are linked from the footer; `/en/privacy` falls back to German when `en` is empty.
+- **e2e `site-content.spec.ts`:** admin edits the hero title → visible on `/de`; reset → default back; editor gets 404 on `/en/admin/content/privacy`; owner uploads a photo → shown on home; `/de/imprint` and `/en/privacy` render and are linked from the footer; `/en/privacy` falls back to German when `en` is empty.
 
 ## Acceptance
 - Content edits appear on the public site without a deploy; a key without a row renders today's copy.
