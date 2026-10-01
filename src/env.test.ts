@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { readPublicEnv, readServerEnv } from "./env";
+import { readCronEnv, readPublicEnv, readServerEnv } from "./env";
 
 afterEach(() => vi.unstubAllEnvs());
 
@@ -15,5 +15,12 @@ describe("env", () => {
     vi.stubEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY", "anon");
     vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", "");
     expect(() => readServerEnv()).toThrow(/NEXT_PUBLIC_SUPABASE_URL.*SUPABASE_SERVICE_ROLE_KEY/);
+  });
+
+  it("requires a CRON_SECRET of at least 32 characters", () => {
+    vi.stubEnv("CRON_SECRET", "short");
+    expect(() => readCronEnv()).toThrow(/CRON_SECRET/);
+    vi.stubEnv("CRON_SECRET", "x".repeat(32));
+    expect(readCronEnv()).toEqual({ CRON_SECRET: "x".repeat(32) });
   });
 });

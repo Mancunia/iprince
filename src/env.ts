@@ -5,6 +5,7 @@ const publicSchema = z.object({
   NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().min(1),
 });
 const serverSchema = publicSchema.extend({ SUPABASE_SERVICE_ROLE_KEY: z.string().min(1) });
+const cronSchema = z.object({ CRON_SECRET: z.string().min(32) });
 
 export type PublicEnv = z.infer<typeof publicSchema>;
 export type ServerEnv = z.infer<typeof serverSchema>;
@@ -32,4 +33,9 @@ export function readServerEnv(): ServerEnv {
     NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
   });
+}
+
+/** Only the cleanup cron route needs this, so local dev without it keeps working. */
+export function readCronEnv(): z.infer<typeof cronSchema> {
+  return parse(cronSchema, { CRON_SECRET: process.env.CRON_SECRET });
 }

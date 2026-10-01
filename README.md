@@ -29,6 +29,7 @@ npm run dev                 # http://localhost:3000/en
 | `npm run test:e2e` | Playwright smoke test (needs `npx supabase start`; refuses non-local Supabase URLs) |
 | `npx supabase db reset` | re-apply migrations + `supabase/seed.sql` |
 | `npm run db:types` | regenerate `src/lib/supabase/database.types.ts` after schema changes |
+| `curl -H "Authorization: Bearer $CRON_SECRET" localhost:3000/api/cron/cleanup-applications` | run the cleanup job by hand |
 
 ## Architecture
 
@@ -47,4 +48,4 @@ Create a project, then run `npx supabase link --project-ref <ref>` and `npx supa
 - Keep Auth `refresh_token_reuse_interval` above 0 (default 10s); the proxy relies on it (see `src/lib/supabase/proxy.ts`).
 - Confirm table privileges for `anon`, `authenticated` and `service_role`; the migrations rely on Supabase's default grants.
 - The rate limit trusts the first `x-forwarded-for` hop (correct on Vercel; revisit behind other proxies).
-- The Plan 2 cleanup job for abandoned applications and uploads is required before production launch (GDPR).
+- Set `CRON_SECRET` (`openssl rand -hex 32`) in the Vercel production environment. Vercel Cron calls `/api/cron/cleanup-applications` daily at 03:00 UTC (`vercel.ts`); it deletes unsubmitted applications and unreferenced uploads older than 24 hours, so they are gone within 48 hours. The privacy policy must say so. Check the first run in the Vercel logs.

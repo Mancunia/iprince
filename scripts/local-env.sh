@@ -12,7 +12,12 @@ printf '%s\n' "$raw" | tr -d '"' | awk '
   /^SERVICE_ROLE_KEY=/ { sub(/^SERVICE_ROLE_KEY=/, ""); print "SUPABASE_SERVICE_ROLE_KEY=" $0 }
 ' > "$tmp"
 
-for v in NEXT_PUBLIC_SUPABASE_URL NEXT_PUBLIC_SUPABASE_ANON_KEY SUPABASE_SERVICE_ROLE_KEY; do
+# Keep an existing CRON_SECRET so a running dev server stays valid; otherwise generate one.
+secret=$(grep '^CRON_SECRET=' .env.local 2>/dev/null | cut -d= -f2- || true)
+[ -n "$secret" ] || secret=$(openssl rand -hex 32)
+echo "CRON_SECRET=$secret" >> "$tmp"
+
+for v in NEXT_PUBLIC_SUPABASE_URL NEXT_PUBLIC_SUPABASE_ANON_KEY SUPABASE_SERVICE_ROLE_KEY CRON_SECRET; do
   grep -q "^$v=." "$tmp" || { echo "missing or empty $v in supabase status output; .env.local left untouched" >&2; exit 1; }
 done
 
