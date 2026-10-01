@@ -256,6 +256,16 @@
     "kicker": "Recruitment for Germany",
     "title": "Your path to a successful career in Germany",
     "lead": "Choose your profession and send us your application. Applying is always free for you.",
+    "trust": { "free": "Free for applicants", "advisor": "Personal advisor", "languages": "Advice in German and English" },
+    "heroAlt": "Skilled worker starting a new job in Germany",
+    "badgeLive": "Available now",
+    "badgeFreeText": "No fees, ever",
+    "statFreeValue": "€0",
+    "features": {
+      "match": { "eyebrow": "Matching", "title": "We find the job that suits your skills", "text": "Tell us about your profession and experience. We match you with employers in Germany who are looking for exactly your qualifications.", "alt": "Candidate talking to an employer" },
+      "advisors": { "eyebrow": "Personal support", "title": "An advisor accompanies you at every step", "text": "From the recognition of your qualifications to visa and relocation: one contact person guides you until your first working day.", "alt": "Advisor helping a candidate", "badgeTitle": "One contact person", "badgeText": "From application to first day" }
+    },
+    "stepsAlt": "Candidate filling in the application",
     "ctaWhatsapp": "Ask on WhatsApp",
     "statPositions": "Open positions",
     "statProfessions": "Professions",
@@ -271,14 +281,11 @@
       "contact": { "title": "We get in touch", "text": "We review your application and contact you about the next steps." }
     },
     "doors": {
-      "candidateKicker": "For candidates",
-      "candidateTitle": "Looking for a job in Germany?",
-      "candidateText": "Choose your profession and apply in a few minutes. It is free for you.",
-      "candidateCta": "View professions",
       "employerKicker": "For employers",
       "employerTitle": "Looking for skilled workers?",
       "employerText": "We find qualified international staff for your company and guide you through the whole process.",
-      "employerCta": "Send an enquiry"
+      "employerCta": "Send an enquiry",
+      "contactCta": "Contact us"
     }
   },
   "publicForms": {

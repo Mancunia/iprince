@@ -153,6 +153,8 @@
     padding: clamp(32px, 6vw, 72px); border-radius: var(--radius-lg); background: var(--surface-page); color: var(--text-body);
   }
   .cta-banner > .photo { position: absolute; inset: 0; z-index: -1; border-radius: 0; opacity: 0.25; }
+  /* The underlay is only for a real photo; a placeholder would wash out the navy. */
+  .cta-banner > .photo-ph { display: none; }
   .cta-banner .eyebrow { color: var(--color-gold-300); }
 
   /* Site chrome */

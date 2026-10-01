@@ -27,3 +27,15 @@ test.describe("phone width", () => {
     await expect(page.getByRole("dialog")).toBeHidden();
   });
 });
+
+test("the home page shows its sections and requests no missing images", async ({ page }) => {
+  const failed: string[] = [];
+  page.on("response", (response) => {
+    if (response.request().resourceType() === "image" && response.status() >= 400) failed.push(response.url());
+  });
+  await page.goto("/en");
+  await expect(page.getByRole("heading", { level: 2, name: "We find the job that suits your skills" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Contact us" })).toBeVisible();
+  await page.waitForLoadState("networkidle");
+  expect(failed).toEqual([]);
+});
