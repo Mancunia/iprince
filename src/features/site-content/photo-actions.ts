@@ -27,7 +27,9 @@ async function readPhotos(supabase: Supabase): Promise<Photos | null> {
   }
   if (!data) return defaults.photos;
   const parsed = contentSchemas.photos.safeParse(data.value);
-  return parsed.success ? parsed.data : defaults.photos;
+  if (parsed.success) return parsed.data;
+  console.error("invalid photos value");
+  return defaults.photos;
 }
 
 async function writePhotos(supabase: Supabase, session: AdminSession, photos: Photos): Promise<boolean> {

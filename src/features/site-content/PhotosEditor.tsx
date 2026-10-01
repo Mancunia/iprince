@@ -79,7 +79,7 @@ function SlotPhoto({ locale, slot, path }: { locale: Locale; slot: PhotoSlot; pa
           <Button type="submit" variant="ghost" size="sm" disabled={removePending}>{t("content.photoRemove")}</Button>
         </form>
       ) : null}
-      {failed ? <Text role="alert" tone="danger">{t(uploadError ? "errors.upload_failed" : "errors.server_error")}</Text> : null}
+      {failed ? <Text role="alert" tone="danger">{t(uploadError ? "errors.upload_failed" : `errors.${(setState && !setState.ok ? setState.formError : undefined) ?? (removeState && !removeState.ok ? removeState.formError : undefined) ?? "server_error"}`)}</Text> : null}
     </div>
   );
 }
