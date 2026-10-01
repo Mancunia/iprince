@@ -5,6 +5,7 @@ import { useState } from "react";
 import type { Locale } from "@/i18n/config";
 import { localized } from "@/lib/i18n/localized";
 import { Button } from "@/ui/Button";
+import { Icon } from "@/ui/Icon";
 import { Select } from "@/ui/inputs";
 import { Stack } from "@/ui/Stack";
 import { FIELD_TYPES, type FormField } from "../definition";
@@ -32,17 +33,22 @@ export function FieldList({ fields, selected, locale, hasErrors, onSelect, onMov
           const label = localized(field.label, locale) || t("untitled");
           return (
           // Index keys: the answer key is editable, so it cannot identify a row.
-          <li key={i}>
-            <Stack direction="row" gap="sm">
-              <Button variant={selected === i ? "primary" : "secondary"} aria-pressed={selected === i} onClick={() => onSelect(i)}>
-                {label} · {t(`types.${field.type}`)}
-                {field.required ? " *" : ""}
-                {hasErrors(i) ? ` · ${t("needsAttention")}` : ""}
-              </Button>
-              <Button variant="secondary" aria-label={`${t("moveUp")}: ${label}`} disabled={i === 0} onClick={() => onMove(i, -1)}>↑</Button>
-              <Button variant="secondary" aria-label={`${t("moveDown")}: ${label}`} disabled={i === fields.length - 1} onClick={() => onMove(i, 1)}>↓</Button>
-              <Button variant="secondary" aria-label={`${t("remove")}: ${label}`} onClick={() => onRemove(i)}>✕</Button>
-            </Stack>
+          <li key={i} className="builder-row" data-selected={selected === i ? "" : undefined}>
+            <Icon name="grip-vertical" size={16} className="text-fg-muted" />
+            <button type="button" className="builder-row-main" aria-pressed={selected === i} onClick={() => onSelect(i)}>
+              <span className="truncate font-medium">{label}{field.required ? " *" : ""}</span>
+              <span className="tag">{t(`types.${field.type}`)}</span>
+              {hasErrors(i) ? <span className="text-sm text-error">{t("needsAttention")}</span> : null}
+            </button>
+            <Button variant="ghost" size="sm" className="btn-icon" aria-label={`${t("moveUp")}: ${label}`} disabled={i === 0} onClick={() => onMove(i, -1)}>
+              <Icon name="chevron-down" size={16} className="rotate-180" />
+            </Button>
+            <Button variant="ghost" size="sm" className="btn-icon" aria-label={`${t("moveDown")}: ${label}`} disabled={i === fields.length - 1} onClick={() => onMove(i, 1)}>
+              <Icon name="chevron-down" size={16} />
+            </Button>
+            <Button variant="danger" size="sm" className="btn-icon" aria-label={`${t("remove")}: ${label}`} onClick={() => onRemove(i)}>
+              <Icon name="x" size={16} />
+            </Button>
           </li>
           );
         })}
