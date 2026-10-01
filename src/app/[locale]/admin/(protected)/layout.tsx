@@ -20,6 +20,8 @@ export default async function AdminLayout({ children, params }: { children: Reac
       <Stack as="header" direction="row" gap="md">
         <Stack as="nav" direction="row" gap="md">
           <Link href="/admin/applications">{t("applications")}</Link>
+          <Link href="/admin/professions">{t("navProfessions")}</Link>
+          {admin.role === "owner" ? <Link href="/admin/team">{t("navTeam")}</Link> : null}
         </Stack>
         <Text as="span" tone="muted" size="sm">{admin.displayName}</Text>
         <form action={signOut}>

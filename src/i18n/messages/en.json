@@ -49,7 +49,35 @@
     "documents": "Documents",
     "back": "Back to applications",
     "statuses": { "new": "New", "reviewing": "Reviewing", "contacted": "Contacted", "placed": "Placed", "rejected": "Rejected", "archived": "Archived" },
-    "errors": { "invalid_credentials": "Email or password is incorrect.", "not_admin": "This account has no admin access.", "invalid": "Please check your input.", "server_error": "Something went wrong.", "not_found": "This application no longer exists." }
+    "errors": { "invalid_credentials": "Email or password is incorrect.", "not_admin": "This account has no admin access.", "invalid": "Please check your input.", "server_error": "Something went wrong.", "not_found": "This application no longer exists.", "has_applications": "This profession has applications. Deactivate it instead." },
+    "navProfessions": "Professions",
+    "navTeam": "Team",
+    "fieldErrors": { "invalid": "Please check this value.", "taken": "This slug is already used.", "form_required": "Publish a form first.", "exists": "This email already has an account.", "too_short": "Use at least 12 characters.", "mismatch": "The passwords do not match." },
+    "professions": {
+      "title": "Professions",
+      "new": "New profession",
+      "empty": "No professions yet.",
+      "name": "Name",
+      "slug": "Slug",
+      "slugHelp": "Lowercase letters, digits and hyphens, e.g. pflege. Used in /apply/<slug>.",
+      "summary": "Summary",
+      "icon": "Icon",
+      "active": "Active",
+      "featured": "Featured",
+      "sortOrder": "Sort order",
+      "openPositions": "Open positions",
+      "form": "Form",
+      "create": "Create profession",
+      "save": "Save",
+      "saved": "Saved.",
+      "editForm": "Edit form",
+      "delete": "Delete profession",
+      "confirmDelete": "Delete this profession and all its form versions?",
+      "back": "Back to professions",
+      "yes": "Yes",
+      "no": "No",
+      "formStatus": { "none": "No form", "draftOnly": "Draft only", "live": "v{version} live", "liveWithDraft": "v{version} live · draft pending" }
+    }
   },
   "errors": { "notFoundTitle": "Page not found", "genericTitle": "Something went wrong", "retry": "Try again" }
 }
