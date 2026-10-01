@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { readCronEnv, readIntegrationsEnv, readPublicEnv, readServerEnv } from "./env";
+import { readCronEnv, readIntegrationsEnv, readNotifyEnv, readPublicEnv, readServerEnv } from "./env";
 
 afterEach(() => vi.unstubAllEnvs());
 
@@ -40,5 +40,29 @@ describe("env", () => {
   it("rejects embed IDs that are not plain alphanumerics", () => {
     vi.stubEnv("TAWK_WIDGET_ID", "../evil");
     expect(() => readIntegrationsEnv()).toThrow(/TAWK_WIDGET_ID/);
+  });
+  it("turns staff notifications off unless all three variables are set", () => {
+    vi.stubEnv("RESEND_API_KEY", "re_test");
+    vi.stubEnv("NOTIFY_EMAIL_TO", "");
+    vi.stubEnv("NOTIFY_EMAIL_FROM", "iPrince <noreply@example.com>");
+    expect(readNotifyEnv()).toBeNull();
+  });
+
+  it("reads complete notification settings", () => {
+    vi.stubEnv("RESEND_API_KEY", "re_test");
+    vi.stubEnv("NOTIFY_EMAIL_TO", "team@example.com");
+    vi.stubEnv("NOTIFY_EMAIL_FROM", "iPrince <noreply@example.com>");
+    expect(readNotifyEnv()).toEqual({
+      RESEND_API_KEY: "re_test",
+      NOTIFY_EMAIL_TO: "team@example.com",
+      NOTIFY_EMAIL_FROM: "iPrince <noreply@example.com>",
+    });
+  });
+
+  it("rejects an invalid notification address", () => {
+    vi.stubEnv("RESEND_API_KEY", "re_test");
+    vi.stubEnv("NOTIFY_EMAIL_TO", "not-an-email");
+    vi.stubEnv("NOTIFY_EMAIL_FROM", "iPrince <noreply@example.com>");
+    expect(() => readNotifyEnv()).toThrow(/NOTIFY_EMAIL_TO/);
   });
 });
