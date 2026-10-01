@@ -17,13 +17,13 @@ test("an admin creates a profession, publishes its form and activates it", async
 
   await page.getByRole("button", { name: "Start editing" }).click();
   await page.getByRole("button", { name: "Add field" }).click();
-  await page.getByLabel("Label (DE)", { exact: true }).fill("Spitzname");
-  await page.getByLabel("Label (EN)", { exact: true }).fill("Nickname");
-  await expect(page.getByLabel("Key", { exact: true })).toHaveValue("spitzname");
+  await page.getByRole("textbox", { name: "Label (DE)", exact: true }).fill("Spitzname");
+  await page.getByRole("textbox", { name: "Label (EN)", exact: true }).fill("Nickname");
+  await expect(page.getByRole("textbox", { name: "Key", exact: true })).toHaveValue("spitzname");
 
-  await page.getByLabel("New field type").selectOption("textarea");
+  await page.getByRole("combobox", { name: "New field type" }).selectOption("textarea");
   await page.getByRole("button", { name: "Add field" }).click();
-  await page.getByLabel("Label (DE)", { exact: true }).fill("Motivation");
+  await page.getByRole("textbox", { name: "Label (DE)", exact: true }).fill("Motivation");
   await page.getByRole("button", { name: "Save draft" }).click();
   await expect(page.getByRole("status")).toHaveText("Draft saved.");
 
@@ -31,7 +31,7 @@ test("an admin creates a profession, publishes its form and activates it", async
   await expect(page.getByText("Version 1 is live.")).toBeVisible();
 
   await page.getByRole("link", { name: "Profession details" }).click();
-  await page.getByLabel("Active", { exact: true }).check();
+  await page.getByRole("checkbox", { name: "Active", exact: true }).check();
   await page.getByRole("button", { name: "Save" }).click();
   await expect(page.getByRole("status")).toHaveText("Saved.");
 
@@ -44,7 +44,7 @@ test("a profession cannot be activated without a published form", async ({ page 
   await signIn(page);
   await createProfession(page, `e2e-inactive-${Date.now()}`);
   await page.getByRole("link", { name: "Profession details" }).click();
-  await page.getByLabel("Active", { exact: true }).check();
+  await page.getByRole("checkbox", { name: "Active", exact: true }).check();
   await page.getByRole("button", { name: "Save" }).click();
   await expect(page.getByText("Publish a form first.")).toBeVisible();
 });

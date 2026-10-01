@@ -4,11 +4,10 @@ import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 import type { Locale } from "@/i18n/config";
-import type { ActionResult } from "@/lib/result";
 import { Button } from "@/ui/Button";
 import { Stack } from "@/ui/Stack";
 import { Text } from "@/ui/Text";
-import { discardFormDraft, publishFormDraft, saveFormDraft } from "../admin-actions";
+import { discardFormDraft, publishFormDraft, saveFormDraft, type Saved } from "../admin-actions";
 import type { FormDefinition, FormField } from "../definition";
 import { FieldEditor } from "./FieldEditor";
 import { FieldList } from "./FieldList";
@@ -54,12 +53,14 @@ export function FormBuilder({ locale, formId, version, initialDefinition, initia
     setMessage({ tone: "danger", text: t(`errors.${code ?? "server_error"}`) });
   }
 
-  function accept(result: ActionResult<{ updatedAt: string }>, successText: string): boolean {
+  function accept(result: Saved, successText: string): boolean {
+    // A failed publish may follow a successful save: adopt the new token either way.
+    const token = result.ok ? result.data.updatedAt : result.updatedAt;
+    if (token) setUpdatedAt(token);
     if (!result.ok) {
       fail(result.formError, result.fieldErrors);
       return false;
     }
-    setUpdatedAt(result.data.updatedAt);
     setErrors({});
     setDirty(false);
     setMessage({ tone: "success", text: successText });

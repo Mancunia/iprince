@@ -12,7 +12,8 @@ import { validateDefinition } from "./builder/model";
 import type { FormDefinition } from "./definition";
 
 export type DraftInput = { locale: Locale; formId: string; expectedUpdatedAt: string; definition: unknown };
-type Saved = ActionResult<{ updatedAt: string }>;
+/** A failed publish after a successful save still carries the draft's new `updatedAt`. */
+export type Saved = { ok: true; data: { updatedAt: string } } | (Failure & { updatedAt?: string });
 
 const draftRef = z.object({ formId: z.guid(), expectedUpdatedAt: z.string().min(1).max(64) });
 const localeOf = (value: unknown) => z.enum(locales).catch("en").parse(value);
@@ -78,10 +79,10 @@ export async function publishFormDraft(input: DraftInput): Promise<Saved> {
 
   const supabase = await createServerSupabase();
   const { error } = await supabase.rpc("publish_form_draft", { p_form_id: prepared.formId, p_expected_updated_at: saved.data.updatedAt });
-  if (error?.code === "P0002") return fail("stale");
+  if (error?.code === "P0002") return { ...fail("stale"), updatedAt: saved.data.updatedAt };
   if (error) {
     console.error("publish_form_draft failed", error);
-    return fail("server_error");
+    return { ...fail("server_error"), updatedAt: saved.data.updatedAt };
   }
   revalidatePath("/", "layout");
   return saved;
