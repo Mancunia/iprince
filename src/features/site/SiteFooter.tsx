@@ -23,6 +23,11 @@ export async function SiteFooter({ cookieSettings }: { cookieSettings: boolean }
             <Link href="/#ablauf">{t("navSteps")}</Link>
           </div>
           <div className="footer-col">
+            <h4>{t("footerEmployers")}</h4>
+            <Link href="/employers">{t("footerEnquiry")}</Link>
+            <Link href="/contact">{t("footerContactForm")}</Link>
+          </div>
+          <div className="footer-col">
             <h4>{t("footerContact")}</h4>
             <a href={WHATSAPP_URL} className="inline-flex items-center gap-2" target="_blank" rel="noopener noreferrer">
               <Icon name="message-circle" size={16} />

@@ -90,6 +90,29 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
         </div>
       </section>
 
+      <section className="border-t border-hairline">
+        <div className="door-split">
+          <div className="door">
+            <p className="kicker kicker-rule">{t("doors.candidateKicker")}</p>
+            <h2>{t("doors.candidateTitle")}</h2>
+            <p className="text-fg-muted">{t("doors.candidateText")}</p>
+            <a href="#berufe" className="btn btn-primary max-w-max">
+              {t("doors.candidateCta")}
+              <Icon name="arrow-right" />
+            </a>
+          </div>
+          <div className="door door-employer bg-surface text-fg">
+            <p className="kicker kicker-rule">{t("doors.employerKicker")}</p>
+            <h2>{t("doors.employerTitle")}</h2>
+            <p className="text-fg-muted">{t("doors.employerText")}</p>
+            <Link href="/employers" className="btn btn-primary max-w-max">
+              {t("doors.employerCta")}
+              <Icon name="arrow-right" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
       <section id="ablauf" className="section scroll-mt-16 bg-surface-tint">
         <div className="container-page">
           <div className="section-head">
