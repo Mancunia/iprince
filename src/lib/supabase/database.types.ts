@@ -82,13 +82,13 @@ isOneToOne: false
                   ]
                 },"blog_categories": {
                   Row: {
-                    "created_at": string,"id": string,"name": NonNullable<Json>,"slug": string,"updated_at": string
+                    "created_at": string,"cta": Database["public"]['Enums']["blog_cta"],"id": string,"name": NonNullable<Json>,"slug": string,"updated_at": string
                   }
                   Insert: {
-                    "created_at"?: string,"id"?: string,"name": NonNullable<Json>,"slug": string,"updated_at"?: string
+                    "created_at"?: string,"cta"?: Database["public"]['Enums']["blog_cta"],"id"?: string,"name": NonNullable<Json>,"slug": string,"updated_at"?: string
                   }
                   Update: {
-                    "created_at"?: string,"id"?: string,"name"?: NonNullable<Json>,"slug"?: string,"updated_at"?: string
+                    "created_at"?: string,"cta"?: Database["public"]['Enums']["blog_cta"],"id"?: string,"name"?: NonNullable<Json>,"slug"?: string,"updated_at"?: string
                   }
                   Relationships: [
                     
@@ -269,7 +269,7 @@ isOneToOne: false
                            }
           }
           Enums: {
-            "admin_role": "owner"|"editor","application_status": "new"|"reviewing"|"contacted"|"placed"|"rejected"|"archived","lead_status": "new"|"contacted"|"qualified"|"closed"|"archived","message_status": "new"|"read"|"archived","post_status": "draft"|"published","review_status": "pending"|"approved"|"rejected"
+            "admin_role": "owner"|"editor","application_status": "new"|"reviewing"|"contacted"|"placed"|"rejected"|"archived","blog_cta": "candidates"|"employers"|"none","lead_status": "new"|"contacted"|"qualified"|"closed"|"archived","message_status": "new"|"read"|"archived","post_status": "draft"|"published","review_status": "pending"|"approved"|"rejected"
           }
           CompositeTypes: {
             [_ in never]: never
@@ -389,7 +389,7 @@ export const Constants = {
           }
         },"public": {
           Enums: {
-            "admin_role": ["owner", "editor"],"application_status": ["new", "reviewing", "contacted", "placed", "rejected", "archived"],"lead_status": ["new", "contacted", "qualified", "closed", "archived"],"message_status": ["new", "read", "archived"],"post_status": ["draft", "published"],"review_status": ["pending", "approved", "rejected"]
+            "admin_role": ["owner", "editor"],"application_status": ["new", "reviewing", "contacted", "placed", "rejected", "archived"],"blog_cta": ["candidates", "employers", "none"],"lead_status": ["new", "contacted", "qualified", "closed", "archived"],"message_status": ["new", "read", "archived"],"post_status": ["draft", "published"],"review_status": ["pending", "approved", "rejected"]
           }
         }
 } as const
