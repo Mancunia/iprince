@@ -1,6 +1,32 @@
 {
   "metadata": { "title": "iPrince Recruiting", "description": "International skilled workers for employers in Germany." },
-  "site": { "skipLink": "Skip to content", "openPositions": "{count, plural, =0 {No open positions} one {# open position} other {# open positions}}", "apply": "Apply", "noProfessions": "No professions are open for applications right now." },
+  "site": {
+    "skipLink": "Skip to content",
+    "openPositions": "{count, plural, =0 {No open positions} one {# open position} other {# open positions}}",
+    "apply": "Apply",
+    "noProfessions": "No professions are open for applications right now.",
+    "brand": "iPrince Recruiting – home",
+    "navProfessions": "Professions",
+    "navSteps": "How it works",
+    "navLabel": "Main navigation",
+    "cta": "Apply for free",
+    "language": "Language",
+    "languages": { "de": "Deutsch", "en": "English" },
+    "tagline": "Your reliable partner for a successful future in Germany",
+    "footerCandidates": "For candidates",
+    "footerContact": "Contact",
+    "whatsapp": "WhatsApp",
+    "whatsappLabel": "Message us on WhatsApp: +49 173 9018671",
+    "rights": "© {year} iPrince Personalvermittlung",
+    "chat": "Live chat",
+    "chatLabel": "Open live chat",
+    "chatConsent": "Our live chat is provided by tawk.to and needs functional cookies. Enabling it shares your chat and browser data with tawk.to.",
+    "chatEnable": "Enable chat",
+    "chatUnavailable": "The cookie settings could not be loaded. Please try again later or message us on WhatsApp.",
+    "chatWhatsappInstead": "Prefer WhatsApp? Message us there instead.",
+    "cookieSettings": "Cookie settings",
+    "legalLabel": "Legal"
+  },
   "apply": {
     "title": "Apply: {profession}",
     "fullName": "Full name",
@@ -26,7 +52,10 @@
       "upload_missing": "A document upload did not complete. Please try again.",
       "upload_failed": "A document could not be uploaded. Please try again.",
       "server_error": "Something went wrong. Please try again."
-    }
+    },
+    "back": "All professions",
+    "kicker": "Application",
+    "lead": "Applying is free for you. After you send the form, we review your documents and get in touch."
   },
   "admin": {
     "acceptInvite": { "title": "Accept your invitation", "text": "Select the button to accept your invitation and choose a password.", "submit": "Accept invite" },
@@ -123,6 +152,7 @@
     "errors": { "invalid_credentials": "Email or password is incorrect.", "not_admin": "This account has no admin access.", "invalid": "Please check your input.", "server_error": "Something went wrong.", "not_found": "This application no longer exists.", "has_applications": "This profession has applications. Deactivate it instead." },
     "navProfessions": "Professions",
     "navTeam": "Team",
+    "navSettings": "Settings",
     "fieldErrors": { "invalid": "Please check this value.", "taken": "This slug is already used.", "form_required": "Publish a form first.", "exists": "This email already has an account.", "too_short": "Use at least 12 characters.", "mismatch": "The passwords do not match." },
     "professions": {
       "title": "Professions",
@@ -175,7 +205,37 @@
         "not_allowed": "The owner cannot be removed.",
         "server_error": "Something went wrong."
       }
+    },
+    "settings": {
+      "title": "Settings",
+      "chatProvider": "Chat on the website",
+      "chatHelp": "Choose which chat button visitors see on every public page.",
+      "providers": { "whatsapp": "WhatsApp", "tawk": "tawk.to live chat", "none": "No chat button" },
+      "tawkNotReady": "tawk.to is not set up yet ({missing}). Until it is, visitors see WhatsApp instead.",
+      "missing": { "cookieScript": "COOKIESCRIPT_ID", "tawk": "TAWK_PROPERTY_ID / TAWK_WIDGET_ID" },
+      "save": "Save",
+      "saved": "Saved. The website now uses this chat.",
+      "errors": { "invalid": "Please choose an option.", "server_error": "Something went wrong." }
     }
   },
-  "errors": { "notFoundTitle": "Page not found", "genericTitle": "Something went wrong", "retry": "Try again" }
+  "errors": { "notFoundTitle": "Page not found", "genericTitle": "Something went wrong", "retry": "Try again" },
+  "home": {
+    "kicker": "Recruitment for Germany",
+    "title": "Your path to a successful career in Germany",
+    "lead": "Choose your profession and send us your application. Applying is always free for you.",
+    "ctaWhatsapp": "Ask on WhatsApp",
+    "statPositions": "Open positions",
+    "statProfessions": "Professions",
+    "statFree": "Applying is free for you",
+    "professionsKicker": "Open professions",
+    "professionsTitle": "Choose your profession",
+    "professionsLead": "Not sure you qualify? Apply anyway. We are happy to advise you.",
+    "stepsKicker": "Process",
+    "stepsTitle": "How your application works",
+    "steps": {
+      "choose": { "title": "Choose a profession", "text": "Pick the profession you would like to work in, in Germany." },
+      "apply": { "title": "Fill in the form", "text": "Answer the questions and upload your documents." },
+      "contact": { "title": "We get in touch", "text": "We review your application and contact you about the next steps." }
+    }
+  }
 }

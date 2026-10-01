@@ -35,7 +35,7 @@ Plan 1 already created every table and RLS policy used here; Plan 2 adds one mig
 ## 2. Profession management
 
 **Pages** (`src/app/[locale]/admin/(protected)/professions/`): `page.tsx` (list), `new/page.tsx`, `[id]/page.tsx` (edit). Nav gains "Professions".
-- List columns: localized name, slug, active, featured, open positions, sort order, form status (`No form` / `vN live` / `vN live · draft pending`). Order: featured desc, sort_order.
+- List columns: localized name, slug, active, featured, open positions, sort order, form status (`No form` / `Draft only` / `vN live` / `vN live · draft pending`). Order: featured desc, sort_order.
 - `ProfessionForm` (shared by new/edit): slug; name de/en and summary de/en (de required); icon select from `public/icons` with preview; is_active, is_featured; sort_order (int); open_positions (int ≥ 0). Edit page links to the form builder and has Delete.
 
 **Actions** (`src/features/professions/admin-actions.ts`), same shape as `updateApplication`: `requireAdmin` first → zod parse → user-session Supabase → `ActionResult` with field errors → `revalidatePath` for admin and public pages.
@@ -59,7 +59,7 @@ Queries in `src/features/professions/admin-queries.ts`.
 - Draft: `FormBuilder` client component (`src/features/forms/builder/`) holding the `FormDefinition` in state:
   - Field list: label, type, required badge; ↑ ↓ ✕; "Add field" by type.
   - Field panel: key (suggested from the de label as snake_case, validated live against the existing key rules), type, label/help de/en, required, section, options (value + label de/en; add/remove/move) for select/multiselect/radio, accept + maxSizeMb for file.
-  - Sections editor: id + title de/en.
+  - Existing `sections` / field `section` values are preserved untouched; no editor until the apply page renders sections.
   - Preview: existing `DynamicFields`, de/en toggle, not submittable.
   - Buttons: **Save draft**, **Publish** (save then publish; needs ≥1 field), **Discard draft**. `beforeunload` guard when dirty.
 - Version history: published versions open read-only in the preview.
@@ -75,14 +75,15 @@ Pure helpers in `src/features/forms/builder/model.ts`: `moveField`, `addField(ty
 **Page** `src/app/[locale]/admin/(protected)/team/page.tsx`: admins with display name, email, role, status (`Active` / `Invited — pending` when `last_sign_in_at` is null; read via the auth admin API). Invite form (email, display name). Remove button with confirmation on editor rows only.
 
 **Actions** (`src/features/team/actions.ts`), both start with `requireOwner`:
-- `inviteEditor` — `auth.admin.inviteUserByEmail(email, { redirectTo: <origin>/<locale>/admin/set-password })`; then insert the `admins` row (`role editor`) with the **owner's session** so RLS enforces ownership; if that insert fails, `auth.admin.deleteUser` to roll back. Existing email → `fieldErrors.email = ["exists"]`.
+- `inviteEditor` — `auth.admin.inviteUserByEmail(email, { redirectTo: <origin>/api/auth/confirm?next=/<locale>/admin/set-password })` (built by `inviteRedirectUrl`); then insert the `admins` row (`role editor`) with the **owner's session** so RLS enforces ownership; if that insert fails, `auth.admin.deleteUser` to roll back. Existing email → `fieldErrors.email = ["exists"]`.
 - `removeEditor(userId)` — refuses the owner's own id and any owner row; `auth.admin.deleteUser` (the `admins` row cascades). The removed user is locked out on the next request because `getAdminSession` revalidates with `getUser()` and finds no admin row.
 - `src/lib/supabase/auth-admin.ts` wraps the service client for `auth.admin.*`; the `service.ts` comment becomes "public submissions and owner-gated user management only".
 
 **Accepting.**
-- `supabase/templates/invite.html` + `[auth.email.template.invite]` in `config.toml`: link `{{ .SiteURL }}/api/auth/confirm?token_hash={{ .TokenHash }}&type=invite&next={{ .RedirectTo }}` (token-hash flow, required for SSR). Production and local `additional_redirect_urls` must allow `/*/admin/set-password`.
-- `src/app/api/auth/confirm/route.ts` (under `/api` so the i18n proxy does not rewrite it): `verifyOtp({ type, token_hash })` sets the session cookie → redirect to `next` only if it is same-origin (full URL or path; otherwise `/de/admin`). On failure → `/<locale>/admin/login?notice=invite_expired`.
-- `src/app/[locale]/admin/set-password/page.tsx` (outside `(protected)`, but requires a session that is an admin, else login): new + confirm password, min 12 chars → `updateUser({ password })` → admin home.
+- `supabase/templates/invite.html` + `[auth.email.template.invite]` in `config.toml`: link `{{ .RedirectTo }}&token_hash={{ .TokenHash }}&type=invite` (token-hash flow, required for SSR). OTP expiry 86400 s.
+- `GET /api/auth/confirm` (under `/api` so the i18n proxy does not rewrite it) does **not** verify the token (link scanners prefetch); it forwards to `/<locale>/admin/accept-invite` (in `admin/(auth)/`) with `token_hash` and `next` as query params.
+- `/<locale>/admin/accept-invite` button runs `verifyOtp({ type, token_hash })` which sets the session cookie, then redirects to `next`. On failure → `/<locale>/admin/login?notice=invite_expired`.
+- `src/app/[locale]/admin/(protected)/set-password/page.tsx`: invited user already has a session and an admin row; new + confirm password, min 12 chars → `updateUser({ password })` → admin home.
 
 ## Cross-cutting
 - i18n: all new strings in `de.json` and `en.json` under `admin.professions`, `admin.forms`, `admin.team`, `admin.setPassword`.

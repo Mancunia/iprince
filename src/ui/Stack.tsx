@@ -1,26 +1,16 @@
-import * as stylex from "@stylexjs/stylex";
 import type { ReactNode } from "react";
-import { space } from "./tokens.stylex";
+import { cn } from "./cn";
 
-const styles = stylex.create({
-  base: { display: "flex" },
-  column: { flexDirection: "column" },
-  row: { flexDirection: "row", flexWrap: "wrap", alignItems: "center" },
-  xs: { gap: space.xs },
-  sm: { gap: space.sm },
-  md: { gap: space.md },
-  lg: { gap: space.lg },
-  xl: { gap: space.xl },
-});
+const GAPS = { xs: "gap-1", sm: "gap-2", md: "gap-5", lg: "gap-8", xl: "gap-12" } as const;
 
 type Props = {
   children: ReactNode;
-  gap?: "xs" | "sm" | "md" | "lg" | "xl";
+  gap?: keyof typeof GAPS;
   direction?: "column" | "row";
   as?: "div" | "section" | "ul" | "form" | "header" | "nav";
-  xstyle?: stylex.StyleXStyles;
+  className?: string;
 };
 
-export function Stack({ children, gap = "md", direction = "column", as: Tag = "div", xstyle }: Props) {
-  return <Tag {...stylex.props(styles.base, styles[direction], styles[gap], xstyle)}>{children}</Tag>;
+export function Stack({ children, gap = "md", direction = "column", as: Tag = "div", className }: Props) {
+  return <Tag className={cn("flex", direction === "column" ? "flex-col" : "flex-row flex-wrap items-center", GAPS[gap], className)}>{children}</Tag>;
 }

@@ -1,25 +1,15 @@
-import * as stylex from "@stylexjs/stylex";
 import type { ButtonHTMLAttributes } from "react";
-import { color, font, radius, space } from "./tokens.stylex";
+import { cn } from "./cn";
 
-const styles = stylex.create({
-  base: {
-    borderWidth: 1,
-    borderStyle: "solid",
-    borderRadius: radius.md,
-    paddingBlock: space.sm,
-    paddingInline: space.md,
-    fontFamily: font.body,
-    fontSize: font.sizeMd,
-    cursor: { default: "pointer", ":disabled": "not-allowed" },
-    opacity: { default: 1, ":disabled": 0.6 },
-  },
-  primary: { backgroundColor: color.accent, borderColor: color.accent, color: color.accentText },
-  secondary: { backgroundColor: color.surface, borderColor: color.border, color: color.text },
-});
+const VARIANTS = { primary: "btn-primary", secondary: "", ghost: "btn-ghost", danger: "btn-danger" } as const;
+const SIZES = { md: "", sm: "btn-sm", lg: "btn-lg" } as const;
 
-type Props = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "className" | "style"> & { variant?: "primary" | "secondary" };
+type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
+  variant?: keyof typeof VARIANTS;
+  size?: keyof typeof SIZES;
+  block?: boolean;
+};
 
-export function Button({ variant = "primary", type = "button", ...rest }: Props) {
-  return <button type={type} {...rest} {...stylex.props(styles.base, styles[variant])} />;
+export function Button({ variant = "primary", size = "md", block, type = "button", className, ...rest }: Props) {
+  return <button type={type} className={cn("btn", VARIANTS[variant], SIZES[size], block ? "btn-block" : "max-w-max", className)} {...rest} />;
 }

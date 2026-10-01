@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { readCronEnv, readPublicEnv, readServerEnv } from "./env";
+import { readCronEnv, readIntegrationsEnv, readPublicEnv, readServerEnv } from "./env";
 
 afterEach(() => vi.unstubAllEnvs());
 
@@ -22,5 +22,23 @@ describe("env", () => {
     expect(() => readCronEnv()).toThrow(/CRON_SECRET/);
     vi.stubEnv("CRON_SECRET", "x".repeat(32));
     expect(readCronEnv()).toEqual({ CRON_SECRET: "x".repeat(32) });
+  });
+
+  it("treats unset or empty integrations as off", () => {
+    vi.stubEnv("COOKIESCRIPT_ID", "");
+    vi.stubEnv("TAWK_PROPERTY_ID", "abc123");
+    expect(readIntegrationsEnv()).toEqual({ cookieScriptId: null, tawk: null });
+  });
+
+  it("reads complete integrations", () => {
+    vi.stubEnv("COOKIESCRIPT_ID", "a1b2c3");
+    vi.stubEnv("TAWK_PROPERTY_ID", "64f0aa");
+    vi.stubEnv("TAWK_WIDGET_ID", "1h9xyz");
+    expect(readIntegrationsEnv()).toEqual({ cookieScriptId: "a1b2c3", tawk: { propertyId: "64f0aa", widgetId: "1h9xyz" } });
+  });
+
+  it("rejects embed IDs that are not plain alphanumerics", () => {
+    vi.stubEnv("TAWK_WIDGET_ID", "../evil");
+    expect(() => readIntegrationsEnv()).toThrow(/TAWK_WIDGET_ID/);
   });
 });

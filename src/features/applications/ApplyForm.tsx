@@ -1,6 +1,5 @@
 "use client";
 
-import * as stylex from "@stylexjs/stylex";
 import { useTranslations } from "next-intl";
 import { useState, type FormEvent } from "react";
 import type { Locale } from "@/i18n/config";
@@ -13,14 +12,11 @@ import type { FieldErrors } from "@/lib/result";
 import { createBrowserSupabase } from "@/lib/supabase/browser";
 import { Button } from "@/ui/Button";
 import { Field } from "@/ui/Field";
+import { Icon } from "@/ui/Icon";
 import { Input } from "@/ui/inputs";
 import { Stack } from "@/ui/Stack";
 import { Text } from "@/ui/Text";
 import { finalizeApplication, submitApplication } from "./actions";
-
-const styles = stylex.create({
-  honeypot: { position: "absolute", left: "-10000px", width: "1px", height: "1px", overflow: "hidden" },
-});
 
 type Props = { professionSlug: string; formId: string; definition: FormDefinition; locale: Locale };
 type Phase = "idle" | "sending" | "uploading" | "done";
@@ -87,7 +83,14 @@ export function ApplyForm({ professionSlug, formId, definition, locale }: Props)
     }
   }
 
-  if (phase === "done") return <Text role="status" tone="success">{t("success")}</Text>;
+  if (phase === "done") {
+    return (
+      <p role="status" className="notice notice-success">
+        <Icon name="circle-check" />
+        {t("success")}
+      </p>
+    );
+  }
 
   const busy = phase !== "idle";
   const coreErrors = (key: string) => fieldErrors[key]?.map(errorText);
@@ -106,12 +109,17 @@ export function ApplyForm({ professionSlug, formId, definition, locale }: Props)
         <Field id="field-phone" label={t("phone")} errors={coreErrors("phone")}>
           <Input id="field-phone" name="phone" type="tel" autoComplete="tel" invalid={Boolean(fieldErrors.phone)} aria-describedby={describedBy("phone")} />
         </Field>
-        <div aria-hidden="true" inert {...stylex.props(styles.honeypot)}>
+        <div aria-hidden="true" inert className="absolute -left-[10000px] h-px w-px overflow-hidden">
           <input name="hp_field" tabIndex={-1} autoComplete="off" />
         </div>
         <DynamicFields definition={definition} locale={locale} errors={fieldErrors} errorText={errorText} chooseLabel={t("choose")} />
-        {formError ? <Text role="alert" tone="danger">{errorText(formError)}</Text> : null}
-        <Button type="submit" disabled={busy}>
+        {formError ? (
+          <p role="alert" className="notice notice-error">
+            <Icon name="circle-alert" />
+            {errorText(formError)}
+          </p>
+        ) : null}
+        <Button type="submit" size="lg" disabled={busy}>
           {phase === "sending" ? t("sending") : phase === "uploading" ? t("uploading") : t("submit")}
         </Button>
       </Stack>

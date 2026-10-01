@@ -1,0 +1,28 @@
+/* Element defaults from the design-system bundle. Runs after Tailwind's preflight. */
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--surface-page); color: var(--text-body);
+    font-family: var(--font-body); font-size: var(--text-base); line-height: var(--leading-body);
+    overflow-wrap: break-word; -webkit-font-smoothing: antialiased;
+  }
+  :lang(de) { hyphens: auto; }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading); font-weight: var(--weight-heading);
+    line-height: var(--leading-heading); letter-spacing: var(--tracking-heading);
+    margin: 0; text-wrap: balance;
+  }
+  h1 { font-size: var(--text-4xl); line-height: var(--leading-tight); }
+  h2 { font-size: var(--text-3xl); }
+  h3 { font-size: var(--text-2xl); }
+  h4 { font-size: var(--text-xl); }
+  p { margin: 0; text-wrap: pretty; }
+  a { color: var(--text-link); text-decoration: underline; text-underline-offset: 3px; }
+  a:hover { color: var(--text-link-hover); }
+  img { display: block; max-width: 100%; }
+  button { font: inherit; }
+  :focus { outline: none; }
+  :focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; }
+  ::selection { background: color-mix(in srgb, var(--color-accent-500) 30%, transparent); }
+}
