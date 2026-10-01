@@ -168,6 +168,19 @@
     "navGroupSetup": "Setup",
     "menuOpen": "Open menu",
     "menuClose": "Close menu",
+    "dashboard": {
+      "title": "Dashboard",
+      "newApplications": "New applications",
+      "newLeads": "New enquiries",
+      "newMessages": "New messages",
+      "activeProfessions": "Active professions",
+      "latestApplications": "Latest applications",
+      "latestInbox": "Latest enquiries and messages",
+      "viewAll": "View all",
+      "emptyInbox": "No enquiries or messages yet.",
+      "kindLead": "Enquiry",
+      "kindMessage": "Message"
+    },
     "inbox": {
       "leadsTitle": "Employer enquiries",
       "messagesTitle": "Contact messages",

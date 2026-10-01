@@ -38,13 +38,13 @@ async function professionLookup(supabase: Client): Promise<Map<string, Localized
   return lookup;
 }
 
-export async function listLeads(status?: LeadStatus): Promise<LeadRow[]> {
+export async function listLeads(status?: LeadStatus, limit = INBOX_LIMIT): Promise<LeadRow[]> {
   const supabase = await createServerSupabase();
   let query = supabase
     .from("employer_leads")
     .select("id, company, contact_name, status, created_at, profession_ids")
     .order("created_at", { ascending: false })
-    .limit(INBOX_LIMIT);
+    .limit(limit);
   if (status) query = query.eq("status", status);
   const [{ data, error }, lookup] = await Promise.all([query, professionLookup(supabase)]);
   if (error) throw error;
@@ -86,13 +86,13 @@ export async function getLead(id: string): Promise<LeadDetail | null> {
   };
 }
 
-export async function listMessages(status?: MessageStatus): Promise<MessageRow[]> {
+export async function listMessages(status?: MessageStatus, limit = INBOX_LIMIT): Promise<MessageRow[]> {
   const supabase = await createServerSupabase();
   let query = supabase
     .from("contact_messages")
     .select("id, name, message, status, created_at")
     .order("created_at", { ascending: false })
-    .limit(INBOX_LIMIT);
+    .limit(limit);
   if (status) query = query.eq("status", status);
   const { data, error } = await query;
   if (error) throw error;

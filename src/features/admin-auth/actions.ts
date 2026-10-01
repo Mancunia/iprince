@@ -28,7 +28,7 @@ export async function signIn(_prev: ActionResult<null> | null, formData: FormDat
     await supabase.auth.signOut();
     return fail("not_admin");
   }
-  redirect(`/${locale}/admin/applications`);
+  redirect(`/${locale}/admin`);
 }
 
 export async function signOut(formData: FormData): Promise<void> {
@@ -52,5 +52,5 @@ export async function setPassword(_prev: ActionResult<null> | null, formData: Fo
     console.error("set password failed", error.code ?? error.status);
     return fail("server_error");
   }
-  redirect(`/${locale}/admin/applications`);
+  redirect(`/${locale}/admin`);
 }
