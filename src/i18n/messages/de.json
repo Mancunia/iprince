@@ -27,6 +27,7 @@
     "cookieSettings": "Cookie-Einstellungen",
     "legalLabel": "Rechtliches",
     "navEmployers": "Arbeitgeber",
+    "navBlog": "Blog",
     "navContact": "Kontakt",
     "menuOpen": "Menü öffnen",
     "menuClose": "Menü schließen",
@@ -406,5 +407,28 @@
     "privacy": "Wir verwenden Ihre Angaben nur, um Ihre Nachricht zu beantworten. Mehr in unserer <link>Datenschutzerklärung</link>.",
     "whatsappTitle": "Lieber per WhatsApp?",
     "whatsappText": "Schreiben Sie uns direkt. Wir antworten meist noch am selben Tag."
+  },
+  "blog": {
+    "kicker": "Blog",
+    "title": "Neuigkeiten und Ratgeber",
+    "lead": "Ratgeber für Fachkräfte zu Anerkennung, Visum und Leben in Deutschland – und Einblicke für Arbeitgeber, die international einstellen.",
+    "all": "Alle",
+    "filterLabel": "Nach Kategorie filtern",
+    "featured": "Empfohlen",
+    "empty": "Noch keine Artikel.",
+    "emptyCategory": "In dieser Kategorie gibt es keine Artikel.",
+    "minutes": "{count} Min. Lesezeit",
+    "by": "Von {author}",
+    "back": "Alle Artikel",
+    "germanOnly": "Dieser Artikel ist nur auf Deutsch verfügbar.",
+    "related": "Weitere Artikel",
+    "pagination": "Seiten",
+    "previous": "Zurück",
+    "next": "Weiter",
+    "pageOf": "Seite {page} von {pages}",
+    "cta": {
+      "candidates": { "title": "Bereit für Ihren Job in Deutschland?", "text": "Bewerben Sie sich kostenlos. Wir begleiten Sie bei Anerkennung, Visum und Ihren ersten Wochen.", "button": "Beruf auswählen" },
+      "employers": { "title": "Sie suchen qualifizierte Fachkräfte?", "text": "Sagen Sie uns, wen Sie brauchen. Wir finden, bereiten vor und begleiten passende Kandidat:innen.", "button": "Personal anfragen" }
+    }
   }
 }

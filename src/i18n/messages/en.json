@@ -27,6 +27,7 @@
     "cookieSettings": "Cookie settings",
     "legalLabel": "Legal",
     "navEmployers": "Employers",
+    "navBlog": "Blog",
     "navContact": "Contact",
     "menuOpen": "Open menu",
     "menuClose": "Close menu",
@@ -406,5 +407,28 @@
     "privacy": "We use your details only to answer your message. More in our <link>privacy policy</link>.",
     "whatsappTitle": "Prefer WhatsApp?",
     "whatsappText": "Message us directly. We usually reply the same day."
+  },
+  "blog": {
+    "kicker": "Blog",
+    "title": "News and guides",
+    "lead": "Guides for skilled workers on recognition, visas and life in Germany, and insights for employers who hire internationally.",
+    "all": "All",
+    "filterLabel": "Filter by category",
+    "featured": "Featured",
+    "empty": "No articles yet.",
+    "emptyCategory": "There are no articles in this category.",
+    "minutes": "{count} min read",
+    "by": "By {author}",
+    "back": "All articles",
+    "germanOnly": "This article is only available in German.",
+    "related": "More articles",
+    "pagination": "Pages",
+    "previous": "Previous",
+    "next": "Next",
+    "pageOf": "Page {page} of {pages}",
+    "cta": {
+      "candidates": { "title": "Ready to work in Germany?", "text": "Apply for free. We guide you through recognition, visa and your first weeks.", "button": "Choose your profession" },
+      "employers": { "title": "Looking for qualified staff?", "text": "Tell us who you need. We find, prepare and accompany suitable candidates.", "button": "Request staff" }
+    }
   }
 }

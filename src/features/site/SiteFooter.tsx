@@ -22,6 +22,7 @@ export async function SiteFooter({ cookieSettings }: { cookieSettings: boolean }
             <h4>{t("footerCandidates")}</h4>
             <Link href="/#berufe">{t("navProfessions")}</Link>
             <Link href="/#ablauf">{t("navSteps")}</Link>
+            <Link href="/blog">{t("navBlog")}</Link>
           </div>
           <div className="footer-col">
             <h4>{t("footerEmployers")}</h4>
