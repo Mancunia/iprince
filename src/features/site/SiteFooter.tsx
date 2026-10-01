@@ -15,7 +15,7 @@ export async function SiteFooter({ cookieSettings }: { cookieSettings: boolean }
             <span className="brand">
               <BrandLogo />
             </span>
-            <p className="max-w-[32ch] text-fg-inverse/80">{t("tagline")}</p>
+            <p className="max-w-[32ch] text-fg-muted">{t("tagline")}</p>
           </div>
           <div className="footer-col">
             <h4>{t("footerCandidates")}</h4>
