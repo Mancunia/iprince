@@ -8,7 +8,7 @@ export const LANGUAGE_LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2", "native"] as
 export const MAX_FILE_MB = 20; // matches the `applications` bucket limit
 
 /** Keys used by the fixed applicant fields and the honeypot. */
-const RESERVED_KEYS = ["full_name", "fullName", "email", "phone", "website", "hp_field", "__proto__", "constructor", "prototype"];
+export const RESERVED_KEYS: readonly string[] = ["full_name", "fullName", "email", "phone", "website", "hp_field", "__proto__", "constructor", "prototype"];
 const CHOICE_TYPES = new Set(["select", "multiselect", "radio"]);
 
 const option = z.object({ value: z.string().min(1).max(100), label: localizedText });

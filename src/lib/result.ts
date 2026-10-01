@@ -9,3 +9,10 @@ export function ok<T>(data: T): ActionResult<T> {
 export function fail(formError?: string, fieldErrors?: FieldErrors): Failure {
   return { ok: false, formError, fieldErrors };
 }
+
+/** Marks each failing input (first path segment of a zod issue) as invalid. */
+export function fieldErrorsOf(issues: readonly { path: readonly PropertyKey[] }[]): FieldErrors {
+  const errors: FieldErrors = {};
+  for (const issue of issues) errors[String(issue.path[0])] = ["invalid"];
+  return errors;
+}

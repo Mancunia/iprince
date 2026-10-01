@@ -29,6 +29,7 @@ npm run dev                 # http://localhost:3000/en
 | `npm run test:e2e` | Playwright smoke test (needs `npx supabase start`; refuses non-local Supabase URLs) |
 | `npx supabase db reset` | re-apply migrations + `supabase/seed.sql` |
 | `npm run db:types` | regenerate `src/lib/supabase/database.types.ts` after schema changes |
+| `curl -H "Authorization: Bearer $CRON_SECRET" localhost:3000/api/cron/cleanup-applications` | run the cleanup job by hand |
 
 ## Architecture
 
@@ -44,7 +45,10 @@ Create a project, then run `npx supabase link --project-ref <ref>` and `npx supa
 
 - Bootstrap the first owner by running `admin:create` with the production env vars in a one-off shell (never commit them).
 - Set Auth minimum password length to 12 or more and keep sign-ups disabled.
+- Auth → URL configuration: add `https://<your-domain>/**` to the redirect URLs. Auth → Email templates → Invite user: paste `supabase/templates/invite.html` (the link must stay `{{ .RedirectTo }}&token_hash={{ .TokenHash }}&type=invite`). Every origin admins use (apex and www, custom domains) must be in Redirect URLs; preview URLs are not supported for invites. An origin missing from the list makes GoTrue fall back to the Site URL and the invite link is malformed.
+- Auth → Email → OTP expiration = 86400 seconds, so invite links last 24 hours as the email says.
+- Invite emails need working SMTP in production (Supabase's built-in sender is rate-limited); configure custom SMTP before inviting staff.
 - Keep Auth `refresh_token_reuse_interval` above 0 (default 10s); the proxy relies on it (see `src/lib/supabase/proxy.ts`).
 - Confirm table privileges for `anon`, `authenticated` and `service_role`; the migrations rely on Supabase's default grants.
 - The rate limit trusts the first `x-forwarded-for` hop (correct on Vercel; revisit behind other proxies).
-- The Plan 2 cleanup job for abandoned applications and uploads is required before production launch (GDPR).
+- Set `CRON_SECRET` (`openssl rand -hex 32`) in the Vercel production environment. Vercel Cron calls `/api/cron/cleanup-applications` daily at 03:00 UTC (`vercel.ts`); it deletes unsubmitted applications and unreferenced uploads older than 24 hours, so they are gone within 48 hours. The privacy policy must say so. Check the first run in the Vercel logs.

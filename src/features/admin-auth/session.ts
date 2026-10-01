@@ -1,5 +1,5 @@
 import "server-only";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { cache } from "react";
 import type { Locale } from "@/i18n/config";
 import { createServerSupabase } from "@/lib/supabase/server";
@@ -22,5 +22,12 @@ export const getAdminSession = cache(async (): Promise<AdminSession | null> => {
 export async function requireAdmin(locale: Locale): Promise<AdminSession> {
   const session = await getAdminSession();
   if (!session) redirect(`/${locale}/admin/login`);
+  return session;
+}
+
+/** Team management is owner-only; editors see a 404 rather than learning the page exists. */
+export async function requireOwner(locale: Locale): Promise<AdminSession> {
+  const session = await requireAdmin(locale);
+  if (session.role !== "owner") notFound();
   return session;
 }

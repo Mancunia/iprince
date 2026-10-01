@@ -227,7 +227,10 @@ isOneToOne: false
             [_ in never]: never
           }
           Functions: {
-            "finalize_application":
+            "delete_abandoned_applications":
+{ Args: { "p_cutoff": string }; Returns: number
+                           },
+"finalize_application":
 { Args: { "p_application_id": string,"p_files": Json }; Returns: boolean
                            },
 "hit_rate_limit":
@@ -238,6 +241,15 @@ isOneToOne: false
                            },
 "is_owner":
 { Args: Record<PropertyKey, never>; Returns: boolean
+                           },
+"orphaned_application_objects":
+{ Args: { "p_cutoff": string,"p_limit": number }; Returns: string[]
+                           },
+"publish_form_draft":
+{ Args: { "p_expected_updated_at": string,"p_form_id": string }; Returns: undefined
+                           },
+"start_form_draft":
+{ Args: { "p_profession_id": string }; Returns: string
                            },
 "storage_object_meta":
 { Args: { "p_bucket": string,"p_path": string }; Returns: Json
