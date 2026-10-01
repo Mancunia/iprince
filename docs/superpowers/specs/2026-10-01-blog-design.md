@@ -13,7 +13,7 @@ The tables `blog_categories` and `blog_posts`, their RLS (anon reads `published 
 | Audience | Both candidates and employers; the category's `cta` decides the post's call to action |
 | Volume | A few posts a month → 9 per page, simple pagination |
 | Editor | Plain textarea with Write/Preview toggle and a cheat-sheet; preview uses the public renderer |
-| Renderer | `react-markdown` + `remark-gfm`, `skipHtml`, allow-list `urlTransform`; no `rehype-raw`, no `dangerouslySetInnerHTML` |
+| Renderer | Reuse the existing `src/ui/Markdown.tsx` (added for the legal pages): `react-markdown` + `remark-gfm`, `skipHtml`, allow-list `safeUrl`; no `rehype-raw`, no `dangerouslySetInnerHTML`. 2c extends it (see §4) instead of adding a second renderer |
 | Slugs | One slug per post shared by de/en (author writes it in German) |
 | Missing English | Fall back to German with an "only available in German" note |
 | Scheduling | Status `published` + future `published_at` = scheduled; enforced by existing RLS, no cron |
@@ -55,7 +55,7 @@ The tables `blog_categories` and `blog_posts`, their RLS (anon reads `published 
 - `publish.ts`: `postState(status, publishedAt, now)`, `berlinInputToUtc(value)`, `utcToBerlinInput(iso)`, `resolvePublishedAt(status, input, now)`.
 - `admin-queries.ts` (server-only): `listPosts(state?)`, `getPost(id)`, `listCategories()` (with post counts), `getCategory(id)`.
 - `admin-actions.ts` (`'use server'`): `createPost`, `updatePost`, `deletePost`, `setPostCover`, `removePostCover`, `createCategory`, `updateCategory`, `deleteCategory`. Each: `requireAdmin(locale)`, zod parse, Supabase write, `23505` on slug → field error `slug: taken`, other errors → form error; `revalidatePath` for the admin blog layout and `/de/blog`, `/en/blog` (layout).
-- UI: `PostForm.tsx`, `MarkdownField.tsx` (client), `CoverField.tsx` (client, mirrors `site-content/PhotosEditor.tsx`), `CategoryForm.tsx`, `DeletePostForm.tsx`, `DeleteCategoryForm.tsx`.
+- UI: `PostForm.tsx` (client; language and Write/Preview toggles follow `site-content/LegalForm.tsx`, preview uses `ui/Markdown`; renders the side cards and an `aside` slot), `CoverField.tsx` (client, mirrors `site-content/PhotosEditor.tsx`), `DeletePostButton.tsx`, `CategoryForm.tsx`, `DeleteCategoryForm.tsx`. Cover and delete controls sit inside the post `<form>`'s side column, so they call their actions from buttons (no nested `<form>`).
 
 ## 3. Public pages
 
@@ -71,12 +71,15 @@ The tables `blog_categories` and `blog_posts`, their RLS (anon reads `published 
 - Locale fallback: if the requested locale's title or body is empty, use de for both and show the note; the content wrapper gets `lang="de"`.
 - `PostCta` by category `cta`: `candidates` → link to `/#berufe`; `employers` → `/employers`; `none`/no category → nothing.
 - Up to 3 related live posts from the same category, hidden when none.
-- `generateMetadata`: title, excerpt description, canonical, `alternates.languages` de/en (same slug), Open Graph `article` with `publishedTime` and the cover (or site default) image.
+- `generateMetadata`: title, excerpt description, canonical, `alternates.languages` de/en (same slug), Open Graph `article` with `publishedTime` and the cover image (default `/logo/iprince-mark.png`).
+- Next 16 fails the build on relative metadata URLs without `metadataBase`, so `src/app/[locale]/layout.tsx` sets `metadataBase` from a tested `src/lib/site-url.ts` (production domain on Vercel production, deployment URL on previews, `http://localhost:3000` locally).
 - Unknown, draft or scheduled slug → `notFound()`.
 
 **`src/features/blog/queries.ts`** (server-only, explicit `status = 'published'` and `published_at <= now` filters in addition to RLS): `listLivePosts({ category?, page, excludeId? })` returning rows plus total, `getFeaturedPost()`, `getLivePost(slug)`, `listRelated(categoryId, excludeId)`, `listUsedCategories()`.
 
-**Pure helpers:** `reading-time.ts` (words / 200, minimum 1), `localizedPost(post, locale)` returning the text and a `fallback` flag.
+**Pure helpers:** `reading-time.ts` (words / 200, minimum 1), `text.ts` `localizePost(post, locale)` returning the text and a `fallback` flag, `paging.ts` (`?page=` parsing, page count, row range).
+
+**Covers on cards:** `features/site/Photo.tsx` gains an optional `icon` prop so blog placeholders show `book-open` instead of `user`. Dates are formatted with `timeZone: "Europe/Berlin"` (next-intl has no global time zone configured).
 
 **Site chrome:** "Blog" link in `SiteHeader`, `MobileNav` and `SiteFooter`.
 
@@ -84,11 +87,12 @@ The tables `blog_categories` and `blog_posts`, their RLS (anon reads `published 
 
 ## 4. Markdown safety
 
-`<Markdown source>` (`features/blog/Markdown.tsx`, usable in server and client components):
-- `react-markdown` with `remarkPlugins={[remarkGfm]}`, `skipHtml`, no rehype plugins.
-- `urlTransform`: keep `http:`, `https:`, `mailto:`, `tel:`, relative paths and `#` anchors; anything else → `""`.
-- Components: `h1` rendered as `h2`; external links `target="_blank" rel="noopener noreferrer"`; `img` lazy with alt and rounded styling (plain `<img>`, any host); tables wrapped in an `overflow-x-auto` container.
-- Styles: `.prose-blog` component class in `globals.css` from design-system tokens.
+The blog reuses `src/ui/Markdown.tsx` (also used by the legal pages and `LegalForm` preview), which already has:
+- `react-markdown` with `remarkPlugins={[remarkGfm]}`, `skipHtml`, no rehype plugins;
+- `safeUrl` as `urlTransform`: keeps `http:`, `https:`, `mailto:`, `tel:`, scheme-less (relative, `#anchor`) URLs; anything else → `""`;
+- tests for `<script>`, `onerror`, `javascript:`, `data:` and `vbscript:`.
+
+2c adds `components` to it (legal pages benefit too): `h1` rendered as `h2`; external (`http(s):`) links `target="_blank" rel="noopener noreferrer"`; `img` lazy-loaded, rendered only with a non-empty (safe) `src` (plain `<img>`, any host); tables wrapped in an `overflow-x-auto` container. Styles: the existing `.prose` class in `src/styles/components.css` gains `h4`, `blockquote`, `img`, `code`, `pre` and `hr` rules from design-system tokens.
 
 ## 5. Errors
 - Actions return `ActionResult` (`fieldErrors` for validation and slug clash, `formError` otherwise); forms keep entered values on failure.
@@ -97,8 +101,8 @@ The tables `blog_categories` and `blog_posts`, their RLS (anon reads `published 
 
 ## 6. Testing
 - **Vitest** (`.test.ts`, `renderToStaticMarkup` without JSX):
-  - `Markdown`: `<script>alert(1)</script>`, `<img src=x onerror=alert(1)>`, `[x](javascript:alert(1))`, `[x](data:text/html,...)` produce no `<script`, no `onerror`, no `javascript:` or `data:` href; headings, lists, links, tables render; `h1` → `h2`; external link gets `rel`.
-  - `schema`, `publish` (states, Berlin conversion across DST change), `reading-time`, `localizedPost`.
+  - `Markdown` (existing safety tests kept): `h1` → `h2`; external link gets `target` and `rel`, internal does not; images lazy, unsafe image `src` dropped; tables wrapped.
+  - `schema` (incl. `slugify`), `publish` (states, Berlin conversion across DST change), `reading-time`, `text` (`localizePost`), `paging`, `cover`, `site-url`.
 - **pgTAP** `supabase/tests/database/blog.test.sql`: anon cannot see draft or future-dated posts and can see live ones; anon cannot insert/update/delete posts or categories; anon cannot write to bucket `blog`, an admin can; the published-date check constraint; `cta` default.
 - **Playwright** `e2e/blog.spec.ts`: admin creates a candidates-CTA category, a de post with cover, publishes it; it shows on `/de/blog` and the post page shows body and CTA; `/en/blog/<slug>` shows the fallback note; a draft URL is 404 when logged out; a future-scheduled post is not listed; the category filter narrows the list.
 - `npm run db:types` after the migration; `npm run check` passes.
