@@ -5,6 +5,7 @@ import { requireAdmin, requireOwner } from "@/features/admin-auth/session";
 import { AdminPageHeader } from "@/features/admin-shell/AdminPageHeader";
 import { isLegalKey, isTextKey, keyFromSlug } from "@/features/site-content/content";
 import { getContentMeta, getSiteContent } from "@/features/site-content/queries";
+import { LegalForm } from "@/features/site-content/LegalForm";
 import { ResetSectionForm } from "@/features/site-content/ResetSectionForm";
 import { SECTION_FIELDS } from "@/features/site-content/sections";
 import { SectionForm } from "@/features/site-content/SectionForm";
@@ -32,6 +33,18 @@ export default async function ContentSectionPage({ params }: Props) {
       </>
     );
   }
-  // Legal pages (Task 8) and photos (Task 9) are added below.
+
+  if (isLegalKey(key)) {
+    return (
+      <>
+        <AdminPageHeader title={t(`sections.${section}`)} back={back} />
+        <Card className="max-w-4xl">
+          <LegalForm locale={locale} section={section} body={content[key].body} />
+        </Card>
+      </>
+    );
+  }
+
+  // Photos (Task 9) are added below.
   notFound();
 }
