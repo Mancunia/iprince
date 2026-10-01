@@ -163,6 +163,11 @@
     "navSettings": "Einstellungen",
     "navLeads": "Anfragen",
     "navMessages": "Nachrichten",
+    "navDashboard": "Übersicht",
+    "navGroupInbox": "Posteingang",
+    "navGroupSetup": "Verwaltung",
+    "menuOpen": "Menü öffnen",
+    "menuClose": "Menü schließen",
     "inbox": {
       "leadsTitle": "Arbeitgeber-Anfragen",
       "messagesTitle": "Kontaktnachrichten",

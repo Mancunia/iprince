@@ -117,15 +117,3 @@ export async function getMessage(id: string): Promise<MessageDetail | null> {
   if (!row) return null;
   return { id: row.id, name: row.name, email: row.email, message: row.message, status: row.status, createdAt: row.created_at };
 }
-
-/** Counts for the nav badges. */
-export async function countNew(): Promise<{ leads: number; messages: number }> {
-  const supabase = await createServerSupabase();
-  const [leads, messages] = await Promise.all([
-    supabase.from("employer_leads").select("id", { count: "exact", head: true }).eq("status", "new"),
-    supabase.from("contact_messages").select("id", { count: "exact", head: true }).eq("status", "new"),
-  ]);
-  if (leads.error) throw leads.error;
-  if (messages.error) throw messages.error;
-  return { leads: leads.count ?? 0, messages: messages.count ?? 0 };
-}

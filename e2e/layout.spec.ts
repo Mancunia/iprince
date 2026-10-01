@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { signIn } from "./helpers";
 
 test.describe("phone width", () => {
   test.use({ viewport: { width: 375, height: 740 } });
@@ -47,4 +48,25 @@ test("the home page shows its sections and requests no missing images", async ({
   await expect(page.getByRole("link", { name: "Contact us" })).toBeVisible();
   await page.waitForLoadState("networkidle");
   expect(failed).toEqual([]);
+});
+
+test.describe("admin at phone width", () => {
+  test.use({ viewport: { width: 375, height: 740 } });
+
+  test("the drawer opens with the section links and closes after navigating", async ({ page }) => {
+    await signIn(page);
+    await page.getByRole("button", { name: "Open menu" }).click();
+    const drawer = page.getByRole("dialog");
+    await expect(drawer.getByRole("link", { name: "Professions" })).toBeVisible();
+    await drawer.getByRole("link", { name: /^Enquiries/ }).click();
+    await expect(page).toHaveURL(/\/en\/admin\/leads$/);
+    await expect(drawer).toBeHidden();
+  });
+
+  test("the drawer closes with Escape", async ({ page }) => {
+    await signIn(page);
+    await page.getByRole("button", { name: "Open menu" }).click();
+    await page.keyboard.press("Escape");
+    await expect(page.getByRole("dialog")).toBeHidden();
+  });
 });

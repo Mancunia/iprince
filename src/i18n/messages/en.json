@@ -163,6 +163,11 @@
     "navSettings": "Settings",
     "navLeads": "Enquiries",
     "navMessages": "Messages",
+    "navDashboard": "Dashboard",
+    "navGroupInbox": "Inbox",
+    "navGroupSetup": "Setup",
+    "menuOpen": "Open menu",
+    "menuClose": "Close menu",
     "inbox": {
       "leadsTitle": "Employer enquiries",
       "messagesTitle": "Contact messages",
