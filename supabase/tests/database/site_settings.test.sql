@@ -9,6 +9,8 @@ insert into auth.users (id, email) values
 insert into public.admins (user_id, role, display_name) values
   ('12000000-0000-0000-0000-000000000001', 'owner', 'Owner'),
   ('12000000-0000-0000-0000-000000000002', 'editor', 'Editor');
+-- The local row may have been changed in Admin → Settings; start from the column default (rolled back below).
+update public.site_settings set chat_provider = default;
 
 select is((select chat_provider from public.site_settings), 'whatsapp', 'defaults to WhatsApp');
 select throws_ok($$insert into public.site_settings (id) values (false)$$, '23514', null, 'only the single row can exist');
