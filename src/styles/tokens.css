@@ -107,11 +107,13 @@
   --color-fg-accent: var(--text-accent);
   --color-fg-highlight: var(--text-highlight);
   --color-fg-inverse: var(--text-inverse);
+  --color-fg-inverse-muted: var(--text-inverse-muted);
   --color-link: var(--text-link);
   --color-link-hover: var(--text-link-hover);
   --color-on-primary: var(--text-on-primary);
 
   --color-hairline: var(--border-hairline);
+  --color-hairline-inverse: var(--border-hairline-inverse);
   --color-control: var(--border-control);
   --color-control-hover: var(--border-control-hover);
   --color-focus: var(--border-focus);
@@ -153,9 +155,11 @@
   --text-link: var(--color-accent-700);
   --text-link-hover: var(--color-accent-800);
   --text-inverse: var(--color-paper);
+  --text-inverse-muted: var(--color-accent-200);
   --text-on-primary: var(--color-paper);
 
   --border-hairline: color-mix(in srgb, var(--color-ink) 16%, transparent);
+  --border-hairline-inverse: color-mix(in srgb, var(--color-paper) 20%, transparent);
   --border-control: var(--color-neutral-600);
   --border-control-hover: var(--color-neutral-800);
   --border-focus: var(--color-accent-600);

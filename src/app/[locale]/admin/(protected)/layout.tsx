@@ -41,8 +41,8 @@ export default async function AdminLayout({ children, params }: { children: Reac
           <BrandLogo />
         </Link>
         <AdminNav items={items} className="grid gap-1" />
-        <div className="mt-auto grid gap-1 border-t border-paper/20 pt-4">
-          <span className="px-2.5 text-xs text-accent-200">{admin.displayName}</span>
+        <div className="mt-auto grid gap-1 border-t border-hairline-inverse pt-4">
+          <span className="px-2.5 text-xs text-fg-inverse-muted">{admin.displayName}</span>
           {signOutForm}
         </div>
       </aside>
