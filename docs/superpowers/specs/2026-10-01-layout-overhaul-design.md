@@ -64,7 +64,7 @@ Rewritten, same names where the concept survives:
 ## 2. Public site
 
 ### Header (`SiteHeader.tsx`)
-Sticky white, 72px. Logo left; centred nav (Professions `/#berufe`, How it works `/#ablauf`, Employers, Contact); right: `LangSwitch` (pill toggle) + "Apply now" `.btn-primary`. Shadow appears after scroll: a tiny client component `HeaderShadow` toggles `data-scrolled` on the header via IntersectionObserver on a sentinel. Below `md`: menu button opens `MobileNav` (client, `<dialog>` sheet with the same links + CTA; closes on navigation and Escape).
+Sticky white, 72px. Logo left; centred nav (Professions `/#berufe`, How it works `/#ablauf`, Employers, Contact); right: `LangSwitch` (pill toggle) + "Apply now" `.btn-primary`. Shadow appears after scroll: a tiny client component `HeaderShadow` sets `data-scrolled` on the header from a passive scroll listener (`scrollY > 8`). Below `md`: menu button opens `MobileNav` (client, `<dialog>` sheet with the same links + CTA; closes on navigation and Escape).
 
 ### Home (`(site)/page.tsx`)
 1. **Hero**: `md:grid-cols-2`. Left: eyebrow, h1, lead, pills (Apply now → `#berufe`; outline WhatsApp), trust row (3 icon + text items: free, personal advisor, German/English). Right: `<Photo slot="hero">` at `radius-lg`, aspect 4/5, with two `.float-badge`s (live open-positions count; "Free for applicants").
@@ -81,7 +81,7 @@ Sticky white, 72px. Logo left; centred nav (Professions `/#berufe`, How it works
 Same two-column pattern: left heading + `ContactForm` card; right a WhatsApp card with icon chip and outline button.
 
 ### Apply (`apply/[slug]/page.tsx`)
-`container-form` centred. Back pill, header card (icon chip, profession name, lead), then form sections as separate cards, rounded stepper, sticky actions bar with white background and top shadow.
+`container-form` centred. Back pill, header card (icon chip, eyebrow, h1 with the profession name, lead), then the existing `ApplyForm` in one white card. The form itself is a single list of fields (no sections or stepper exist), so its markup is unchanged.
 
 ### Footer (`SiteFooter.tsx`)
 `canvas` background, dark text. Four columns (brand + tagline, pages, legal, contact), bottom bar with copyright and cookie settings link.
@@ -112,7 +112,7 @@ FAB becomes a pill with `shadow-raised`; consent panel becomes a card.
 `lg:grid-cols-[minmax(0,1fr)_340px]`. Main card: definition grid of fields, file links as chips (icon, name, size). Side column, `lg:sticky top-6`: "Review" card with existing review form; danger card with delete form. Form element ids (`#review-status`, `#lead-status`, `#message-status`) are kept.
 
 ### Professions
-List as card grid (icon chip, name, positions, active status pill, "Edit" and "Edit form" links); "New profession" in the page header actions. Profession form and builder: each pane becomes a card; field rows get a grip icon and hover state. No behaviour change.
+List as card grid (icon chip, name, positions, active status pill, "Edit" and "Edit form" links); "New profession" in the page header actions. Profession form in a card. The builder stays one column (field list, field editor, actions, preview); the field list, the editor and the preview each sit in a card, and field rows become `.builder-row` items (grip icon, label, type, move/remove icon buttons with the same accessible names). No behaviour change.
 
 ### Settings, team
 Forms in cards with section headings; invite form in a card above the team table.
@@ -136,6 +136,7 @@ Forms in cards with section headings; invite form in a card above the team table
 - **Unit (Vitest)**: `Photo` slot resolution (src vs placeholder); `listRecentInbox` merge/sort/limit as a pure helper `mergeRecent(leads, messages, limit)`.
 - **DB (pgTAP)**: none; no schema change.
 - **E2E (Playwright)**: update expectations that post-login URL is `/en/admin/applications` (`helpers.ts`, `apply-and-review.spec.ts`, `team.spec.ts`) to `/en/admin`; navigate to lists via sidebar links by role/name. Add `dashboard.spec.ts`: after submitting an application, the dashboard's "New applications" card shows ≥ 1 and links to the filtered list. Add a mobile-viewport check that the site menu and admin drawer open and contain the nav links.
+- **Accessible names stay stable**: `Avatar` is `aria-hidden`, icons are `aria-hidden`, so link names used by e2e (applicant name, company, sender, "Profession details", nav "Enquiries 3") do not change. Closed `<dialog>`s (site menu, admin drawer) keep duplicate nav links out of the accessibility tree.
 - **Manual**: `npm run check` green; visual pass of every page at 375px, 768px and 1280px in `de` and `en` (German strings are longer; check pills and nav don't wrap badly); keyboard pass of mobile nav, admin drawer and status tabs (focus visible, Escape closes dialogs); contrast check of gold on white (gold only as icon/background, text in `gold-700`+).
 
 ### Risks
