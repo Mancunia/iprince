@@ -139,6 +139,33 @@
       "yes": "Yes",
       "no": "No",
       "formStatus": { "none": "No form", "draftOnly": "Draft only", "live": "v{version} live", "liveWithDraft": "v{version} live · draft pending" }
+    },
+    "team": {
+      "title": "Team",
+      "name": "Name",
+      "email": "Email",
+      "role": "Role",
+      "status": "Status",
+      "roles": {
+        "owner": "Owner",
+        "editor": "Editor"
+      },
+      "statuses": {
+        "active": "Active",
+        "pending": "Invited — pending"
+      },
+      "invite": "Invite an editor",
+      "displayName": "Display name",
+      "sendInvite": "Send invite",
+      "invited": "Invite sent.",
+      "remove": "Remove",
+      "confirmRemove": "Remove this person's admin access? Their account is deleted.",
+      "errors": {
+        "invalid": "Please check your input.",
+        "not_found": "This person is no longer on the team.",
+        "not_allowed": "The owner cannot be removed.",
+        "server_error": "Something went wrong."
+      }
     }
   },
   "errors": { "notFoundTitle": "Page not found", "genericTitle": "Something went wrong", "retry": "Try again" }

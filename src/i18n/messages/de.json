@@ -139,6 +139,33 @@
       "yes": "Ja",
       "no": "Nein",
       "formStatus": { "none": "Kein Formular", "draftOnly": "Nur Entwurf", "live": "v{version} live", "liveWithDraft": "v{version} live · Entwurf offen" }
+    },
+    "team": {
+      "title": "Team",
+      "name": "Name",
+      "email": "E-Mail",
+      "role": "Rolle",
+      "status": "Status",
+      "roles": {
+        "owner": "Inhaber:in",
+        "editor": "Redakteur:in"
+      },
+      "statuses": {
+        "active": "Aktiv",
+        "pending": "Eingeladen — ausstehend"
+      },
+      "invite": "Redakteur:in einladen",
+      "displayName": "Anzeigename",
+      "sendInvite": "Einladung senden",
+      "invited": "Einladung gesendet.",
+      "remove": "Entfernen",
+      "confirmRemove": "Admin-Zugang dieser Person entfernen? Ihr Konto wird gelöscht.",
+      "errors": {
+        "invalid": "Bitte prüfen Sie Ihre Eingaben.",
+        "not_found": "Diese Person ist nicht mehr im Team.",
+        "not_allowed": "Die Inhaberin bzw. der Inhaber kann nicht entfernt werden.",
+        "server_error": "Etwas ist schiefgelaufen."
+      }
     }
   },
   "errors": { "notFoundTitle": "Seite nicht gefunden", "genericTitle": "Etwas ist schiefgelaufen", "retry": "Erneut versuchen" }
