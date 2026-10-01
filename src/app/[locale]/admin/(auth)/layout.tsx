@@ -1,5 +1,5 @@
 import { BrandLogo } from "@/features/site/Brand";
-import { Blueprint } from "@/ui/Blueprint";
+import { Card } from "@/ui/Card";
 
 /** Sign-in and invite pages: a single framed panel, centred. No session exists yet. */
 export default function AdminAuthLayout({ children }: { children: React.ReactNode }) {
@@ -9,7 +9,7 @@ export default function AdminAuthLayout({ children }: { children: React.ReactNod
         <span className="brand mx-auto">
           <BrandLogo />
         </span>
-        <Blueprint className="panel bg-surface-input p-8">{children}</Blueprint>
+        <Card className="p-8 shadow-raised">{children}</Card>
       </div>
     </main>
   );

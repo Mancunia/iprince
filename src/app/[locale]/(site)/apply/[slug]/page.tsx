@@ -5,7 +5,7 @@ import { Link } from "@/i18n/navigation";
 import { ApplyForm } from "@/features/applications/ApplyForm";
 import { getApplyForm } from "@/features/professions/queries";
 import { localized } from "@/lib/i18n/localized";
-import { Blueprint } from "@/ui/Blueprint";
+import { Card } from "@/ui/Card";
 import { Icon } from "@/ui/Icon";
 
 export default async function ApplyPage({ params }: { params: Promise<{ locale: Locale; slug: string }> }) {
@@ -22,13 +22,13 @@ export default async function ApplyPage({ params }: { params: Promise<{ locale: 
         {t("back")}
       </Link>
       <div className="grid gap-4">
-        <p className="kicker kicker-rule">{t("kicker")}</p>
+        <p className="eyebrow">{t("kicker")}</p>
         <h1 className="text-3xl">{t("title", { profession: localized(form.name, locale) })}</h1>
         <p className="lead">{t("lead")}</p>
       </div>
-      <Blueprint className="form-section">
+      <Card className="form-section">
         <ApplyForm professionSlug={form.slug} formId={form.formId} definition={form.definition} locale={locale} />
-      </Blueprint>
+      </Card>
     </div>
   );
 }

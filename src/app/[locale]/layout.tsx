@@ -1,22 +1,16 @@
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { Barlow, Barlow_Condensed } from "next/font/google";
+import { DM_Sans } from "next/font/google";
 import { notFound } from "next/navigation";
 import { locales, type Locale } from "@/i18n/config";
 import "../globals.css";
 
-const barlow = Barlow({
+const dmSans = DM_Sans({
   subsets: ["latin", "latin-ext"],
-  weight: ["400", "500", "600"],
+  weight: ["400", "500", "700"],
   style: ["normal", "italic"],
-  variable: "--font-barlow",
-});
-
-const barlowCondensed = Barlow_Condensed({
-  subsets: ["latin", "latin-ext"],
-  weight: ["500", "600", "700"],
-  variable: "--font-barlow-condensed",
+  variable: "--font-dm-sans",
 });
 
 export function generateStaticParams() {
@@ -36,7 +30,7 @@ export default async function LocaleLayout({ children, params }: { children: Rea
   const t = await getTranslations("site");
 
   return (
-    <html lang={locale} className={`${barlow.variable} ${barlowCondensed.variable}`}>
+    <html lang={locale} className={dmSans.variable}>
       <body>
         <NextIntlClientProvider>
           <a href="#main" className="skip-link">{t("skipLink")}</a>

@@ -4,7 +4,7 @@ import { Link } from "@/i18n/navigation";
 import { listActiveProfessions } from "@/features/professions/queries";
 import { WHATSAPP_URL } from "@/features/site/contact";
 import { localized } from "@/lib/i18n/localized";
-import { Blueprint } from "@/ui/Blueprint";
+import { Card } from "@/ui/Card";
 import { Icon } from "@/ui/Icon";
 
 const STEPS = ["choose", "apply", "contact"] as const;
@@ -25,7 +25,7 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
       <section className="section">
         <div className="container-page grid items-center gap-12 md:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]">
           <div className="grid gap-6">
-            <p className="kicker kicker-rule">{t("kicker")}</p>
+            <p className="eyebrow">{t("kicker")}</p>
             <h1>{t("title")}</h1>
             <p className="lead">{t("lead")}</p>
             <div className="flex flex-wrap gap-3 pt-2">
@@ -39,7 +39,7 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
               </a>
             </div>
           </div>
-          <Blueprint>
+          <Card>
             <div className="cells grid-cols-2 border-0">
               <div className="stat">
                 <span className="stat-value">{format.number(openPositions)}</span>
@@ -54,14 +54,14 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
                 <span className="font-display text-xl font-semibold">{t("statFree")}</span>
               </div>
             </div>
-          </Blueprint>
+          </Card>
         </div>
       </section>
 
       <section id="berufe" className="section scroll-mt-16 border-t border-hairline">
         <div className="container-page">
           <div className="section-head">
-            <p className="kicker kicker-rule">{t("professionsKicker")}</p>
+            <p className="eyebrow">{t("professionsKicker")}</p>
             <h2>{t("professionsTitle")}</h2>
             <p className="lead">{t("professionsLead")}</p>
           </div>
@@ -93,7 +93,7 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
       <section className="border-t border-hairline">
         <div className="door-split">
           <div className="door">
-            <p className="kicker kicker-rule">{t("doors.candidateKicker")}</p>
+            <p className="eyebrow">{t("doors.candidateKicker")}</p>
             <h2>{t("doors.candidateTitle")}</h2>
             <p className="text-fg-muted">{t("doors.candidateText")}</p>
             <a href="#berufe" className="btn btn-primary max-w-max">
@@ -102,7 +102,7 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
             </a>
           </div>
           <div className="door door-employer bg-surface text-fg">
-            <p className="kicker kicker-rule">{t("doors.employerKicker")}</p>
+            <p className="eyebrow">{t("doors.employerKicker")}</p>
             <h2>{t("doors.employerTitle")}</h2>
             <p className="text-fg-muted">{t("doors.employerText")}</p>
             <Link href="/employers" className="btn btn-primary max-w-max">
@@ -116,7 +116,7 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
       <section id="ablauf" className="section scroll-mt-16 bg-surface-tint">
         <div className="container-page">
           <div className="section-head">
-            <p className="kicker kicker-rule">{t("stepsKicker")}</p>
+            <p className="eyebrow">{t("stepsKicker")}</p>
             <h2>{t("stepsTitle")}</h2>
           </div>
           <ol className="steps">
