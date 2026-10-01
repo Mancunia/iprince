@@ -29,6 +29,14 @@
     }
   },
   "admin": {
+    "inviteExpired": "Dieser Einladungslink ist abgelaufen oder wurde schon verwendet. Bitten Sie um eine neue Einladung.",
+    "setPassword": {
+      "title": "Passwort festlegen",
+      "password": "Neues Passwort",
+      "confirm": "Passwort bestätigen",
+      "help": "Mindestens 12 Zeichen.",
+      "submit": "Passwort festlegen"
+    },
     "forms": {
       "title": "Bewerbungsformular: {name}",
       "backToProfession": "Berufsdetails",

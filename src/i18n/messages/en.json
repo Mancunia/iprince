@@ -29,6 +29,14 @@
     }
   },
   "admin": {
+    "inviteExpired": "This invite link has expired or was already used. Ask the owner to invite you again.",
+    "setPassword": {
+      "title": "Choose your password",
+      "password": "New password",
+      "confirm": "Confirm password",
+      "help": "At least 12 characters.",
+      "submit": "Set password"
+    },
     "forms": {
       "title": "Application form: {name}",
       "backToProfession": "Profession details",
