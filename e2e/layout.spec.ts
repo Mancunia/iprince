@@ -26,6 +26,15 @@ test.describe("phone width", () => {
     await page.getByRole("dialog").getByRole("link", { name: "How it works" }).click();
     await expect(page.getByRole("dialog")).toBeHidden();
   });
+
+  for (const path of ["/de", "/de/employers", "/de/contact", "/de/apply/pflege"]) {
+    test(`no horizontal scroll on ${path}`, async ({ page }) => {
+      await page.goto(path);
+      await page.waitForLoadState("networkidle");
+      const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+      expect(overflow).toBeLessThanOrEqual(0);
+    });
+  }
 });
 
 test("the home page shows its sections and requests no missing images", async ({ page }) => {

@@ -25,14 +25,14 @@ export async function listActiveProfessions(): Promise<ProfessionCard[]> {
   }));
 }
 
-export type ApplyFormData = { slug: string; name: LocalizedText; formId: string; definition: FormDefinition };
+export type ApplyFormData = { slug: string; name: LocalizedText; icon: string; formId: string; definition: FormDefinition };
 
 /** Active profession plus its current published form (RLS hides everything else from anon). */
 export async function getApplyForm(slug: string): Promise<ApplyFormData | null> {
   const supabase = await createServerSupabase();
   const { data: profession, error: professionError } = await supabase
     .from("professions")
-    .select("slug, name, current_form_id")
+    .select("slug, name, icon, current_form_id")
     .eq("slug", slug)
     .eq("is_active", true)
     .maybeSingle();
@@ -53,5 +53,5 @@ export async function getApplyForm(slug: string): Promise<ApplyFormData | null> 
     console.error(`profession_forms ${form.id} has an invalid schema`, definition.error.issues);
     return null;
   }
-  return { slug: profession.slug, name: localizedText.parse(profession.name), formId: form.id, definition: definition.data };
+  return { slug: profession.slug, name: localizedText.parse(profession.name), icon: profession.icon, formId: form.id, definition: definition.data };
 }
