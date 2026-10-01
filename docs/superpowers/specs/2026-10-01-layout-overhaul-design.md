@@ -52,13 +52,14 @@ Rewritten, same names where the concept survives:
 | New: `.eyebrow` | 14px 500 `accent-600` (replaces `.kicker` and `.kicker-rule`) |
 | New: `.float-badge` | White pill card, `shadow-raised`, icon chip + two-line text; absolutely positioned on photos |
 | New: `.cta-banner` | `radius-lg`, navy-900 with optional photo underlay at 25% opacity, inverse text, gold primary button |
-| New: `.timeline` | Vertical line with numbered gold dots, alternating sides at `lg` |
+| New: `.timeline` | Vertical line with numbered gold dots, single column; the steps photo sits beside it at `lg` |
 | Deleted | `.blueprint` + corners, `.duotone`, `.cells`, `.trust-strip`, `.door-split`, `.door`, `.steps`, `.kicker-rule`, `.legal-strip`, `.side-count` |
 
 ### Primitives (`src/ui`)
 - `Blueprint.tsx` deleted; its 8 call sites switch to `<Card>` (new `src/ui/Card.tsx`: `as`, `className`, `interactive?`).
-- New `Photo.tsx`: `{ slot, alt, className, priority? }`. Reads `src/features/site/photos.ts` (a typed list of slots, each with `src | null`). Placeholder: `accent-100` background, centred `user` icon, same aspect ratio. Slots: `hero`, `feature-match`, `feature-advisors`, `steps`, `employer-banner`.
-- New `Avatar.tsx`: initials in a navy-100 circle (admin lists, user card).
+- New `src/features/site/Photo.tsx` (site-specific, so it lives with the site feature, not in `src/ui`): `{ slot, alt, className, priority? }`. Reads `src/features/site/photos.ts` (a typed list of slots, each with `src | null`). Placeholder: `accent-100` background, centred `user` icon, same aspect ratio. Slots: `hero`, `feature-match`, `feature-advisors`, `steps`, `employer-banner`.
+- New `Avatar.tsx` (+ pure `initials.ts`): initials in a navy-100 circle (admin lists, user card), `aria-hidden`.
+- New `EmptyState.tsx`: icon chip + text for empty lists.
 - `Button`, `Field`, `inputs`, `Status`, `Text` keep their APIs.
 
 ## 2. Public site
@@ -78,7 +79,7 @@ Sticky white, 72px. Logo left; centred nav (Professions `/#berufe`, How it works
 `accent-100` hero band: left eyebrow, h1, lead, benefit list with `gold-600` check icons; right the `LeadForm` in a white card (`shadow-raised`). Light theme throughout.
 
 ### Contact (`contact/page.tsx`)
-Same two-column pattern: left heading + `ContactForm` card; right a WhatsApp card with icon chip and outline button.
+Same two-column pattern as employers: left heading, lead and a WhatsApp card (icon chip, outline button); right the `ContactForm` in a raised card.
 
 ### Apply (`apply/[slug]/page.tsx`)
 `container-form` centred. Back pill, header card (icon chip, eyebrow, h1 with the profession name, lead), then the existing `ApplyForm` in one white card. The form itself is a single list of fields (no sections or stepper exist), so its markup is unchanged.
@@ -95,7 +96,7 @@ FAB becomes a pill with `shadow-raised`; consent panel becomes a card.
 - Grid `[248px_1fr]` at `xl`, `canvas` background.
 - **Sidebar** (white, right hairline): logo → `/admin`; nav groups "Inbox" (Dashboard, Applications, Leads, Messages) and "Setup" (Professions; Team and Settings for owners), group labels 12px muted. `AdminNav` takes `groups` instead of `items`. Active item: `accent-100` pill, `accent-800` text; Dashboard is active only on exact `/admin`. New counts: gold pill badge. Bottom: user card (`Avatar`, name, role, sign-out icon button).
 - **Mobile** (`< xl`): top bar with menu button opening `AdminDrawer` (client, `<dialog>` from the left containing the same sidebar content). Replaces `.admin-side-mobile`.
-- **Page header**: new `src/features/admin-auth/AdminPageHeader.tsx` `{ title, back?: { href, label }, actions?: ReactNode }`, rendered by each page at the top of `main` as a white bar. The layout stays page-agnostic.
+- **Page header**: new `src/features/admin-shell/AdminPageHeader.tsx` (admin chrome moves to `src/features/admin-shell/`: `AdminNav`, `AdminSidebar`, `AdminDrawer`, `AdminPageHeader`, `StatusTabs`) `{ title, back?: { href, label }, actions?: ReactNode }`, rendered by each page at the top of `main` as a white bar. The layout stays page-agnostic.
 
 ### Dashboard (`admin/(protected)/page.tsx`)
 - Row 1: 4 stat cards (icon chip, number, label), each a link: new applications → `/admin/applications?status=new`, new leads → `/admin/leads?status=new`, new messages → `/admin/messages?status=new`, active professions → `/admin/professions`.
