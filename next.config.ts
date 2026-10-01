@@ -13,14 +13,12 @@ const isLocalSupabase = supabase.hostname === "127.0.0.1" || supabase.hostname =
 
 const nextConfig: NextConfig = {
   images: {
-    remotePatterns: [
-      {
-        protocol: supabase.protocol === "http:" ? "http" : "https",
-        hostname: supabase.hostname,
-        port: supabase.port,
-        pathname: "/storage/v1/object/public/site/**",
-      },
-    ],
+    remotePatterns: ["site", "blog"].map((bucket) => ({
+      protocol: supabase.protocol === "http:" ? ("http" as const) : ("https" as const),
+      hostname: supabase.hostname,
+      port: supabase.port,
+      pathname: `/storage/v1/object/public/${bucket}/**`,
+    })),
     // Only the local Supabase CLI stack lives on a local IP; production Supabase is a public https host.
     dangerouslyAllowLocalIP: isLocalSupabase,
   },
