@@ -1,15 +1,22 @@
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { Barlow, Barlow_Condensed } from "next/font/google";
 import { notFound } from "next/navigation";
-import * as stylex from "@stylexjs/stylex";
 import { locales, type Locale } from "@/i18n/config";
-import { color, space } from "@/ui/tokens.stylex";
 import "../globals.css";
 
-const styles = stylex.create({
-  body: { backgroundColor: color.bg, color: color.text },
-  main: { maxWidth: "960px", marginInline: "auto", padding: space.lg },
+const barlow = Barlow({
+  subsets: ["latin", "latin-ext"],
+  weight: ["400", "500", "600"],
+  style: ["normal", "italic"],
+  variable: "--font-barlow",
+});
+
+const barlowCondensed = Barlow_Condensed({
+  subsets: ["latin", "latin-ext"],
+  weight: ["500", "600", "700"],
+  variable: "--font-barlow-condensed",
 });
 
 export function generateStaticParams() {
@@ -29,11 +36,11 @@ export default async function LocaleLayout({ children, params }: { children: Rea
   const t = await getTranslations("site");
 
   return (
-    <html lang={locale}>
-      <body {...stylex.props(styles.body)}>
+    <html lang={locale} className={`${barlow.variable} ${barlowCondensed.variable}`}>
+      <body>
         <NextIntlClientProvider>
-          <a href="#main">{t("skipLink")}</a>
-          <main id="main" {...stylex.props(styles.main)}>{children}</main>
+          <a href="#main" className="skip-link">{t("skipLink")}</a>
+          {children}
         </NextIntlClientProvider>
       </body>
     </html>

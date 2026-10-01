@@ -1,6 +1,32 @@
 {
   "metadata": { "title": "iPrince Personalvermittlung", "description": "Internationale Fachkräfte für Arbeitgeber in Deutschland." },
-  "site": { "skipLink": "Zum Inhalt springen", "openPositions": "{count, plural, =0 {Keine offenen Stellen} one {# offene Stelle} other {# offene Stellen}}", "apply": "Bewerben", "noProfessions": "Derzeit sind keine Berufe für Bewerbungen geöffnet." },
+  "site": {
+    "skipLink": "Zum Inhalt springen",
+    "openPositions": "{count, plural, =0 {Keine offenen Stellen} one {# offene Stelle} other {# offene Stellen}}",
+    "apply": "Bewerben",
+    "noProfessions": "Derzeit sind keine Berufe für Bewerbungen geöffnet.",
+    "brand": "iPrince Personalvermittlung – Startseite",
+    "navProfessions": "Berufe",
+    "navSteps": "So funktioniert’s",
+    "navLabel": "Hauptnavigation",
+    "cta": "Kostenlos bewerben",
+    "language": "Sprache",
+    "languages": { "de": "Deutsch", "en": "English" },
+    "tagline": "Ihr verlässlicher Partner für eine erfolgreiche Zukunft in Deutschland",
+    "footerCandidates": "Für Bewerber",
+    "footerContact": "Kontakt",
+    "whatsapp": "WhatsApp",
+    "whatsappLabel": "Per WhatsApp schreiben: +49 173 9018671",
+    "rights": "© {year} iPrince Personalvermittlung",
+    "chat": "Live-Chat",
+    "chatLabel": "Live-Chat öffnen",
+    "chatConsent": "Unser Live-Chat wird von tawk.to bereitgestellt und benötigt funktionale Cookies. Wenn Sie ihn aktivieren, werden Ihre Chat- und Browserdaten an tawk.to übermittelt.",
+    "chatEnable": "Chat aktivieren",
+    "chatUnavailable": "Die Cookie-Einstellungen konnten nicht geladen werden. Bitte versuchen Sie es später erneut oder schreiben Sie uns auf WhatsApp.",
+    "chatWhatsappInstead": "Lieber WhatsApp? Schreiben Sie uns dort.",
+    "cookieSettings": "Cookie-Einstellungen",
+    "legalLabel": "Rechtliches"
+  },
   "apply": {
     "title": "Bewerbung: {profession}",
     "fullName": "Vollständiger Name",
@@ -26,7 +52,10 @@
       "upload_missing": "Ein Dokument wurde nicht vollständig hochgeladen. Bitte erneut versuchen.",
       "upload_failed": "Ein Dokument konnte nicht hochgeladen werden. Bitte erneut versuchen.",
       "server_error": "Etwas ist schiefgelaufen. Bitte erneut versuchen."
-    }
+    },
+    "back": "Alle Berufe",
+    "kicker": "Bewerbung",
+    "lead": "Die Bewerbung ist für Sie kostenlos. Nach dem Absenden prüfen wir Ihre Unterlagen und melden uns bei Ihnen."
   },
   "admin": {
     "acceptInvite": { "title": "Einladung annehmen", "text": "Wählen Sie die Schaltfläche, um Ihre Einladung anzunehmen und ein Passwort festzulegen.", "submit": "Einladung annehmen" },
@@ -123,6 +152,7 @@
     "errors": { "invalid_credentials": "E-Mail oder Passwort ist falsch.", "not_admin": "Dieses Konto hat keinen Admin-Zugang.", "invalid": "Bitte prüfen Sie Ihre Eingaben.", "server_error": "Etwas ist schiefgelaufen.", "not_found": "Diese Bewerbung existiert nicht mehr.", "has_applications": "Für diesen Beruf gibt es Bewerbungen. Deaktivieren Sie ihn stattdessen." },
     "navProfessions": "Berufe",
     "navTeam": "Team",
+    "navSettings": "Einstellungen",
     "fieldErrors": { "invalid": "Bitte prüfen Sie diesen Wert.", "taken": "Dieser Slug ist bereits vergeben.", "form_required": "Veröffentlichen Sie zuerst ein Formular.", "exists": "Für diese E-Mail gibt es bereits ein Konto.", "too_short": "Mindestens 12 Zeichen.", "mismatch": "Die Passwörter stimmen nicht überein." },
     "professions": {
       "title": "Berufe",
@@ -175,7 +205,37 @@
         "not_allowed": "Die Inhaberin bzw. der Inhaber kann nicht entfernt werden.",
         "server_error": "Etwas ist schiefgelaufen."
       }
+    },
+    "settings": {
+      "title": "Einstellungen",
+      "chatProvider": "Chat auf der Website",
+      "chatHelp": "Wählen Sie, welchen Chat-Button Besucher auf allen öffentlichen Seiten sehen.",
+      "providers": { "whatsapp": "WhatsApp", "tawk": "tawk.to Live-Chat", "none": "Kein Chat-Button" },
+      "tawkNotReady": "tawk.to ist noch nicht eingerichtet ({missing}). Bis dahin sehen Besucher stattdessen WhatsApp.",
+      "missing": { "cookieScript": "COOKIESCRIPT_ID", "tawk": "TAWK_PROPERTY_ID / TAWK_WIDGET_ID" },
+      "save": "Speichern",
+      "saved": "Gespeichert. Die Website nutzt jetzt diesen Chat.",
+      "errors": { "invalid": "Bitte wählen Sie eine Option.", "server_error": "Etwas ist schiefgelaufen." }
     }
   },
-  "errors": { "notFoundTitle": "Seite nicht gefunden", "genericTitle": "Etwas ist schiefgelaufen", "retry": "Erneut versuchen" }
+  "errors": { "notFoundTitle": "Seite nicht gefunden", "genericTitle": "Etwas ist schiefgelaufen", "retry": "Erneut versuchen" },
+  "home": {
+    "kicker": "Personalvermittlung für Deutschland",
+    "title": "Ihr Weg zu einer erfolgreichen Karriere in Deutschland",
+    "lead": "Wählen Sie Ihren Beruf und senden Sie uns Ihre Bewerbung. Die Bewerbung ist für Sie immer kostenlos.",
+    "ctaWhatsapp": "Fragen per WhatsApp",
+    "statPositions": "Offene Stellen",
+    "statProfessions": "Berufe",
+    "statFree": "Bewerbung für Sie kostenlos",
+    "professionsKicker": "Offene Berufe",
+    "professionsTitle": "Wählen Sie Ihren Beruf",
+    "professionsLead": "Nicht sicher, ob Sie passen? Bewerben Sie sich trotzdem. Wir beraten Sie gern.",
+    "stepsKicker": "Ablauf",
+    "stepsTitle": "So funktioniert Ihre Bewerbung",
+    "steps": {
+      "choose": { "title": "Beruf wählen", "text": "Wählen Sie den Beruf, in dem Sie in Deutschland arbeiten möchten." },
+      "apply": { "title": "Formular ausfüllen", "text": "Beantworten Sie die Fragen und laden Sie Ihre Unterlagen hoch." },
+      "contact": { "title": "Wir melden uns", "text": "Wir prüfen Ihre Bewerbung und melden uns bei Ihnen mit den nächsten Schritten." }
+    }
+  }
 }

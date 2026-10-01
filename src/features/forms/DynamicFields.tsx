@@ -1,19 +1,11 @@
-import * as stylex from "@stylexjs/stylex";
 import type { Locale } from "@/i18n/config";
 import { localized } from "@/lib/i18n/localized";
 import type { FieldErrors } from "@/lib/result";
 import { Field } from "@/ui/Field";
+import { ErrorMessages } from "@/ui/ErrorMessages";
 import { Input, Select, Textarea } from "@/ui/inputs";
 import { Stack } from "@/ui/Stack";
-import { color, font, space } from "@/ui/tokens.stylex";
 import { LANGUAGE_LEVELS, type FormDefinition, type FormField } from "./definition";
-
-const styles = stylex.create({
-  group: { borderWidth: 0, margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: space.xs },
-  legend: { fontWeight: 600, fontSize: font.sizeSm, padding: 0 },
-  help: { color: color.textMuted, fontSize: font.sizeSm, margin: 0 },
-  error: { color: color.danger, fontSize: font.sizeSm, margin: 0 },
-});
 
 const INPUT_TYPES: Partial<Record<FormField["type"], string>> = { text: "text", email: "email", tel: "tel", date: "date", number: "number" };
 
@@ -45,28 +37,27 @@ function DynamicField({ field, locale, errors, chooseLabel }: { field: FormField
 
   if (field.type === "radio" || field.type === "multiselect") {
     return (
-      <fieldset {...stylex.props(styles.group)} aria-describedby={describedBy}>
-        <legend {...stylex.props(styles.legend)}>
+      <fieldset className="field" aria-describedby={describedBy}>
+        <legend className="label">
           {label}
-          {field.required ? <span aria-hidden="true"> *</span> : null}
+          {field.required ? <span className="req" aria-hidden="true">*</span> : null}
         </legend>
-        {help ? <p id={`${id}-help`} {...stylex.props(styles.help)}>{help}</p> : null}
-        {field.options?.map((option) => (
-          <label key={option.value}>
-            <Input
-              type={field.type === "radio" ? "radio" : "checkbox"}
-              name={name}
-              value={option.value}
-              required={field.type === "radio" && field.required}
-            />{" "}
-            {localized(option.label, locale)}
-          </label>
-        ))}
-        {invalid ? (
-          <div id={`${id}-error`}>
-            {errors?.map((message, index) => <p key={`${index}-${message}`} role="alert" {...stylex.props(styles.error)}>{message}</p>)}
-          </div>
-        ) : null}
+        {help ? <p id={`${id}-help`} className="hint">{help}</p> : null}
+        <div>
+          {field.options?.map((option) => (
+            <label key={option.value} className={field.type === "radio" ? "radio" : "check"}>
+              <Input
+                type={field.type === "radio" ? "radio" : "checkbox"}
+                name={name}
+                value={option.value}
+                required={field.type === "radio" && field.required}
+                invalid={invalid}
+              />
+              <span>{localized(option.label, locale)}</span>
+            </label>
+          ))}
+        </div>
+        <ErrorMessages id={id} errors={errors} />
       </fieldset>
     );
   }
@@ -83,7 +74,9 @@ function DynamicField({ field, locale, errors, chooseLabel }: { field: FormField
             : field.options?.map((o) => <option key={o.value} value={o.value}>{localized(o.label, locale)}</option>)}
         </Select>
       ) : field.type === "checkbox" ? (
-        <Input id={id} type="checkbox" name={name} required={field.required} invalid={invalid} aria-describedby={describedBy} />
+        <span className="check">
+          <Input id={id} type="checkbox" name={name} required={field.required} invalid={invalid} aria-describedby={describedBy} />
+        </span>
       ) : field.type === "file" ? (
         <Input
           id={id}

@@ -35,6 +35,29 @@ export function readServerEnv(): ServerEnv {
   });
 }
 
+// Third-party embed IDs end up in public script URLs, so only plain alphanumeric IDs are accepted.
+const embedId = z.string().regex(/^[A-Za-z0-9]{1,64}$/);
+const integrationsSchema = z.object({
+  COOKIESCRIPT_ID: embedId.optional(),
+  TAWK_PROPERTY_ID: embedId.optional(),
+  TAWK_WIDGET_ID: embedId.optional(),
+});
+
+export type Integrations = { cookieScriptId: string | null; tawk: { propertyId: string; widgetId: string } | null };
+
+/** Optional embeds for the public site. Read at request time on the server, so changing them needs no rebuild. */
+export function readIntegrationsEnv(): Integrations {
+  const env = parse(integrationsSchema, {
+    COOKIESCRIPT_ID: process.env.COOKIESCRIPT_ID || undefined,
+    TAWK_PROPERTY_ID: process.env.TAWK_PROPERTY_ID || undefined,
+    TAWK_WIDGET_ID: process.env.TAWK_WIDGET_ID || undefined,
+  });
+  return {
+    cookieScriptId: env.COOKIESCRIPT_ID ?? null,
+    tawk: env.TAWK_PROPERTY_ID && env.TAWK_WIDGET_ID ? { propertyId: env.TAWK_PROPERTY_ID, widgetId: env.TAWK_WIDGET_ID } : null,
+  };
+}
+
 /** Only the cleanup cron route needs this, so local dev without it keeps working. */
 export function readCronEnv(): z.infer<typeof cronSchema> {
   return parse(cronSchema, { CRON_SECRET: process.env.CRON_SECRET });

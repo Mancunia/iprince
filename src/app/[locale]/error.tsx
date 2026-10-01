@@ -9,9 +9,11 @@ export default function ErrorBoundary({ error, reset }: { error: Error & { diges
   const t = useTranslations("errors");
   console.error(error);
   return (
-    <Stack>
-      <Text as="h1" size="xl">{t("genericTitle")}</Text>
-      <Button onClick={reset}>{t("retry")}</Button>
-    </Stack>
+    <main id="main" className="container-page py-16">
+      <Stack>
+        <Text as="h1" size="xl">{t("genericTitle")}</Text>
+        <Button onClick={reset}>{t("retry")}</Button>
+      </Stack>
+    </main>
   );
 }

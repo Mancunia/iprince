@@ -1,27 +1,23 @@
-import * as stylex from "@stylexjs/stylex";
 import type { ReactNode } from "react";
-import { color, font } from "./tokens.stylex";
+import { cn } from "./cn";
 
-const styles = stylex.create({
-  base: { margin: 0, fontFamily: font.body },
-  sm: { fontSize: font.sizeSm },
-  md: { fontSize: font.sizeMd },
-  lg: { fontSize: font.sizeLg, fontWeight: 600 },
-  xl: { fontSize: font.sizeXl, fontWeight: 700, lineHeight: 1.2 },
-  default: { color: color.text },
-  muted: { color: color.textMuted },
-  danger: { color: color.danger },
-  success: { color: color.success },
-});
+const SIZES = { sm: "text-sm", md: "text-base", lg: "text-xl", xl: "text-3xl" } as const;
+const TONES = { default: "", muted: "text-fg-muted", danger: "text-error", success: "text-success" } as const;
 
 type Props = {
   children: ReactNode;
   as?: "p" | "h1" | "h2" | "h3" | "span";
-  size?: "sm" | "md" | "lg" | "xl";
-  tone?: "default" | "muted" | "danger" | "success";
+  size?: keyof typeof SIZES;
+  tone?: keyof typeof TONES;
   role?: "alert" | "status";
+  className?: string;
 };
 
-export function Text({ children, as: Tag = "p", size = "md", tone = "default", role }: Props) {
-  return <Tag role={role} {...stylex.props(styles.base, styles[size], styles[tone])}>{children}</Tag>;
+export function Text({ children, as: Tag = "p", size = "md", tone = "default", role, className }: Props) {
+  const heading = Tag !== "p" && Tag !== "span";
+  return (
+    <Tag role={role} className={cn(SIZES[size], !heading && size === "lg" && "font-semibold", TONES[tone], className)}>
+      {children}
+    </Tag>
+  );
 }

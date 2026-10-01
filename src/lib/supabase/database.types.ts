@@ -221,6 +221,19 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
+                },"site_settings": {
+                  Row: {
+                    "chat_provider": string,"id": boolean,"updated_at": string
+                  }
+                  Insert: {
+                    "chat_provider"?: string,"id"?: boolean,"updated_at"?: string
+                  }
+                  Update: {
+                    "chat_provider"?: string,"id"?: boolean,"updated_at"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
                 }
           }
           Views: {

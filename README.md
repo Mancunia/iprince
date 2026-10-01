@@ -1,6 +1,6 @@
 # iPrince Recruiting
 
-Next 16 · React 19 · StyleX · Supabase · next-intl (de/en)
+Next 16 · React 19 · Tailwind 4 · Supabase · next-intl (de/en)
 
 ## Local setup
 
@@ -37,7 +37,8 @@ npm run dev                 # http://localhost:3000/en
 - Professions and their application forms are **admin-managed data**. Forms are versioned JSON (`profession_forms`); published versions are immutable.
 - Public submissions go through server actions using the service role after validation, a honeypot and rate limiting. Admin code uses the signed-in user's session, so row-level security applies.
 - `src/proxy.ts` (Next 16's replacement for middleware) handles locale routing, session refresh and an optimistic admin redirect. `requireAdmin()` is the real guard.
-- Design tokens live in `src/ui/tokens.stylex.ts` (placeholders until the design system lands).
+- Styling: Tailwind 4. Tokens in `src/styles/tokens.css` (`@theme`), design-system classes in `src/styles/components.css` (`@layer components`); primitives in `src/ui` map props to those classes, pages use utilities for layout. `cn()` = clsx + tailwind-merge.
+- Site settings (`site_settings`, one row): the owner picks the chat channel (WhatsApp, tawk.to or none) under Admin → Settings. tawk.to only loads after CookieScript consent (`COOKIESCRIPT_ID`, `TAWK_*` in `.env.example`).
 
 ## Production Supabase
 

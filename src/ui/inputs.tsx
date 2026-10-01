@@ -1,36 +1,18 @@
-import * as stylex from "@stylexjs/stylex";
 import type { InputHTMLAttributes, SelectHTMLAttributes, TextareaHTMLAttributes } from "react";
-import { color, font, radius, space } from "./tokens.stylex";
+import { cn } from "./cn";
 
-const styles = stylex.create({
-  control: {
-    fontFamily: font.body,
-    fontSize: font.sizeMd,
-    paddingBlock: space.sm,
-    paddingInline: space.sm,
-    borderWidth: 1,
-    borderStyle: "solid",
-    borderColor: color.border,
-    borderRadius: radius.sm,
-    backgroundColor: color.bg,
-    color: color.text,
-    maxWidth: "100%",
-  },
-  invalid: { borderColor: color.danger },
-  textarea: { minHeight: "8rem", resize: "vertical" },
-});
+type Invalid = { invalid?: boolean; dense?: boolean };
 
-type Invalid = { invalid?: boolean };
-
-export function Input({ invalid, ...rest }: Omit<InputHTMLAttributes<HTMLInputElement>, "className" | "style"> & Invalid) {
+/** Text-like inputs get the .input control style. Checkboxes and radios are styled by their .check / .radio label. */
+export function Input({ invalid, dense, className, ...rest }: InputHTMLAttributes<HTMLInputElement> & Invalid) {
   const isBox = rest.type === "checkbox" || rest.type === "radio";
-  return <input aria-invalid={invalid || undefined} {...rest} {...(isBox ? {} : stylex.props(styles.control, invalid && styles.invalid))} />;
+  return <input aria-invalid={invalid || undefined} className={cn(!isBox && "input", dense && "input-dense", className)} {...rest} />;
 }
 
-export function Textarea({ invalid, ...rest }: Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, "className" | "style"> & Invalid) {
-  return <textarea aria-invalid={invalid || undefined} {...rest} {...stylex.props(styles.control, styles.textarea, invalid && styles.invalid)} />;
+export function Textarea({ invalid, dense, className, ...rest }: TextareaHTMLAttributes<HTMLTextAreaElement> & Invalid) {
+  return <textarea aria-invalid={invalid || undefined} className={cn("textarea", dense && "input-dense", className)} {...rest} />;
 }
 
-export function Select({ invalid, ...rest }: Omit<SelectHTMLAttributes<HTMLSelectElement>, "className" | "style"> & Invalid) {
-  return <select aria-invalid={invalid || undefined} {...rest} {...stylex.props(styles.control, invalid && styles.invalid)} />;
+export function Select({ invalid, dense, className, ...rest }: SelectHTMLAttributes<HTMLSelectElement> & Invalid) {
+  return <select aria-invalid={invalid || undefined} className={cn("select", dense && "input-dense", className)} {...rest} />;
 }
