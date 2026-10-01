@@ -5,6 +5,7 @@ import { requireAdmin, requireOwner } from "@/features/admin-auth/session";
 import { AdminPageHeader } from "@/features/admin-shell/AdminPageHeader";
 import { isLegalKey, isTextKey, keyFromSlug } from "@/features/site-content/content";
 import { getContentMeta, getSiteContent } from "@/features/site-content/queries";
+import { PhotosEditor } from "@/features/site-content/PhotosEditor";
 import { LegalForm } from "@/features/site-content/LegalForm";
 import { ResetSectionForm } from "@/features/site-content/ResetSectionForm";
 import { SECTION_FIELDS } from "@/features/site-content/sections";
@@ -45,6 +46,14 @@ export default async function ContentSectionPage({ params }: Props) {
     );
   }
 
-  // Photos (Task 9) are added below.
+  if (key === "photos") {
+    return (
+      <>
+        <AdminPageHeader title={t("sections.photos")} back={back} />
+        <PhotosEditor locale={locale} photos={content.photos} />
+      </>
+    );
+  }
+
   notFound();
 }
