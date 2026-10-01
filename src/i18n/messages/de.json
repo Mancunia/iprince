@@ -168,6 +168,7 @@
     "navGroupSetup": "Verwaltung",
     "menuOpen": "Menü öffnen",
     "menuClose": "Menü schließen",
+    "statusFilter": "Nach Status filtern",
     "dashboard": {
       "title": "Übersicht",
       "newApplications": "Neue Bewerbungen",

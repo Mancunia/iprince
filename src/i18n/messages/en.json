@@ -168,6 +168,7 @@
     "navGroupSetup": "Setup",
     "menuOpen": "Open menu",
     "menuClose": "Close menu",
+    "statusFilter": "Filter by status",
     "dashboard": {
       "title": "Dashboard",
       "newApplications": "New applications",
