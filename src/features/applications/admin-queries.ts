@@ -23,14 +23,14 @@ export type ApplicationRow = {
 
 export const INBOX_LIMIT = 200;
 
-export async function listApplications(status?: ApplicationStatus): Promise<ApplicationRow[]> {
+export async function listApplications(status?: ApplicationStatus, limit = INBOX_LIMIT): Promise<ApplicationRow[]> {
   const supabase = await createServerSupabase();
   let query = supabase
     .from("applications")
     .select("id, full_name, email, status, submitted_at, profession:professions(name)")
     .not("submitted_at", "is", null)
     .order("submitted_at", { ascending: false })
-    .limit(INBOX_LIMIT);
+    .limit(limit);
   if (status) query = query.eq("status", status);
   const { data, error } = await query;
   if (error) throw error;

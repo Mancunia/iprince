@@ -11,7 +11,7 @@ type Props = { params: Promise<{ locale: Locale }>; searchParams: Promise<{ noti
 export default async function AdminLoginPage({ params, searchParams }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
-  if (await getAdminSession()) redirect(`/${locale}/admin/applications`);
+  if (await getAdminSession()) redirect(`/${locale}/admin`);
   const [t, { notice }] = await Promise.all([getTranslations("admin"), searchParams]);
   return (
     <Stack gap="lg">

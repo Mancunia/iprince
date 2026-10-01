@@ -39,7 +39,7 @@ test("the owner invites an editor, who sets a password and is later removed", as
   await editor.getByLabel("New password").fill("editor-password-123");
   await editor.getByLabel("Confirm password").fill("editor-password-123");
   await editor.getByRole("button", { name: "Set password" }).click();
-  await expect(editor).toHaveURL(/\/en\/admin\/applications$/);
+  await expect(editor).toHaveURL(/\/en\/admin$/);
   await expect(editor.getByRole("link", { name: "Team" })).toHaveCount(0);
   expect((await editor.goto("/en/admin/team"))?.status()).toBe(404);
 

@@ -7,7 +7,7 @@ import { getIntegrations } from "@/features/site-settings/queries";
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   const { cookieScriptId } = getIntegrations();
   return (
-    <div className="door-candidate flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col">
       <SiteHeader />
       <main id="main" className="flex-1">{children}</main>
       <SiteFooter cookieSettings={Boolean(cookieScriptId)} />

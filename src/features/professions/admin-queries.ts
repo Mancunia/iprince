@@ -14,6 +14,7 @@ export type AdminProfessionRow = {
   id: string;
   slug: string;
   name: LocalizedText;
+  icon: string;
   isActive: boolean;
   isFeatured: boolean;
   sortOrder: number;
@@ -26,7 +27,7 @@ export async function listProfessionsForAdmin(): Promise<AdminProfessionRow[]> {
   const [professions, forms] = await Promise.all([
     supabase
       .from("professions")
-      .select("id, slug, name, is_active, is_featured, sort_order, open_positions, current_form_id")
+      .select("id, slug, name, icon, is_active, is_featured, sort_order, open_positions, current_form_id")
       .order("is_featured", { ascending: false })
       .order("sort_order"),
     supabase.from("profession_forms").select("id, profession_id, version, published_at"),
@@ -37,6 +38,7 @@ export async function listProfessionsForAdmin(): Promise<AdminProfessionRow[]> {
     id: p.id,
     slug: p.slug,
     name: storedText.parse(p.name),
+    icon: p.icon,
     isActive: p.is_active,
     isFeatured: p.is_featured,
     sortOrder: p.sort_order,

@@ -27,6 +27,9 @@
     "cookieSettings": "Cookie-Einstellungen",
     "legalLabel": "Rechtliches",
     "navEmployers": "Arbeitgeber",
+    "navContact": "Kontakt",
+    "menuOpen": "Menü öffnen",
+    "menuClose": "Menü schließen",
     "footerEmployers": "Für Arbeitgeber",
     "footerEnquiry": "Fachkräfte anfragen",
     "footerContactForm": "Kontaktformular"
@@ -160,6 +163,28 @@
     "navSettings": "Einstellungen",
     "navLeads": "Anfragen",
     "navMessages": "Nachrichten",
+    "navDashboard": "Übersicht",
+    "navGroupInbox": "Posteingang",
+    "navGroupSetup": "Verwaltung",
+    "menuOpen": "Menü öffnen",
+    "menuClose": "Menü schließen",
+    "navLabel": "Admin-Navigation",
+    "statusFilter": "Nach Status filtern",
+    "review": "Bearbeitung",
+    "dangerZone": "Eintrag löschen",
+    "dashboard": {
+      "title": "Übersicht",
+      "newApplications": "Neue Bewerbungen",
+      "newLeads": "Neue Anfragen",
+      "newMessages": "Neue Nachrichten",
+      "activeProfessions": "Aktive Berufe",
+      "latestApplications": "Neueste Bewerbungen",
+      "latestInbox": "Neueste Anfragen und Nachrichten",
+      "viewAll": "Alle anzeigen",
+      "emptyInbox": "Noch keine Anfragen oder Nachrichten.",
+      "kindLead": "Anfrage",
+      "kindMessage": "Nachricht"
+    },
     "inbox": {
       "leadsTitle": "Arbeitgeber-Anfragen",
       "messagesTitle": "Kontaktnachrichten",
@@ -253,6 +278,16 @@
     "kicker": "Personalvermittlung für Deutschland",
     "title": "Ihr Weg zu einer erfolgreichen Karriere in Deutschland",
     "lead": "Wählen Sie Ihren Beruf und senden Sie uns Ihre Bewerbung. Die Bewerbung ist für Sie immer kostenlos.",
+    "trust": { "free": "Kostenlos für Bewerber", "advisor": "Persönliche Beratung", "languages": "Beratung auf Deutsch und Englisch" },
+    "heroAlt": "Fachkraft beim Start in einen neuen Job in Deutschland",
+    "badgeLive": "Jetzt verfügbar",
+    "badgeFreeText": "Ohne Gebühren",
+    "statFreeValue": "0 €",
+    "features": {
+      "match": { "eyebrow": "Vermittlung", "title": "Wir finden den Job, der zu Ihren Fähigkeiten passt", "text": "Erzählen Sie uns von Ihrem Beruf und Ihrer Erfahrung. Wir bringen Sie mit Arbeitgebern in Deutschland zusammen, die genau Ihre Qualifikation suchen.", "alt": "Bewerberin im Gespräch mit einem Arbeitgeber" },
+      "advisors": { "eyebrow": "Persönliche Begleitung", "title": "Eine Ansprechperson begleitet Sie bei jedem Schritt", "text": "Von der Anerkennung Ihrer Qualifikation über das Visum bis zum Umzug: Eine Ansprechperson begleitet Sie bis zu Ihrem ersten Arbeitstag.", "alt": "Beraterin unterstützt einen Bewerber", "badgeTitle": "Eine Ansprechperson", "badgeText": "Von der Bewerbung bis zum ersten Arbeitstag" }
+    },
+    "stepsAlt": "Bewerber füllt das Formular aus",
     "ctaWhatsapp": "Fragen per WhatsApp",
     "statPositions": "Offene Stellen",
     "statProfessions": "Berufe",
@@ -268,14 +303,11 @@
       "contact": { "title": "Wir melden uns", "text": "Wir prüfen Ihre Bewerbung und melden uns bei Ihnen mit den nächsten Schritten." }
     },
     "doors": {
-      "candidateKicker": "Für Bewerber",
-      "candidateTitle": "Sie suchen eine Stelle in Deutschland?",
-      "candidateText": "Wählen Sie Ihren Beruf und bewerben Sie sich in wenigen Minuten. Für Sie kostenlos.",
-      "candidateCta": "Berufe ansehen",
       "employerKicker": "Für Arbeitgeber",
       "employerTitle": "Sie suchen Fachkräfte?",
       "employerText": "Wir finden qualifizierte internationale Fachkräfte für Ihr Unternehmen und begleiten Sie durch den gesamten Prozess.",
-      "employerCta": "Anfrage senden"
+      "employerCta": "Anfrage senden",
+      "contactCta": "Kontakt aufnehmen"
     }
   },
   "publicForms": {

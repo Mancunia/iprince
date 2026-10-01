@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 import type { Locale } from "@/i18n/config";
 import { Button } from "@/ui/Button";
+import { Card } from "@/ui/Card";
 import { Stack } from "@/ui/Stack";
 import { Text } from "@/ui/Text";
 import { discardFormDraft, publishFormDraft, saveFormDraft, type Saved } from "../admin-actions";
@@ -103,26 +104,30 @@ export function FormBuilder({ locale, formId, version, initialDefinition, initia
 
   return (
     <Stack gap="lg">
-      <Text as="h2" size="lg">{t("draftTitle", { version })}</Text>
-      <FieldList
-        fields={fields}
-        selected={selected}
-        locale={locale}
-        hasErrors={(i) => hasErrorsUnder(errors, `fields.${i}`)}
-        onSelect={setSelected}
-        onMove={(i, delta) => update(moveItem(fields, i, delta), selectedAfterMove(selected, i, delta))}
-        onRemove={(i) => update(removeAt(fields, i), selectedAfterRemove(selected, i))}
-        onAdd={(type) => update([...fields, newField(type, keys)], fields.length)}
-      />
-      {field && selected !== null ? (
-        <FieldEditor
-          key={`${selected}-${field.type}`}
-          field={field}
-          index={selected}
-          otherKeys={keys.filter((_, i) => i !== selected)}
-          errors={errorsUnder(errors, `fields.${selected}`)}
-          onChange={(next) => update(fields.map((f, i) => (i === selected ? next : f)), selected)}
+      <Card>
+        <h2 className="card-title">{t("draftTitle", { version })}</h2>
+        <FieldList
+          fields={fields}
+          selected={selected}
+          locale={locale}
+          hasErrors={(i) => hasErrorsUnder(errors, `fields.${i}`)}
+          onSelect={setSelected}
+          onMove={(i, delta) => update(moveItem(fields, i, delta), selectedAfterMove(selected, i, delta))}
+          onRemove={(i) => update(removeAt(fields, i), selectedAfterRemove(selected, i))}
+          onAdd={(type) => update([...fields, newField(type, keys)], fields.length)}
         />
+      </Card>
+      {field && selected !== null ? (
+        <Card>
+          <FieldEditor
+            key={`${selected}-${field.type}`}
+            field={field}
+            index={selected}
+            otherKeys={keys.filter((_, i) => i !== selected)}
+            errors={errorsUnder(errors, `fields.${selected}`)}
+            onChange={(next) => update(fields.map((f, i) => (i === selected ? next : f)), selected)}
+          />
+        </Card>
       ) : null}
       {message ? <Text role={message.tone === "success" ? "status" : "alert"} tone={message.tone}>{message.text}</Text> : null}
       <Stack direction="row" gap="sm">
@@ -130,8 +135,10 @@ export function FormBuilder({ locale, formId, version, initialDefinition, initia
         <Button disabled={pending} onClick={() => submit("publish")}>{t("publish")}</Button>
         <Button variant="secondary" disabled={pending} onClick={discard}>{t("discardDraft")}</Button>
       </Stack>
-      <Text as="h2" size="lg">{t("preview")}</Text>
-      <FormPreview definition={definition} initialLocale={locale} />
+      <Card>
+        <h2 className="card-title">{t("preview")}</h2>
+        <FormPreview definition={definition} initialLocale={locale} />
+      </Card>
     </Stack>
   );
 }
