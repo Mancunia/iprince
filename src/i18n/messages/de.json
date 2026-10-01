@@ -16,7 +16,7 @@
     "footerCandidates": "Für Bewerber",
     "footerContact": "Kontakt",
     "whatsapp": "WhatsApp",
-    "whatsappLabel": "Per WhatsApp schreiben: +49 173 9018671",
+    "whatsappLabel": "Per WhatsApp schreiben: {number}",
     "rights": "© {year} iPrince Personalvermittlung",
     "chat": "Live-Chat",
     "chatLabel": "Live-Chat öffnen",
@@ -334,7 +334,7 @@
     "message": "Nachricht (optional)",
     "submit": "Anfrage senden",
     "success": "Vielen Dank! Wir haben Ihre Anfrage erhalten und melden uns innerhalb eines Werktags.",
-    "privacy": "Wir verwenden Ihre Angaben nur, um Ihre Anfrage zu beantworten."
+    "privacy": "Wir verwenden Ihre Angaben nur, um Ihre Anfrage zu beantworten. Mehr in unserer <link>Datenschutzerklärung</link>."
   },
   "contact": {
     "kicker": "Kontakt",
@@ -345,7 +345,7 @@
     "message": "Nachricht",
     "submit": "Nachricht senden",
     "success": "Vielen Dank! Wir haben Ihre Nachricht erhalten und melden uns innerhalb eines Werktags.",
-    "privacy": "Wir verwenden Ihre Angaben nur, um Ihre Nachricht zu beantworten.",
+    "privacy": "Wir verwenden Ihre Angaben nur, um Ihre Nachricht zu beantworten. Mehr in unserer <link>Datenschutzerklärung</link>.",
     "whatsappTitle": "Lieber per WhatsApp?",
     "whatsappText": "Schreiben Sie uns direkt. Wir antworten meist noch am selben Tag."
   }

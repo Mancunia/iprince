@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { startTransition, useActionState, type FormEvent } from "react";
+import { Link } from "@/i18n/navigation";
 import { Button } from "@/ui/Button";
 import { Field } from "@/ui/Field";
 import { Icon } from "@/ui/Icon";
@@ -80,7 +81,7 @@ export function LeadForm({ professions }: { professions: Option[] }) {
             {tf(`errors.${formError === "rate_limited" ? "rate_limited" : "server_error"}`)}
           </p>
         ) : null}
-        <Text tone="muted" size="sm">{t("privacy")}</Text>
+        <Text tone="muted" size="sm">{t.rich("privacy", { link: (chunks) => <Link href="/privacy" className="underline">{chunks}</Link> })}</Text>
         <Button type="submit" size="lg" disabled={pending}>{pending ? tf("sending") : t("submit")}</Button>
       </Stack>
     </form>

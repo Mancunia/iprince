@@ -1,12 +1,13 @@
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
+import { whatsappHref } from "@/features/site-content/content";
+import { getSiteContent } from "@/features/site-content/queries";
 import { Icon } from "@/ui/Icon";
 import { BrandLogo } from "./Brand";
 import { CookieSettingsButton } from "./CookieBanner";
-import { WHATSAPP_NUMBER, WHATSAPP_URL } from "./contact";
 
 export async function SiteFooter({ cookieSettings }: { cookieSettings: boolean }) {
-  const t = await getTranslations("site");
+  const [t, { contact }] = await Promise.all([getTranslations("site"), getSiteContent()]);
   return (
     <footer className="site-footer">
       <div className="container-page">
@@ -29,10 +30,22 @@ export async function SiteFooter({ cookieSettings }: { cookieSettings: boolean }
           </div>
           <div className="footer-col">
             <h4>{t("footerContact")}</h4>
-            <a href={WHATSAPP_URL} className="inline-flex items-center gap-2" target="_blank" rel="noopener noreferrer">
+            <a href={whatsappHref(contact.whatsapp)} className="inline-flex items-center gap-2" target="_blank" rel="noopener noreferrer">
               <Icon name="message-circle" size={16} />
-              {t("whatsapp")}: {WHATSAPP_NUMBER}
+              {t("whatsapp")}: {contact.whatsapp}
             </a>
+            {contact.email ? (
+              <a href={`mailto:${contact.email}`} className="inline-flex items-center gap-2">
+                <Icon name="mail" size={16} />
+                {contact.email}
+              </a>
+            ) : null}
+            {contact.address ? (
+              <address className="inline-flex items-start gap-2 whitespace-pre-line not-italic">
+                <Icon name="map-pin" size={16} className="mt-1" />
+                {contact.address}
+              </address>
+            ) : null}
           </div>
         </div>
         <div className="footer-legal">
