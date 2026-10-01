@@ -4,7 +4,7 @@ import { Link, usePathname } from "@/i18n/navigation";
 import { Icon } from "@/ui/Icon";
 import { cn } from "@/ui/cn";
 
-type Item = { href: string; label: string; icon: string };
+type Item = { href: string; label: string; icon: string; count?: number };
 
 /** Admin section links; marks the current section with aria-current. */
 export function AdminNav({ items, className, linkClassName }: { items: Item[]; className?: string; linkClassName?: string }) {
@@ -20,6 +20,7 @@ export function AdminNav({ items, className, linkClassName }: { items: Item[]; c
         >
           <Icon name={item.icon} size={16} />
           {item.label}
+          {item.count ? <span className="badge ml-auto">{item.count}</span> : null}
         </Link>
       ))}
     </nav>

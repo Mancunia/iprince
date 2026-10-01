@@ -2,6 +2,7 @@ import { randomUUID } from "node:crypto";
 import { expect, test } from "@playwright/test";
 import { createClient } from "@supabase/supabase-js";
 import { ABANDONED_AFTER_MS, cleanupAbandoned } from "../src/features/applications/cleanup";
+import { deleteExpired } from "../src/features/leads/retention";
 import type { Database } from "../src/lib/supabase/database.types";
 
 const PFLEGE = "a0000000-0000-4000-8000-000000000001";
@@ -65,10 +66,57 @@ test("abandoned applications and their uploads are deleted after 24 hours; submi
 });
 
 test("the cleanup cron route requires CRON_SECRET", async ({ request }) => {
-  const url = "/api/cron/cleanup-applications";
+  const url = "/api/cron/cleanup";
   expect((await request.get(url)).status()).toBe(401);
   expect((await request.get(url, { headers: { authorization: "Bearer wrong" } })).status()).toBe(401);
   const response = await request.get(url, { headers: { authorization: `Bearer ${process.env.CRON_SECRET}` } });
   expect(response.status()).toBe(200);
-  expect(await response.json()).toMatchObject({ complete: true });
+  expect(await response.json()).toMatchObject({
+    applications: { complete: true },
+    leads: { leadsDeleted: expect.any(Number), messagesDeleted: expect.any(Number) },
+  });
+});
+
+function monthsAgo(months: number) {
+  const date = new Date();
+  date.setUTCMonth(date.getUTCMonth() - months);
+  return date.toISOString();
+}
+
+test("old contact messages and closed enquiries are deleted; open and recent ones stay", async () => {
+  const supabase = service();
+  // The set_updated_at trigger only fires on update, so an explicit updated_at on insert sticks.
+  const message = async (updatedAt: string) => {
+    const { data, error } = await supabase
+      .from("contact_messages")
+      .insert({ name: "E2E Retention", email: "retention@example.com", message: "old", updated_at: updatedAt })
+      .select("id")
+      .single();
+    if (error) throw error;
+    return data.id;
+  };
+  const lead = async (status: "new" | "closed" | "archived", updatedAt: string) => {
+    const { data, error } = await supabase
+      .from("employer_leads")
+      .insert({ company: "E2E Retention", contact_name: "E2E", email: "retention@example.com", status, updated_at: updatedAt })
+      .select("id")
+      .single();
+    if (error) throw error;
+    return data.id;
+  };
+  const oldMessage = await message(monthsAgo(7));
+  const recentMessage = await message(monthsAgo(5));
+  const oldClosed = await lead("closed", monthsAgo(13));
+  const oldOpen = await lead("new", monthsAgo(13));
+  const recentArchived = await lead("archived", monthsAgo(11));
+
+  await deleteExpired(supabase, new Date());
+
+  const remaining = async (table: "contact_messages" | "employer_leads", ids: string[]) => {
+    const { data, error } = await supabase.from(table).select("id").in("id", ids);
+    if (error) throw error;
+    return data.map((row) => row.id).sort();
+  };
+  expect(await remaining("contact_messages", [oldMessage, recentMessage])).toEqual([recentMessage]);
+  expect(await remaining("employer_leads", [oldClosed, oldOpen, recentArchived])).toEqual([oldOpen, recentArchived].sort());
 });

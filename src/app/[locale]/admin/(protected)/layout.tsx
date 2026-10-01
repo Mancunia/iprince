@@ -6,6 +6,7 @@ import { Link } from "@/i18n/navigation";
 import { signOut } from "@/features/admin-auth/actions";
 import { AdminNav } from "@/features/admin-auth/AdminNav";
 import { requireAdmin } from "@/features/admin-auth/session";
+import { countNew } from "@/features/leads/admin-queries";
 import { BrandLogo } from "@/features/site/Brand";
 import { Icon } from "@/ui/Icon";
 
@@ -13,9 +14,11 @@ export default async function AdminLayout({ children, params }: { children: Reac
   const { locale } = await params;
   if (!hasLocale(locales, locale)) notFound();
   const admin = await requireAdmin(locale);
-  const t = await getTranslations("admin");
+  const [t, newCounts] = await Promise.all([getTranslations("admin"), countNew()]);
   const items = [
     { href: "/admin/applications", label: t("applications"), icon: "inbox" },
+    { href: "/admin/leads", label: t("navLeads"), icon: "building-2", count: newCounts.leads },
+    { href: "/admin/messages", label: t("navMessages"), icon: "mail", count: newCounts.messages },
     { href: "/admin/professions", label: t("navProfessions"), icon: "briefcase" },
     ...(admin.role === "owner"
       ? [

@@ -25,7 +25,11 @@
     "chatUnavailable": "The cookie settings could not be loaded. Please try again later or message us on WhatsApp.",
     "chatWhatsappInstead": "Prefer WhatsApp? Message us there instead.",
     "cookieSettings": "Cookie settings",
-    "legalLabel": "Legal"
+    "legalLabel": "Legal",
+    "navEmployers": "Employers",
+    "footerEmployers": "For employers",
+    "footerEnquiry": "Request staff",
+    "footerContactForm": "Contact form"
   },
   "apply": {
     "title": "Apply: {profession}",
@@ -139,6 +143,7 @@
     "filter": "Filter",
     "limitNotice": "Showing the latest {count} applications. Use the status filter to narrow the list.",
     "empty": "No applications yet.",
+    "applicant": "Name",
     "submittedAt": "Submitted",
     "profession": "Profession",
     "status": "Status",
@@ -153,6 +158,31 @@
     "navProfessions": "Professions",
     "navTeam": "Team",
     "navSettings": "Settings",
+    "navLeads": "Enquiries",
+    "navMessages": "Messages",
+    "inbox": {
+      "leadsTitle": "Employer enquiries",
+      "messagesTitle": "Contact messages",
+      "emptyLeads": "No enquiries yet.",
+      "emptyMessages": "No messages yet.",
+      "limitNotice": "Showing the latest {count} entries. Use the status filter to narrow the list.",
+      "company": "Company",
+      "contactName": "Contact person",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "professions": "Professions",
+      "headcount": "People needed",
+      "message": "Message",
+      "received": "Received",
+      "backToLeads": "Back to enquiries",
+      "backToMessages": "Back to messages",
+      "delete": "Delete",
+      "confirmDelete": "Delete this entry permanently?",
+      "leadStatuses": { "new": "New", "contacted": "Contacted", "qualified": "Qualified", "closed": "Closed", "archived": "Archived" },
+      "messageStatuses": { "new": "New", "read": "Read", "archived": "Archived" },
+      "errors": { "invalid": "Please check your input.", "server_error": "Something went wrong.", "not_found": "This entry no longer exists." }
+    },
     "fieldErrors": { "invalid": "Please check this value.", "taken": "This slug is already used.", "form_required": "Publish a form first.", "exists": "This email already has an account.", "too_short": "Use at least 12 characters.", "mismatch": "The passwords do not match." },
     "professions": {
       "title": "Professions",
@@ -236,6 +266,55 @@
       "choose": { "title": "Choose a profession", "text": "Pick the profession you would like to work in, in Germany." },
       "apply": { "title": "Fill in the form", "text": "Answer the questions and upload your documents." },
       "contact": { "title": "We get in touch", "text": "We review your application and contact you about the next steps." }
+    },
+    "doors": {
+      "candidateKicker": "For candidates",
+      "candidateTitle": "Looking for a job in Germany?",
+      "candidateText": "Choose your profession and apply in a few minutes. It is free for you.",
+      "candidateCta": "View professions",
+      "employerKicker": "For employers",
+      "employerTitle": "Looking for skilled workers?",
+      "employerText": "We find qualified international staff for your company and guide you through the whole process.",
+      "employerCta": "Send an enquiry"
     }
+  },
+  "publicForms": {
+    "requiredHint": "Fields marked * are required.",
+    "sending": "Sending…",
+    "errors": { "invalid": "Please check this field.", "rate_limited": "Too many attempts. Please try again later.", "server_error": "Something went wrong. Please try again." }
+  },
+  "employers": {
+    "kicker": "For employers",
+    "title": "Skilled workers for your company",
+    "lead": "Tell us whom you are looking for. We will get back to you within one working day.",
+    "benefits": {
+      "selection": "Pre-selected candidates with checked qualifications",
+      "process": "Support with recognition, visa and relocation",
+      "support": "One contact person from the first call to the first working day"
+    },
+    "formTitle": "Your enquiry",
+    "company": "Company",
+    "contactName": "Contact person",
+    "email": "Email",
+    "phone": "Phone (optional)",
+    "professions": "Which professions are you hiring for? (optional)",
+    "headcount": "How many people do you need? (optional)",
+    "message": "Message (optional)",
+    "submit": "Send enquiry",
+    "success": "Thank you! We have received your enquiry and will get back to you within one working day.",
+    "privacy": "We use your details only to answer your enquiry."
+  },
+  "contact": {
+    "kicker": "Contact",
+    "title": "Get in touch",
+    "lead": "Questions about applying or working with us? Write to us.",
+    "name": "Name",
+    "email": "Email",
+    "message": "Message",
+    "submit": "Send message",
+    "success": "Thank you! We have received your message and will get back to you within one working day.",
+    "privacy": "We use your details only to answer your message.",
+    "whatsappTitle": "Prefer WhatsApp?",
+    "whatsappText": "Message us directly. We usually reply the same day."
   }
 }

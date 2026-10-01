@@ -62,3 +62,22 @@ export function readIntegrationsEnv(): Integrations {
 export function readCronEnv(): z.infer<typeof cronSchema> {
   return parse(cronSchema, { CRON_SECRET: process.env.CRON_SECRET });
 }
+
+const notifySchema = z.object({
+  RESEND_API_KEY: z.string().min(1),
+  NOTIFY_EMAIL_TO: z.email(),
+  NOTIFY_EMAIL_FROM: z.string().min(3).max(200),
+});
+
+export type NotifyEnv = z.infer<typeof notifySchema>;
+
+/** Staff notification email via Resend. Off (null) unless all three variables are set. */
+export function readNotifyEnv(): NotifyEnv | null {
+  const raw = {
+    RESEND_API_KEY: process.env.RESEND_API_KEY || undefined,
+    NOTIFY_EMAIL_TO: process.env.NOTIFY_EMAIL_TO || undefined,
+    NOTIFY_EMAIL_FROM: process.env.NOTIFY_EMAIL_FROM || undefined,
+  };
+  if (Object.values(raw).some((value) => value === undefined)) return null;
+  return parse(notifySchema, raw);
+}

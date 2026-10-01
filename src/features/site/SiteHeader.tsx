@@ -14,6 +14,7 @@ export async function SiteHeader() {
         <nav className="site-nav" aria-label={t("navLabel")}>
           <Link href="/#berufe">{t("navProfessions")}</Link>
           <Link href="/#ablauf">{t("navSteps")}</Link>
+          <Link href="/employers">{t("navEmployers")}</Link>
         </nav>
         <LangSwitch />
         <Link href="/#berufe" className="btn btn-primary header-cta">{t("cta")}</Link>

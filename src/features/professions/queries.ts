@@ -3,20 +3,21 @@ import { formDefinition, type FormDefinition } from "@/features/forms/definition
 import { localizedText, type LocalizedText } from "@/lib/i18n/localized";
 import { createServerSupabase } from "@/lib/supabase/server";
 
-export type ProfessionCard = { slug: string; name: LocalizedText; icon: string; openPositions: number };
+export type ProfessionCard = { id: string; slug: string; name: LocalizedText; icon: string; openPositions: number };
 
 /** Active professions visible to the public (explicit filters: public reads must not depend on the visitor's session). */
 export async function listActiveProfessions(): Promise<ProfessionCard[]> {
   const supabase = await createServerSupabase();
   const { data, error } = await supabase
     .from("professions")
-    .select("slug, name, icon, open_positions")
+    .select("id, slug, name, icon, open_positions")
     .eq("is_active", true)
     .not("current_form_id", "is", null)
     .order("is_featured", { ascending: false })
     .order("sort_order");
   if (error) throw error;
   return data.map((row) => ({
+    id: row.id,
     slug: row.slug,
     name: localizedText.parse(row.name),
     icon: row.icon,

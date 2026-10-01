@@ -25,7 +25,11 @@
     "chatUnavailable": "Die Cookie-Einstellungen konnten nicht geladen werden. Bitte versuchen Sie es später erneut oder schreiben Sie uns auf WhatsApp.",
     "chatWhatsappInstead": "Lieber WhatsApp? Schreiben Sie uns dort.",
     "cookieSettings": "Cookie-Einstellungen",
-    "legalLabel": "Rechtliches"
+    "legalLabel": "Rechtliches",
+    "navEmployers": "Arbeitgeber",
+    "footerEmployers": "Für Arbeitgeber",
+    "footerEnquiry": "Fachkräfte anfragen",
+    "footerContactForm": "Kontaktformular"
   },
   "apply": {
     "title": "Bewerbung: {profession}",
@@ -139,6 +143,7 @@
     "filter": "Filtern",
     "limitNotice": "Es werden die neuesten {count} Bewerbungen angezeigt. Nutzen Sie den Statusfilter, um die Liste einzugrenzen.",
     "empty": "Noch keine Bewerbungen.",
+    "applicant": "Name",
     "submittedAt": "Eingegangen",
     "profession": "Beruf",
     "status": "Status",
@@ -153,6 +158,31 @@
     "navProfessions": "Berufe",
     "navTeam": "Team",
     "navSettings": "Einstellungen",
+    "navLeads": "Anfragen",
+    "navMessages": "Nachrichten",
+    "inbox": {
+      "leadsTitle": "Arbeitgeber-Anfragen",
+      "messagesTitle": "Kontaktnachrichten",
+      "emptyLeads": "Noch keine Anfragen.",
+      "emptyMessages": "Noch keine Nachrichten.",
+      "limitNotice": "Es werden die neuesten {count} Einträge angezeigt. Nutzen Sie den Statusfilter, um die Liste einzugrenzen.",
+      "company": "Unternehmen",
+      "contactName": "Ansprechperson",
+      "name": "Name",
+      "email": "E-Mail",
+      "phone": "Telefon",
+      "professions": "Berufe",
+      "headcount": "Benötigte Personen",
+      "message": "Nachricht",
+      "received": "Eingegangen",
+      "backToLeads": "Zurück zu den Anfragen",
+      "backToMessages": "Zurück zu den Nachrichten",
+      "delete": "Löschen",
+      "confirmDelete": "Diesen Eintrag endgültig löschen?",
+      "leadStatuses": { "new": "Neu", "contacted": "Kontaktiert", "qualified": "Qualifiziert", "closed": "Abgeschlossen", "archived": "Archiviert" },
+      "messageStatuses": { "new": "Neu", "read": "Gelesen", "archived": "Archiviert" },
+      "errors": { "invalid": "Bitte prüfen Sie Ihre Eingabe.", "server_error": "Etwas ist schiefgelaufen.", "not_found": "Dieser Eintrag existiert nicht mehr." }
+    },
     "fieldErrors": { "invalid": "Bitte prüfen Sie diesen Wert.", "taken": "Dieser Slug ist bereits vergeben.", "form_required": "Veröffentlichen Sie zuerst ein Formular.", "exists": "Für diese E-Mail gibt es bereits ein Konto.", "too_short": "Mindestens 12 Zeichen.", "mismatch": "Die Passwörter stimmen nicht überein." },
     "professions": {
       "title": "Berufe",
@@ -236,6 +266,55 @@
       "choose": { "title": "Beruf wählen", "text": "Wählen Sie den Beruf, in dem Sie in Deutschland arbeiten möchten." },
       "apply": { "title": "Formular ausfüllen", "text": "Beantworten Sie die Fragen und laden Sie Ihre Unterlagen hoch." },
       "contact": { "title": "Wir melden uns", "text": "Wir prüfen Ihre Bewerbung und melden uns bei Ihnen mit den nächsten Schritten." }
+    },
+    "doors": {
+      "candidateKicker": "Für Bewerber",
+      "candidateTitle": "Sie suchen eine Stelle in Deutschland?",
+      "candidateText": "Wählen Sie Ihren Beruf und bewerben Sie sich in wenigen Minuten. Für Sie kostenlos.",
+      "candidateCta": "Berufe ansehen",
+      "employerKicker": "Für Arbeitgeber",
+      "employerTitle": "Sie suchen Fachkräfte?",
+      "employerText": "Wir finden qualifizierte internationale Fachkräfte für Ihr Unternehmen und begleiten Sie durch den gesamten Prozess.",
+      "employerCta": "Anfrage senden"
     }
+  },
+  "publicForms": {
+    "requiredHint": "Mit * markierte Felder sind Pflichtfelder.",
+    "sending": "Wird gesendet…",
+    "errors": { "invalid": "Bitte prüfen Sie dieses Feld.", "rate_limited": "Zu viele Versuche. Bitte später erneut versuchen.", "server_error": "Etwas ist schiefgelaufen. Bitte erneut versuchen." }
+  },
+  "employers": {
+    "kicker": "Für Arbeitgeber",
+    "title": "Fachkräfte für Ihr Unternehmen",
+    "lead": "Sagen Sie uns, wen Sie suchen. Wir melden uns innerhalb eines Werktags.",
+    "benefits": {
+      "selection": "Vorausgewählte Kandidaten mit geprüften Qualifikationen",
+      "process": "Unterstützung bei Anerkennung, Visum und Umzug",
+      "support": "Eine feste Ansprechperson vom ersten Gespräch bis zum ersten Arbeitstag"
+    },
+    "formTitle": "Ihre Anfrage",
+    "company": "Unternehmen",
+    "contactName": "Ansprechperson",
+    "email": "E-Mail",
+    "phone": "Telefon (optional)",
+    "professions": "Für welche Berufe suchen Sie? (optional)",
+    "headcount": "Wie viele Personen benötigen Sie? (optional)",
+    "message": "Nachricht (optional)",
+    "submit": "Anfrage senden",
+    "success": "Vielen Dank! Wir haben Ihre Anfrage erhalten und melden uns innerhalb eines Werktags.",
+    "privacy": "Wir verwenden Ihre Angaben nur, um Ihre Anfrage zu beantworten."
+  },
+  "contact": {
+    "kicker": "Kontakt",
+    "title": "Schreiben Sie uns",
+    "lead": "Fragen zur Bewerbung oder zur Zusammenarbeit? Schreiben Sie uns.",
+    "name": "Name",
+    "email": "E-Mail",
+    "message": "Nachricht",
+    "submit": "Nachricht senden",
+    "success": "Vielen Dank! Wir haben Ihre Nachricht erhalten und melden uns innerhalb eines Werktags.",
+    "privacy": "Wir verwenden Ihre Angaben nur, um Ihre Nachricht zu beantworten.",
+    "whatsappTitle": "Lieber per WhatsApp?",
+    "whatsappText": "Schreiben Sie uns direkt. Wir antworten meist noch am selben Tag."
   }
 }

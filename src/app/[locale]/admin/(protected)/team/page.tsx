@@ -6,6 +6,7 @@ import { listTeam } from "@/features/team/queries";
 import { RemoveMemberForm } from "@/features/team/RemoveMemberForm";
 import { canRemove } from "@/features/team/team";
 import { Stack } from "@/ui/Stack";
+import { Status } from "@/ui/Status";
 import { Text } from "@/ui/Text";
 
 export default async function TeamPage({ params }: { params: Promise<{ locale: Locale }> }) {
@@ -25,17 +26,17 @@ export default async function TeamPage({ params }: { params: Promise<{ locale: L
               <th scope="col">{t("email")}</th>
               <th scope="col">{t("role")}</th>
               <th scope="col">{t("status")}</th>
-              <th scope="col"><span className="sr-only">{t("remove")}</span></th>
+              <th scope="col" className="actions"><span className="sr-only">{t("remove")}</span></th>
             </tr>
           </thead>
           <tbody>
             {members.map((m) => (
               <tr key={m.userId}>
-                <td>{m.displayName}</td>
+                <td className="cell-primary">{m.displayName}</td>
                 <td>{m.email}</td>
                 <td>{t(`roles.${m.role}`)}</td>
-                <td>{t(`statuses.${m.status}`)}</td>
-                <td>{canRemove(m, owner.userId) ? <RemoveMemberForm userId={m.userId} locale={locale} /> : null}</td>
+                <td><Status tone={m.status === "active" ? "ok" : "review"}>{t(`statuses.${m.status}`)}</Status></td>
+                <td className="actions">{canRemove(m, owner.userId) ? <RemoveMemberForm userId={m.userId} locale={locale} /> : null}</td>
               </tr>
             ))}
           </tbody>

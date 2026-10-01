@@ -1,6 +1,7 @@
 import type { Locale } from "@/i18n/config";
 import type { FormDefinition } from "@/features/forms/definition";
 import { localized } from "@/lib/i18n/localized";
+import type { StatusTone } from "@/ui/Status";
 
 export const APPLICATION_STATUSES = ["new", "reviewing", "contacted", "placed", "rejected", "archived"] as const;
 export type ApplicationStatus = (typeof APPLICATION_STATUSES)[number];
@@ -28,3 +29,13 @@ export function describeAnswers(
     return [{ key: field.key, label: localized(field.label, locale), value }];
   });
 }
+
+/** Pill colour for each status in admin lists. */
+export const STATUS_TONE = {
+  new: "new",
+  reviewing: "review",
+  contacted: "review",
+  placed: "ok",
+  rejected: "error",
+  archived: "draft",
+} as const satisfies Record<ApplicationStatus, StatusTone>;
