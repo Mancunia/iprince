@@ -9,7 +9,7 @@ import { requireAdmin } from "@/features/admin-auth/session";
 import { fail, fieldErrorsOf, ok, type ActionResult } from "@/lib/result";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { coverFolder, isCoverPathFor } from "./cover";
-import { readPostForm, toPostRow } from "./schema";
+import { readCategoryForm, readPostForm, toCategoryRow, toPostRow } from "./schema";
 
 type Result = ActionResult<null>;
 type Supabase = Awaited<ReturnType<typeof createServerSupabase>>;
@@ -114,6 +114,50 @@ export async function removePostCover(_prev: Result | null, formData: FormData):
   if (error) return dbFailure(error, "remove cover");
   if (data.length === 0) return fail("entry_not_found");
   await removeCoverFiles(supabase, id.data);
+  revalidateBlog();
+  return ok(null);
+}
+
+export async function createCategory(_prev: Result | null, formData: FormData): Promise<Result> {
+  const locale = localeOf(formData);
+  await requireAdmin(locale);
+  const parsed = readCategoryForm(formData);
+  if (!parsed.success) return fail("invalid", fieldErrorsOf(parsed.error.issues));
+
+  const supabase = await createServerSupabase();
+  const { error } = await supabase.from("blog_categories").insert(toCategoryRow(parsed.data));
+  if (error) return dbFailure(error, "create category");
+  revalidateBlog();
+  return ok(null);
+}
+
+export async function updateCategory(_prev: Result | null, formData: FormData): Promise<Result> {
+  const locale = localeOf(formData);
+  await requireAdmin(locale);
+  const id = idOf(formData);
+  if (!id.success) return fail("invalid");
+  const parsed = readCategoryForm(formData);
+  if (!parsed.success) return fail("invalid", fieldErrorsOf(parsed.error.issues));
+
+  const supabase = await createServerSupabase();
+  const { data, error } = await supabase.from("blog_categories").update(toCategoryRow(parsed.data)).eq("id", id.data).select("id");
+  if (error) return dbFailure(error, "update category");
+  if (data.length === 0) return fail("entry_not_found");
+  revalidateBlog();
+  return ok(null);
+}
+
+/** Posts keep existing without a category (on delete set null) and lose their call to action. */
+export async function deleteCategory(_prev: Result | null, formData: FormData): Promise<Result> {
+  const locale = localeOf(formData);
+  await requireAdmin(locale);
+  const id = idOf(formData);
+  if (!id.success) return fail("invalid");
+
+  const supabase = await createServerSupabase();
+  const { data, error } = await supabase.from("blog_categories").delete().eq("id", id.data).select("id");
+  if (error) return dbFailure(error, "delete category");
+  if (data.length === 0) return fail("entry_not_found");
   revalidateBlog();
   return ok(null);
 }
