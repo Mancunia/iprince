@@ -32,7 +32,10 @@
     "menuClose": "Close menu",
     "footerEmployers": "For employers",
     "footerEnquiry": "Request staff",
-    "footerContactForm": "Contact form"
+    "footerContactForm": "Contact form",
+    "imprint": "Imprint",
+    "privacy": "Privacy policy",
+    "germanOnly": "This page is only available in German."
   },
   "apply": {
     "title": "Apply: {profession}",

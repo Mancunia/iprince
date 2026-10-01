@@ -50,7 +50,11 @@ export async function SiteFooter({ cookieSettings }: { cookieSettings: boolean }
         </div>
         <div className="footer-legal">
           <span>{t("rights", { year: new Date().getFullYear() })}</span>
-          {cookieSettings ? <nav aria-label={t("legalLabel")}><CookieSettingsButton /></nav> : null}
+          <nav aria-label={t("legalLabel")} className="flex flex-wrap gap-x-5 gap-y-2">
+            <Link href="/imprint">{t("imprint")}</Link>
+            <Link href="/privacy">{t("privacy")}</Link>
+            {cookieSettings ? <CookieSettingsButton /> : null}
+          </nav>
         </div>
       </div>
     </footer>

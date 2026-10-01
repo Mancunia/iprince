@@ -32,7 +32,10 @@
     "menuClose": "Menü schließen",
     "footerEmployers": "Für Arbeitgeber",
     "footerEnquiry": "Fachkräfte anfragen",
-    "footerContactForm": "Kontaktformular"
+    "footerContactForm": "Kontaktformular",
+    "imprint": "Impressum",
+    "privacy": "Datenschutz",
+    "germanOnly": "Diese Seite ist nur auf Deutsch verfügbar."
   },
   "apply": {
     "title": "Bewerbung: {profession}",
