@@ -28,6 +28,28 @@ describe("Markdown", () => {
     const html = render("[a](mailto:a@b.de) [b](tel:+49) [c](https://x.de) [d](/de/privacy)");
     for (const href of ["mailto:a@b.de", "tel:+49", "https://x.de", "/de/privacy"]) expect(html).toContain(`href="${href}"`);
   });
+  it("turns a heading 1 in the text into a heading 2 (the page owns the h1)", () => {
+    expect(render("# Big")).toContain("<h2>Big</h2>");
+  });
+
+  it("opens external links in a new tab without opener access", () => {
+    const html = render("[x](https://example.com)");
+    expect(html).toContain('target="_blank"');
+    expect(html).toContain('rel="noopener noreferrer"');
+  });
+
+  it("keeps internal links in the same tab", () => {
+    expect(render("[x](/de/blog)")).not.toContain("target=");
+  });
+
+  it("lazy-loads images and drops images with an unsafe source", () => {
+    expect(render("![Team](https://x.de/a.jpg)")).toContain('loading="lazy"');
+    expect(render("![x](data:image/png;base64,AAAA)")).not.toContain("<img");
+  });
+
+  it("wraps tables for horizontal scrolling", () => {
+    expect(render("| a |\n|---|\n| 1 |")).toContain('<div class="overflow-x-auto"><table>');
+  });
 });
 
 describe("safeUrl", () => {
