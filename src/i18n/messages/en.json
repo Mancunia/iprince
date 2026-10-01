@@ -139,6 +139,7 @@
     "filter": "Filter",
     "limitNotice": "Showing the latest {count} applications. Use the status filter to narrow the list.",
     "empty": "No applications yet.",
+    "applicant": "Name",
     "submittedAt": "Submitted",
     "profession": "Profession",
     "status": "Status",

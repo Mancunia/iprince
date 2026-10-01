@@ -139,6 +139,7 @@
     "filter": "Filtern",
     "limitNotice": "Es werden die neuesten {count} Bewerbungen angezeigt. Nutzen Sie den Statusfilter, um die Liste einzugrenzen.",
     "empty": "Noch keine Bewerbungen.",
+    "applicant": "Name",
     "submittedAt": "Eingegangen",
     "profession": "Beruf",
     "status": "Status",

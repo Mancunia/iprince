@@ -17,7 +17,8 @@ export function RemoveMemberForm({ userId, locale }: { userId: string; locale: L
       <input type="hidden" name="locale" value={locale} />
       <Button
         type="submit"
-        variant="secondary"
+        variant="danger"
+        size="sm"
         disabled={pending}
         onClick={(event) => {
           if (!window.confirm(t("confirmRemove"))) event.preventDefault();
