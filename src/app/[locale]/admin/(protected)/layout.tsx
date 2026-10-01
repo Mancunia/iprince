@@ -29,6 +29,7 @@ export default async function AdminLayout({ children, params }: { children: Reac
       label: t("navGroupSetup"),
       items: [
         { href: "/admin/professions", label: t("navProfessions"), icon: "briefcase" },
+        { href: "/admin/content", label: t("navContent"), icon: "file-text" },
         ...(admin.role === "owner"
           ? [
               { href: "/admin/team", label: t("navTeam"), icon: "users" },

@@ -2,9 +2,10 @@ import { getFormatter, getTranslations, setRequestLocale } from "next-intl/serve
 import type { Locale } from "@/i18n/config";
 import { Link } from "@/i18n/navigation";
 import { listActiveProfessions } from "@/features/professions/queries";
-import { WHATSAPP_URL } from "@/features/site/contact";
+import { photoSrc, whatsappHref } from "@/features/site-content/content";
+import { getSiteContent } from "@/features/site-content/queries";
 import { Photo } from "@/features/site/Photo";
-import { localized } from "@/lib/i18n/localized";
+import { localized, type LocalizedText } from "@/lib/i18n/localized";
 import { Card } from "@/ui/Card";
 import { Icon } from "@/ui/Icon";
 import { cn } from "@/ui/cn";
@@ -23,12 +24,19 @@ const STEPS = ["choose", "apply", "contact"] as const;
 export default async function Home({ params }: { params: Promise<{ locale: Locale }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const [t, tSite, format, professions] = await Promise.all([
+  const [t, tSite, format, professions, content] = await Promise.all([
     getTranslations("home"),
     getTranslations("site"),
     getFormatter(),
     listActiveProfessions(),
+    getSiteContent(),
   ]);
+  const L = (value: LocalizedText) => localized(value, locale);
+  const { photos } = content;
+  const hero = content["home.hero"];
+  const features = content["home.features"];
+  const steps = content["home.steps"];
+  const employers = content["home.employers"];
   const openPositions = professions.reduce((sum, p) => sum + p.openPositions, 0);
   const stats = [
     { icon: "briefcase", value: format.number(openPositions), label: t("statPositions") },
@@ -41,15 +49,15 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
       <section className="pt-10 pb-16 md:pt-16 md:pb-24">
         <div className="container-page grid items-center gap-12 md:grid-cols-2">
           <div className="grid gap-6">
-            <p className="eyebrow">{t("kicker")}</p>
-            <h1>{t("title")}</h1>
-            <p className="lead">{t("lead")}</p>
+            <p className="eyebrow">{L(hero.kicker)}</p>
+            <h1>{L(hero.title)}</h1>
+            <p className="lead">{L(hero.lead)}</p>
             <div className="flex flex-wrap gap-3 pt-2">
               <a href="#berufe" className="btn btn-primary btn-lg">
                 {tSite("cta")}
                 <Icon name="arrow-right" />
               </a>
-              <a href={WHATSAPP_URL} className="btn btn-lg" target="_blank" rel="noopener noreferrer">
+              <a href={whatsappHref(content.contact.whatsapp)} className="btn btn-lg" target="_blank" rel="noopener noreferrer">
                 <Icon name="message-circle" />
                 {t("ctaWhatsapp")}
               </a>
@@ -64,7 +72,7 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
             </ul>
           </div>
           <div className="relative">
-            <Photo slot="hero" alt={t("heroAlt")} className="aspect-[4/5] md:aspect-[5/6]" priority />
+            <Photo src={photoSrc(photos.hero.path)} alt={L(photos.hero.alt)} className="aspect-[4/5] md:aspect-[5/6]" priority />
             {openPositions > 0 ? (
               <div className="float-badge -left-4 top-10">
                 <span className="icon-chip"><Icon name="briefcase" size={16} /></span>
@@ -96,18 +104,18 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
           {FEATURES.map((f, i) => (
             <div key={f.key} className="grid items-center gap-10 md:grid-cols-2 md:gap-16">
               <div className={cn("relative", i % 2 === 1 && "md:order-2")}>
-                <Photo slot={f.slot} alt={t(`features.${f.key}.alt`)} className="aspect-[4/3]" />
+                <Photo src={photoSrc(photos[f.slot].path)} alt={L(photos[f.slot].alt)} className="aspect-[4/3]" />
                 {f.key === "advisors" ? (
                   <div className="float-badge -bottom-6 right-6">
                     <span className="icon-chip"><Icon name="heart-handshake" size={16} /></span>
-                    <span><strong>{t("features.advisors.badgeTitle")}</strong>{t("features.advisors.badgeText")}</span>
+                    <span><strong>{L(features.advisors.badgeTitle)}</strong>{L(features.advisors.badgeText)}</span>
                   </div>
                 ) : null}
               </div>
               <div className="grid content-center gap-5">
-                <p className="eyebrow">{t(`features.${f.key}.eyebrow`)}</p>
-                <h2>{t(`features.${f.key}.title`)}</h2>
-                <p className="lead">{t(`features.${f.key}.text`)}</p>
+                <p className="eyebrow">{L(features[f.key].eyebrow)}</p>
+                <h2>{L(features[f.key].title)}</h2>
+                <p className="lead">{L(features[f.key].text)}</p>
               </div>
             </div>
           ))}
@@ -152,29 +160,29 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
         <div className="container-page grid items-center gap-12 lg:grid-cols-2">
           <div>
             <div className="section-head">
-              <p className="eyebrow">{t("stepsKicker")}</p>
-              <h2>{t("stepsTitle")}</h2>
+              <p className="eyebrow">{L(steps.kicker)}</p>
+              <h2>{L(steps.title)}</h2>
             </div>
             <ol className="timeline">
               {STEPS.map((step, i) => (
                 <li key={step}>
                   <span className="timeline-dot" aria-hidden="true">{i + 1}</span>
-                  <h3 className="text-xl">{t(`steps.${step}.title`)}</h3>
-                  <p className="text-fg-muted">{t(`steps.${step}.text`)}</p>
+                  <h3 className="text-xl">{L(steps[step].title)}</h3>
+                  <p className="text-fg-muted">{L(steps[step].text)}</p>
                 </li>
               ))}
             </ol>
           </div>
-          <Photo slot="steps" alt={t("stepsAlt")} className="hidden aspect-square lg:grid" />
+          <Photo src={photoSrc(photos.steps.path)} alt={L(photos.steps.alt)} className="hidden aspect-square lg:grid" />
         </div>
       </section>
 
       <section className="container-page pb-24">
         <div className="cta-banner">
-          <Photo slot="employer-banner" alt="" sizes="100vw" />
-          <p className="eyebrow">{t("doors.employerKicker")}</p>
-          <h2 className="max-w-[20ch]">{t("doors.employerTitle")}</h2>
-          <p className="lead">{t("doors.employerText")}</p>
+          <Photo src={photoSrc(photos["employer-banner"].path)} alt={L(photos["employer-banner"].alt)} sizes="100vw" />
+          <p className="eyebrow">{L(employers.kicker)}</p>
+          <h2 className="max-w-[20ch]">{L(employers.title)}</h2>
+          <p className="lead">{L(employers.text)}</p>
           <div className="flex flex-wrap gap-3">
             <Link href="/employers" className="btn btn-primary">
               {t("doors.employerCta")}

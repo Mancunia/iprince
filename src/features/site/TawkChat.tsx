@@ -4,7 +4,6 @@ import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useId, useRef, useState } from "react";
 import { Icon } from "@/ui/Icon";
 import { grantConsent, showConsentBanner, useConsent } from "./consent";
-import { WHATSAPP_URL } from "./contact";
 
 const SCRIPT_ID = "tawk-embed";
 
@@ -27,7 +26,7 @@ function loadTawk(propertyId: string, widgetId: string, onLoad: () => void) {
  * tawk.to live chat, loaded only after the visitor accepts CookieScript's "functionality" category.
  * Until then a chat button explains why and offers to enable it, with WhatsApp as a cookie-free alternative.
  */
-export function TawkChat({ propertyId, widgetId }: { propertyId: string; widgetId: string }) {
+export function TawkChat({ propertyId, widgetId, whatsappUrl }: { propertyId: string; widgetId: string; whatsappUrl: string }) {
   const t = useTranslations("site");
   const locale = useLocale();
   const consented = useConsent("functionality");
@@ -80,7 +79,7 @@ export function TawkChat({ propertyId, widgetId }: { propertyId: string; widgetI
             <button type="button" className="btn btn-primary btn-sm" onClick={enable}>{t("chatEnable")}</button>
             <button type="button" className="btn btn-sm" onClick={showConsentBanner}>{t("cookieSettings")}</button>
           </div>
-          <a href={WHATSAPP_URL} className="text-sm" target="_blank" rel="noopener noreferrer">{t("chatWhatsappInstead")}</a>
+          <a href={whatsappUrl} className="text-sm" target="_blank" rel="noopener noreferrer">{t("chatWhatsappInstead")}</a>
         </div>
       ) : null}
       <button

@@ -16,7 +16,7 @@
     "footerCandidates": "Für Bewerber",
     "footerContact": "Kontakt",
     "whatsapp": "WhatsApp",
-    "whatsappLabel": "Per WhatsApp schreiben: +49 173 9018671",
+    "whatsappLabel": "Per WhatsApp schreiben: {number}",
     "rights": "© {year} iPrince Personalvermittlung",
     "chat": "Live-Chat",
     "chatLabel": "Live-Chat öffnen",
@@ -32,7 +32,10 @@
     "menuClose": "Menü schließen",
     "footerEmployers": "Für Arbeitgeber",
     "footerEnquiry": "Fachkräfte anfragen",
-    "footerContactForm": "Kontaktformular"
+    "footerContactForm": "Kontaktformular",
+    "imprint": "Impressum",
+    "privacy": "Datenschutz",
+    "germanOnly": "Diese Seite ist nur auf Deutsch verfügbar."
   },
   "apply": {
     "title": "Bewerbung: {profession}",
@@ -157,8 +160,10 @@
     "documents": "Dokumente",
     "back": "Zurück zu den Bewerbungen",
     "statuses": { "new": "Neu", "reviewing": "In Prüfung", "contacted": "Kontaktiert", "placed": "Vermittelt", "rejected": "Abgelehnt", "archived": "Archiviert" },
-    "errors": { "invalid_credentials": "E-Mail oder Passwort ist falsch.", "not_admin": "Dieses Konto hat keinen Admin-Zugang.", "invalid": "Bitte prüfen Sie Ihre Eingaben.", "server_error": "Etwas ist schiefgelaufen.", "not_found": "Diese Bewerbung existiert nicht mehr.", "has_applications": "Für diesen Beruf gibt es Bewerbungen. Deaktivieren Sie ihn stattdessen." },
+    "errors": { "invalid_credentials": "E-Mail oder Passwort ist falsch.", "not_admin": "Dieses Konto hat keinen Admin-Zugang.", "invalid": "Bitte prüfen Sie Ihre Eingaben.", "server_error": "Etwas ist schiefgelaufen.", "not_found": "Diese Bewerbung existiert nicht mehr.", "has_applications": "Für diesen Beruf gibt es Bewerbungen. Deaktivieren Sie ihn stattdessen.", "upload_failed": "Das Hochladen ist fehlgeschlagen. Prüfen Sie Dateityp und -größe." },
     "navProfessions": "Berufe",
+    "navContent": "Inhalte",
+    "content": {"title": "Website-Inhalte", "sections": {"hero": "Startbereich", "features": "Vorteile", "steps": "Ablauf", "employers": "Arbeitgeber-Bereich", "contact": "Kontaktdaten", "photos": "Fotos", "imprint": "Impressum", "privacy": "Datenschutzerklärung"}, "default": "Standard", "edited": "Bearbeitet · {date}", "edit": "Bearbeiten", "ownerOnly": "Nur der Inhaber kann diese Seite bearbeiten.", "placeholders": "Enthält Platzhalter", "placeholderWarning": "Dieser Text enthält noch [PLATZHALTER]-Markierungen. Ersetzen Sie alle, bevor die Website live geht.", "reset": "Auf Standard zurücksetzen", "resetConfirm": "Diesen Bereich durch den Standardtext ersetzen?", "german": "Deutsch", "english": "Englisch", "englishHelp": "Optional. Leere Felder zeigen den deutschen Text.", "write": "Schreiben", "preview": "Vorschau", "markdownHelp": "Markdown: ## Überschrift, **fett**, - Listenpunkt, [Linktext](https://…). Ein \\ am Zeilenende bricht die Zeile um.", "fields": {"kicker": "Dachzeile", "title": "Titel", "lead": "Einleitung", "eyebrow": "Dachzeile", "text": "Text", "badgeTitle": "Badge-Titel", "badgeText": "Badge-Text", "whatsapp": "WhatsApp-Nummer", "email": "E-Mail (optional)", "address": "Adresse (optional)", "alt": "Alternativtext", "body": "Text"}, "groups": {"match": "Block 1: Vermittlung", "advisors": "Block 2: Persönliche Betreuung", "choose": "Schritt 1", "apply": "Schritt 2", "contact": "Schritt 3"}, "slots": {"hero": "Startbereich", "feature-match": "Block 1", "feature-advisors": "Block 2", "steps": "Ablauf", "employer-banner": "Arbeitgeber-Banner"}, "noPhoto": "Noch kein Foto. Es wird ein Platzhalter gezeigt.", "photoHelp": "JPEG, PNG oder WebP, bis 5 MB.", "photoUpload": "Foto hochladen", "photoReplace": "Foto ersetzen", "photoRemove": "Foto entfernen", "photoRemoveConfirm": "Dieses Foto von der Website entfernen?", "uploading": "Wird hochgeladen…", "saveAlts": "Alternativtexte speichern", "altHelp": "Beschreiben Sie das Foto für Screenreader. Bei rein dekorativen Fotos leer lassen."},
     "navTeam": "Team",
     "navSettings": "Einstellungen",
     "navLeads": "Anfragen",
@@ -334,7 +339,7 @@
     "message": "Nachricht (optional)",
     "submit": "Anfrage senden",
     "success": "Vielen Dank! Wir haben Ihre Anfrage erhalten und melden uns innerhalb eines Werktags.",
-    "privacy": "Wir verwenden Ihre Angaben nur, um Ihre Anfrage zu beantworten."
+    "privacy": "Wir verwenden Ihre Angaben nur, um Ihre Anfrage zu beantworten. Mehr in unserer <link>Datenschutzerklärung</link>."
   },
   "contact": {
     "kicker": "Kontakt",
@@ -345,7 +350,7 @@
     "message": "Nachricht",
     "submit": "Nachricht senden",
     "success": "Vielen Dank! Wir haben Ihre Nachricht erhalten und melden uns innerhalb eines Werktags.",
-    "privacy": "Wir verwenden Ihre Angaben nur, um Ihre Nachricht zu beantworten.",
+    "privacy": "Wir verwenden Ihre Angaben nur, um Ihre Nachricht zu beantworten. Mehr in unserer <link>Datenschutzerklärung</link>.",
     "whatsappTitle": "Lieber per WhatsApp?",
     "whatsappText": "Schreiben Sie uns direkt. Wir antworten meist noch am selben Tag."
   }

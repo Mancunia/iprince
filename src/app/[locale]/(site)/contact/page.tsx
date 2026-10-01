@@ -1,14 +1,15 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Locale } from "@/i18n/config";
 import { ContactForm } from "@/features/leads/ContactForm";
-import { WHATSAPP_NUMBER, WHATSAPP_URL } from "@/features/site/contact";
+import { whatsappHref } from "@/features/site-content/content";
+import { getSiteContent } from "@/features/site-content/queries";
 import { Card } from "@/ui/Card";
 import { Icon } from "@/ui/Icon";
 
 export default async function ContactPage({ params }: { params: Promise<{ locale: Locale }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const [t, tSite] = await Promise.all([getTranslations("contact"), getTranslations("site")]);
+  const [t, tSite, { contact }] = await Promise.all([getTranslations("contact"), getTranslations("site"), getSiteContent()]);
 
   return (
     <section className="bg-accent-100/60">
@@ -21,9 +22,9 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
             <span className="icon-chip"><Icon name="message-circle" /></span>
             <h2 className="card-title">{t("whatsappTitle")}</h2>
             <p className="text-fg-muted">{t("whatsappText")}</p>
-            <a href={WHATSAPP_URL} className="btn" target="_blank" rel="noopener noreferrer">
+            <a href={whatsappHref(contact.whatsapp)} className="btn" target="_blank" rel="noopener noreferrer">
               <Icon name="message-circle" />
-              {tSite("whatsapp")}: {WHATSAPP_NUMBER}
+              {tSite("whatsapp")}: {contact.whatsapp}
             </a>
           </Card>
         </div>

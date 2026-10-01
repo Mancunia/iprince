@@ -16,7 +16,7 @@
     "footerCandidates": "For candidates",
     "footerContact": "Contact",
     "whatsapp": "WhatsApp",
-    "whatsappLabel": "Message us on WhatsApp: +49 173 9018671",
+    "whatsappLabel": "Message us on WhatsApp: {number}",
     "rights": "© {year} iPrince Personalvermittlung",
     "chat": "Live chat",
     "chatLabel": "Open live chat",
@@ -32,7 +32,10 @@
     "menuClose": "Close menu",
     "footerEmployers": "For employers",
     "footerEnquiry": "Request staff",
-    "footerContactForm": "Contact form"
+    "footerContactForm": "Contact form",
+    "imprint": "Imprint",
+    "privacy": "Privacy policy",
+    "germanOnly": "This page is only available in German."
   },
   "apply": {
     "title": "Apply: {profession}",
@@ -157,8 +160,10 @@
     "documents": "Documents",
     "back": "Back to applications",
     "statuses": { "new": "New", "reviewing": "Reviewing", "contacted": "Contacted", "placed": "Placed", "rejected": "Rejected", "archived": "Archived" },
-    "errors": { "invalid_credentials": "Email or password is incorrect.", "not_admin": "This account has no admin access.", "invalid": "Please check your input.", "server_error": "Something went wrong.", "not_found": "This application no longer exists.", "has_applications": "This profession has applications. Deactivate it instead." },
+    "errors": { "invalid_credentials": "Email or password is incorrect.", "not_admin": "This account has no admin access.", "invalid": "Please check your input.", "server_error": "Something went wrong.", "not_found": "This application no longer exists.", "has_applications": "This profession has applications. Deactivate it instead.", "upload_failed": "The upload failed. Check the file type and size." },
     "navProfessions": "Professions",
+    "navContent": "Content",
+    "content": {"title": "Site content", "sections": {"hero": "Hero", "features": "Features", "steps": "How it works", "employers": "Employers section", "contact": "Contact details", "photos": "Photos", "imprint": "Imprint", "privacy": "Privacy policy"}, "default": "Default", "edited": "Edited · {date}", "edit": "Edit", "ownerOnly": "Only the owner can edit this page.", "placeholders": "Contains placeholders", "placeholderWarning": "This text still contains [PLATZHALTER] markers. Replace all of them before the site goes live.", "reset": "Reset to default", "resetConfirm": "Replace this section with the default text?", "german": "German", "english": "English", "englishHelp": "Optional. Empty fields show the German text.", "write": "Write", "preview": "Preview", "markdownHelp": "Markdown: ## heading, **bold**, - list item, [link text](https://…). A line ending in \\ breaks the line.", "fields": {"kicker": "Kicker", "title": "Title", "lead": "Intro", "eyebrow": "Kicker", "text": "Text", "badgeTitle": "Badge title", "badgeText": "Badge text", "whatsapp": "WhatsApp number", "email": "Email (optional)", "address": "Address (optional)", "alt": "Alt text", "body": "Text"}, "groups": {"match": "Block 1: Matching", "advisors": "Block 2: Personal support", "choose": "Step 1", "apply": "Step 2", "contact": "Step 3"}, "slots": {"hero": "Hero", "feature-match": "Block 1", "feature-advisors": "Block 2", "steps": "How it works", "employer-banner": "Employer banner"}, "noPhoto": "No photo yet. A placeholder is shown.", "photoHelp": "JPEG, PNG or WebP, up to 5 MB.", "photoUpload": "Upload photo", "photoReplace": "Replace photo", "photoRemove": "Remove photo", "photoRemoveConfirm": "Remove this photo from the website?", "uploading": "Uploading…", "saveAlts": "Save alt texts", "altHelp": "Describe the photo for screen readers. Leave empty for a purely decorative photo."},
     "navTeam": "Team",
     "navSettings": "Settings",
     "navLeads": "Enquiries",
@@ -334,7 +339,7 @@
     "message": "Message (optional)",
     "submit": "Send enquiry",
     "success": "Thank you! We have received your enquiry and will get back to you within one working day.",
-    "privacy": "We use your details only to answer your enquiry."
+    "privacy": "We use your details only to answer your enquiry. More in our <link>privacy policy</link>."
   },
   "contact": {
     "kicker": "Contact",
@@ -345,7 +350,7 @@
     "message": "Message",
     "submit": "Send message",
     "success": "Thank you! We have received your message and will get back to you within one working day.",
-    "privacy": "We use your details only to answer your message.",
+    "privacy": "We use your details only to answer your message. More in our <link>privacy policy</link>.",
     "whatsappTitle": "Prefer WhatsApp?",
     "whatsappText": "Message us directly. We usually reply the same day."
   }

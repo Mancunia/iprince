@@ -14,6 +14,7 @@
     "db:env": "sh scripts/local-env.sh",
     "db:types": "supabase gen types typescript --local > src/lib/supabase/database.types.ts",
     "admin:create": "tsx --env-file=.env.local scripts/create-admin.ts",
+    "check:legal": "tsx scripts/check-legal.ts",
     "check": "npm run typecheck && npm run lint && npm run test && npm run test:db && npm run build"
   },
   "dependencies": {
@@ -24,6 +25,8 @@
     "next-intl": "^4.14.5",
     "react": "19.2.8",
     "react-dom": "19.2.8",
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1",
     "server-only": "^0.0.1",
     "tailwind-merge": "^3.7.0",
     "zod": "^4.6.5"

@@ -30,7 +30,7 @@ test("an employer enquiry and a contact message reach the admin inbox", async ({
   await page.goto("/en/contact");
   await page.getByLabel("Name").fill(sender);
   await page.getByLabel("Email").fill("sender@example.com");
-  await page.getByLabel("Message").fill("Do you place electricians?");
+  await page.getByRole("textbox", { name: "Message", exact: true }).fill("Do you place electricians?");
   await page.getByRole("button", { name: "Send message" }).click();
   await expect(page.getByRole("status")).toContainText("Thank you");
 
@@ -65,7 +65,7 @@ test("a contact form with the honeypot filled pretends success and stores nothin
   await page.goto("/en/contact");
   await page.getByLabel("Name").fill(bot);
   await page.getByLabel("Email").fill("bot@example.com");
-  await page.getByLabel("Message").fill("spam");
+  await page.getByRole("textbox", { name: "Message", exact: true }).fill("spam");
   // The trap is inert and hidden, so set it directly like a bot would.
   await page.locator('input[name="hp_field"]').evaluate((el: HTMLInputElement) => { el.value = "http://spam.test"; });
   await page.getByRole("button", { name: "Send message" }).click();
