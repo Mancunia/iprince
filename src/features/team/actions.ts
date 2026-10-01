@@ -8,7 +8,7 @@ import { requireOwner } from "@/features/admin-auth/session";
 import { fail, fieldErrorsOf, ok, type ActionResult } from "@/lib/result";
 import { authAdmin } from "@/lib/supabase/auth-admin";
 import { createServerSupabase } from "@/lib/supabase/server";
-import { canRemove, inviteInput, inviteRedirectUrl } from "./team";
+import { canRemove, inviteInput, inviteInsertFailure, inviteRedirectUrl } from "./team";
 
 type Result = ActionResult<null>;
 const localeOf = (formData: FormData) => z.enum(locales).catch("en").parse(formData.get("locale"));
@@ -26,7 +26,7 @@ export async function inviteEditor(_prev: Result | null, formData: FormData): Pr
   const admin = authAdmin();
   const { data, error } = await admin.inviteUserByEmail(parsed.data.email, { redirectTo: inviteRedirectUrl(origin, locale) });
   if (error) {
-    if (error.code === "email_exists" || error.status === 422) return fail("invalid", { email: ["exists"] });
+    if (error.code === "email_exists") return fail("invalid", { email: ["exists"] });
     console.error("invite failed", error.code ?? error.status);
     return fail("server_error");
   }
@@ -37,8 +37,10 @@ export async function inviteEditor(_prev: Result | null, formData: FormData): Pr
     .from("admins")
     .insert({ user_id: data.user.id, role: "editor", display_name: parsed.data.displayName });
   if (insertError) {
+    if (inviteInsertFailure(insertError.code) === "exists") return fail("invalid", { email: ["exists"] });
     console.error("admins insert failed", insertError.code);
-    await admin.deleteUser(data.user.id); // no auth user without an admins row
+    const { error: rollbackError } = await admin.deleteUser(data.user.id); // no auth user without an admins row
+    if (rollbackError) console.error("invite rollback failed", rollbackError.code ?? rollbackError.status);
     return fail("server_error");
   }
   revalidatePath(`/${locale}/admin/team`);

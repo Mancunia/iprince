@@ -18,3 +18,8 @@ export function canRemove(target: { userId: string; role: "owner" | "editor" }, 
 export function memberStatus(lastSignInAt: string | null | undefined): "active" | "pending" {
   return lastSignInAt ? "active" : "pending";
 }
+
+/** An invite for an already-invited user can succeed in Auth but hit the admins primary key; that user must not be deleted. */
+export function inviteInsertFailure(code: string | undefined): "exists" | "rollback" {
+  return code === "23505" ? "exists" : "rollback";
+}

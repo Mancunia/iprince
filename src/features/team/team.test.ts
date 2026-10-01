@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { canRemove, inviteInput, inviteRedirectUrl, memberStatus } from "./team";
+import { canRemove, inviteInput, inviteInsertFailure, inviteRedirectUrl, memberStatus } from "./team";
 
 describe("inviteInput", () => {
   it("normalises a valid invite", () => {
@@ -36,5 +36,15 @@ describe("memberStatus", () => {
     expect(memberStatus(null)).toBe("pending");
     expect(memberStatus(undefined)).toBe("pending");
     expect(memberStatus("2026-10-01T10:00:00Z")).toBe("active");
+  });
+});
+
+describe("inviteInsertFailure", () => {
+  it("treats a unique violation as an existing member and never rolls back", () => {
+    expect(inviteInsertFailure("23505")).toBe("exists");
+  });
+  it("rolls back for any other insert error", () => {
+    expect(inviteInsertFailure("42501")).toBe("rollback");
+    expect(inviteInsertFailure(undefined)).toBe("rollback");
   });
 });
