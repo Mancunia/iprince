@@ -185,7 +185,9 @@
   /* Modal sheets: site menu (top) and admin drawer (left). Native <dialog> with showModal(). */
   .sheet, .drawer { margin: 0; max-width: none; padding: 0; border: 0; color: var(--text-body); background: var(--surface-input); box-shadow: var(--shadow-raised); }
   .sheet::backdrop, .drawer::backdrop { background: rgb(16 24 40 / 0.4); }
-  .sheet { width: 100%; max-height: 100dvh; padding: 8px var(--gutter) 24px; border-radius: 0 0 var(--radius-lg) var(--radius-lg); }
+  /* Padding lives on .sheet-body: a click whose target is the dialog itself is then always the backdrop. */
+  .sheet { width: 100%; max-height: 100dvh; border-radius: 0 0 var(--radius-lg) var(--radius-lg); }
+  .sheet-body { padding: 8px var(--gutter) 24px; }
   .sheet-head { display: flex; justify-content: flex-end; min-height: 56px; align-items: center; }
   .sheet-nav { display: grid; gap: 4px; padding-block: 4px 20px; }
   .sheet-nav a { display: flex; align-items: center; min-height: 48px; padding: 0 12px; border-radius: var(--radius-sm); color: var(--text-body); text-decoration: none; font-size: var(--text-lg); font-weight: var(--weight-medium); }

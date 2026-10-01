@@ -168,6 +168,7 @@
     "navGroupSetup": "Setup",
     "menuOpen": "Open menu",
     "menuClose": "Close menu",
+    "navLabel": "Admin navigation",
     "statusFilter": "Filter by status",
     "review": "Review",
     "dangerZone": "Delete entry",

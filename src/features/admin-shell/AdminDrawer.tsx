@@ -3,10 +3,10 @@
 import { useRef, type ReactNode } from "react";
 import { Icon } from "@/ui/Icon";
 
-type Props = { children: ReactNode; openLabel: string; closeLabel: string };
+type Props = { children: ReactNode; openLabel: string; closeLabel: string; navLabel: string };
 
 /** Below 1000px the sidebar opens in a modal drawer. Closes on Escape (native), on the backdrop and on any link. */
-export function AdminDrawer({ children, openLabel, closeLabel }: Props) {
+export function AdminDrawer({ children, openLabel, closeLabel, navLabel }: Props) {
   const dialog = useRef<HTMLDialogElement>(null);
   return (
     <>
@@ -16,7 +16,7 @@ export function AdminDrawer({ children, openLabel, closeLabel }: Props) {
       <dialog
         ref={dialog}
         className="drawer"
-        aria-label={openLabel}
+        aria-label={navLabel}
         onClick={(event) => {
           const target = event.target as Element;
           if (target === event.currentTarget || target.closest("a")) event.currentTarget.close();

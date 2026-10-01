@@ -65,10 +65,12 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
           </div>
           <div className="relative">
             <Photo slot="hero" alt={t("heroAlt")} className="aspect-[4/5] md:aspect-[5/6]" priority />
-            <div className="float-badge -left-4 top-10">
-              <span className="icon-chip"><Icon name="briefcase" size={16} /></span>
-              <span><strong>{tSite("openPositions", { count: openPositions })}</strong>{t("badgeLive")}</span>
-            </div>
+            {openPositions > 0 ? (
+              <div className="float-badge -left-4 top-10">
+                <span className="icon-chip"><Icon name="briefcase" size={16} /></span>
+                <span><strong>{tSite("openPositions", { count: openPositions })}</strong>{t("badgeLive")}</span>
+              </div>
+            ) : null}
             <div className="float-badge -right-4 bottom-10">
               <span className="icon-chip icon-chip-navy"><Icon name="badge-check" size={16} /></span>
               <span><strong>{t("statFree")}</strong>{t("badgeFreeText")}</span>

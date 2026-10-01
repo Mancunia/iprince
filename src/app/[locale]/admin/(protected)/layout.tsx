@@ -44,7 +44,7 @@ export default async function AdminLayout({ children, params }: { children: Reac
     <div className="admin">
       <aside className="admin-side">{sidebar}</aside>
       <div className="admin-topbar">
-        <AdminDrawer openLabel={t("menuOpen")} closeLabel={t("menuClose")}>{sidebar}</AdminDrawer>
+        <AdminDrawer openLabel={t("menuOpen")} closeLabel={t("menuClose")} navLabel={t("navLabel")}>{sidebar}</AdminDrawer>
         <Link href="/admin" className="brand" aria-label="iPrince Admin">
           <BrandLogo />
         </Link>

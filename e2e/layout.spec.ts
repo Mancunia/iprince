@@ -1,4 +1,6 @@
 import { expect, test } from "@playwright/test";
+import { createClient } from "@supabase/supabase-js";
+import type { Database } from "../src/lib/supabase/database.types";
 import { signIn } from "./helpers";
 
 test.describe("phone width", () => {
@@ -19,6 +21,16 @@ test.describe("phone width", () => {
     await page.getByRole("dialog").getByRole("link", { name: "Contact" }).click();
     await expect(page).toHaveURL(/\/en\/contact$/);
     await expect(page.getByRole("dialog")).toBeHidden();
+  });
+
+  test("a tap on the menu's own padding keeps it open", async ({ page }) => {
+    await page.goto("/en");
+    await page.getByRole("button", { name: "Open menu" }).click();
+    const menu = page.getByRole("dialog");
+    const box = (await menu.boundingBox())!;
+    // Bottom padding, centred: away from the rounded corners, which are backdrop.
+    await page.mouse.click(box.x + box.width / 2, box.y + box.height - 12);
+    await expect(menu).toBeVisible();
   });
 
   test("an in-page menu link closes the menu", async ({ page }) => {
@@ -63,10 +75,32 @@ test.describe("admin at phone width", () => {
     await expect(drawer).toBeHidden();
   });
 
+  test("the drawer is announced as the admin navigation", async ({ page }) => {
+    await signIn(page);
+    await page.getByRole("button", { name: "Open menu" }).click();
+    await expect(page.getByRole("dialog", { name: "Admin navigation" })).toBeVisible();
+  });
+
   test("the drawer closes with Escape", async ({ page }) => {
     await signIn(page);
     await page.getByRole("button", { name: "Open menu" }).click();
     await page.keyboard.press("Escape");
     await expect(page.getByRole("dialog")).toBeHidden();
   });
+});
+
+test("the hero never claims availability when there are no open positions", async ({ page }) => {
+  const supabase = createClient<Database>(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
+  const { data: before, error } = await supabase.from("professions").select("id, open_positions").gt("open_positions", 0);
+  if (error) throw error;
+  try {
+    for (const row of before) await supabase.from("professions").update({ open_positions: 0 }).eq("id", row.id);
+    await page.goto("/en");
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    await expect(page.getByText("Available now")).toHaveCount(0);
+  } finally {
+    for (const row of before) await supabase.from("professions").update({ open_positions: row.open_positions }).eq("id", row.id);
+  }
 });
