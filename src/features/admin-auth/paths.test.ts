@@ -6,6 +6,8 @@ describe("isProtectedAdminPath", () => {
     ["/en/admin", true],
     ["/de/admin/applications/1", true],
     ["/en/admin/login", false],
+    ["/de/admin/accept-invite", false],
+    ["/de/admin/team", true],
     ["/en/administrator", false],
     ["/en/apply/pflege", false],
   ])("%s → %s", (path, expected) => expect(isProtectedAdminPath(path)).toBe(expected));

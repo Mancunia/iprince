@@ -29,6 +29,7 @@
     }
   },
   "admin": {
+    "acceptInvite": { "title": "Einladung annehmen", "text": "Wählen Sie die Schaltfläche, um Ihre Einladung anzunehmen und ein Passwort festzulegen.", "submit": "Einladung annehmen" },
     "inviteExpired": "Dieser Einladungslink ist abgelaufen oder wurde schon verwendet. Bitten Sie um eine neue Einladung.",
     "setPassword": {
       "title": "Passwort festlegen",

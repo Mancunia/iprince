@@ -1,19 +1,19 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { adminLoginPath, safeNextPath } from "@/features/admin-auth/paths";
-import { createServerSupabase } from "@/lib/supabase/server";
 
-// Under /api so the i18n proxy leaves it alone. verifyOtp sets the session cookies via cookies(),
-// which Next applies to the redirect response.
-export async function GET(request: NextRequest) {
+// Under /api so the i18n proxy leaves it alone. This GET must not spend the one-time token: email link
+// scanners prefetch links. It forwards to an interstitial page whose button runs the verification.
+export function GET(request: NextRequest) {
   const params = request.nextUrl.searchParams;
   const next = safeNextPath(params.get("next"));
   const tokenHash = params.get("token_hash");
 
   if (tokenHash && params.get("type") === "invite") {
-    const supabase = await createServerSupabase();
-    const { error } = await supabase.auth.verifyOtp({ type: "invite", token_hash: tokenHash });
-    if (!error) return NextResponse.redirect(new URL(next, request.url));
-    console.error("invite verification failed", error.code ?? error.status);
+    const locale = next.split("/")[1];
+    const target = new URL(`/${locale}/admin/accept-invite`, request.url);
+    target.searchParams.set("token_hash", tokenHash);
+    target.searchParams.set("next", next);
+    return NextResponse.redirect(target);
   }
   return NextResponse.redirect(new URL(`${adminLoginPath(next)}?notice=invite_expired`, request.url));
 }

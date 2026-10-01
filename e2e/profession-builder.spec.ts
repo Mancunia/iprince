@@ -31,6 +31,8 @@ test("an admin creates a profession, publishes its form and activates it", async
   await expect(page.getByText("Version 1 is live.")).toBeVisible();
 
   await page.getByRole("link", { name: "Profession details" }).click();
+  await expect(page).toHaveURL(/\/en\/admin\/professions\/[0-9a-f-]+$/);
+  const detailsUrl = page.url();
   await page.getByRole("checkbox", { name: "Active", exact: true }).check();
   await page.getByRole("button", { name: "Save" }).click();
   await expect(page.getByRole("status")).toHaveText("Saved.");
@@ -38,6 +40,12 @@ test("an admin creates a profession, publishes its form and activates it", async
   await page.goto(`/de/apply/${slug}`);
   await expect(page.getByLabel("Spitzname")).toBeVisible();
   await expect(page.getByLabel("Motivation")).toBeVisible();
+
+  // Leave no active test profession behind.
+  await page.goto(detailsUrl);
+  await page.getByRole("checkbox", { name: "Active", exact: true }).uncheck();
+  await page.getByRole("button", { name: "Save" }).click();
+  await expect(page.getByRole("status")).toHaveText("Saved.");
 });
 
 test("a profession cannot be activated without a published form", async ({ page }) => {

@@ -28,21 +28,24 @@ export function FieldList({ fields, selected, locale, hasErrors, onSelect, onMov
   return (
     <Stack gap="sm">
       <Stack as="ul" gap="xs">
-        {fields.map((field, i) => (
+        {fields.map((field, i) => {
+          const label = localized(field.label, locale) || t("untitled");
+          return (
           // Index keys: the answer key is editable, so it cannot identify a row.
           <li key={i}>
             <Stack direction="row" gap="sm">
               <Button variant={selected === i ? "primary" : "secondary"} aria-pressed={selected === i} onClick={() => onSelect(i)}>
-                {localized(field.label, locale) || t("untitled")} · {t(`types.${field.type}`)}
+                {label} · {t(`types.${field.type}`)}
                 {field.required ? " *" : ""}
                 {hasErrors(i) ? ` · ${t("needsAttention")}` : ""}
               </Button>
-              <Button variant="secondary" aria-label={t("moveUp")} disabled={i === 0} onClick={() => onMove(i, -1)}>↑</Button>
-              <Button variant="secondary" aria-label={t("moveDown")} disabled={i === fields.length - 1} onClick={() => onMove(i, 1)}>↓</Button>
-              <Button variant="secondary" aria-label={t("remove")} onClick={() => onRemove(i)}>✕</Button>
+              <Button variant="secondary" aria-label={`${t("moveUp")}: ${label}`} disabled={i === 0} onClick={() => onMove(i, -1)}>↑</Button>
+              <Button variant="secondary" aria-label={`${t("moveDown")}: ${label}`} disabled={i === fields.length - 1} onClick={() => onMove(i, 1)}>↓</Button>
+              <Button variant="secondary" aria-label={`${t("remove")}: ${label}`} onClick={() => onRemove(i)}>✕</Button>
             </Stack>
           </li>
-        ))}
+          );
+        })}
       </Stack>
       <Stack direction="row" gap="sm">
         <Select aria-label={t("newFieldType")} value={type} onChange={(e) => setType(e.target.value as FieldType)}>

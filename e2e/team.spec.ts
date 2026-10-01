@@ -33,6 +33,8 @@ test("the owner invites an editor, who sets a password and is later removed", as
   const editorContext = await browser.newContext();
   const editor = await editorContext.newPage();
   await editor.goto(await latestEmailLink(email));
+  await expect(editor).toHaveURL(/\/en\/admin\/accept-invite\?/);
+  await editor.getByRole("button", { name: "Accept invite" }).click();
   await expect(editor).toHaveURL(/\/en\/admin\/set-password$/);
   await editor.getByLabel("New password").fill("editor-password-123");
   await editor.getByLabel("Confirm password").fill("editor-password-123");
@@ -54,6 +56,8 @@ test("the owner invites an editor, who sets a password and is later removed", as
 
 test("a used or bogus invite link lands on the login page with a notice", async ({ page }) => {
   await page.goto("/api/auth/confirm?token_hash=bogus&type=invite&next=%2Fen%2Fadmin%2Fset-password");
+  await expect(page).toHaveURL(/\/en\/admin\/accept-invite\?/);
+  await page.getByRole("button", { name: "Accept invite" }).click();
   await expect(page).toHaveURL(/\/en\/admin\/login\?notice=invite_expired$/);
   // Next adds its own empty role=alert route announcer, so filter by text.
   await expect(page.getByRole("alert").filter({ hasText: "expired" })).toBeVisible();
@@ -61,5 +65,5 @@ test("a used or bogus invite link lands on the login page with a notice", async 
 
 test("the confirm route never redirects off-site", async ({ page }) => {
   await page.goto("/api/auth/confirm?token_hash=bogus&type=invite&next=https%3A%2F%2Fevil.example");
-  await expect(page).toHaveURL(/^http:\/\/localhost:3000\/de\/admin\/login\?notice=invite_expired$/);
+  await expect(page).toHaveURL(/^http:\/\/localhost:3000\/de\/admin\/accept-invite\?/);
 });

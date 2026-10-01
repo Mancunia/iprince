@@ -5,7 +5,7 @@ import { ABANDONED_AFTER_MS, cleanupAbandoned } from "./cleanup";
 type Options = { listOrphans: () => string[]; removable?: (names: string[]) => string[]; deleted?: number };
 
 function fakeClient({ listOrphans, removable = (names) => names, deleted = 0 }: Options) {
-  const rpc = vi.fn(async (fn: string, _args: Record<string, unknown>) => {
+  const rpc = vi.fn(async (fn: string) => {
     if (fn === "orphaned_application_objects") return { data: listOrphans(), error: null };
     if (fn === "delete_abandoned_applications") return { data: deleted, error: null };
     throw new Error(`unexpected rpc ${fn}`);

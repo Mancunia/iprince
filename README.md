@@ -45,7 +45,8 @@ Create a project, then run `npx supabase link --project-ref <ref>` and `npx supa
 
 - Bootstrap the first owner by running `admin:create` with the production env vars in a one-off shell (never commit them).
 - Set Auth minimum password length to 12 or more and keep sign-ups disabled.
-- Auth → URL configuration: add `https://<your-domain>/**` to the redirect URLs. Auth → Email templates → Invite user: paste `supabase/templates/invite.html` (the link must stay `{{ .RedirectTo }}&token_hash={{ .TokenHash }}&type=invite`).
+- Auth → URL configuration: add `https://<your-domain>/**` to the redirect URLs. Auth → Email templates → Invite user: paste `supabase/templates/invite.html` (the link must stay `{{ .RedirectTo }}&token_hash={{ .TokenHash }}&type=invite`). Every origin admins use (apex and www, custom domains) must be in Redirect URLs; preview URLs are not supported for invites. An origin missing from the list makes GoTrue fall back to the Site URL and the invite link is malformed.
+- Auth → Email → OTP expiration = 86400 seconds, so invite links last 24 hours as the email says.
 - Invite emails need working SMTP in production (Supabase's built-in sender is rate-limited); configure custom SMTP before inviting staff.
 - Keep Auth `refresh_token_reuse_interval` above 0 (default 10s); the proxy relies on it (see `src/lib/supabase/proxy.ts`).
 - Confirm table privileges for `anon`, `authenticated` and `service_role`; the migrations rely on Supabase's default grants.

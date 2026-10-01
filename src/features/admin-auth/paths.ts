@@ -1,4 +1,4 @@
-const PROTECTED = /^\/(de|en)\/admin(?!\/login)(\/|$)/;
+const PROTECTED = /^\/(de|en)\/admin(?!\/(?:login|accept-invite)(?:\/|$))(\/|$)/;
 
 export function isProtectedAdminPath(pathname: string): boolean {
   return PROTECTED.test(pathname);

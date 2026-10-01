@@ -16,6 +16,8 @@ import {
 
 type Option = NonNullable<FormField["options"]>[number];
 
+const optionName = (option: Option) => option.label.de || option.value;
+
 type Props = {
   field: FormField;
   index: number;
@@ -90,9 +92,9 @@ export function FieldEditor({ field, index, otherKeys, errors, onChange }: Props
                 errors={errorsUnder(errors, `options.${oi}.label`)}
                 onChange={(label) => setOptions(field.options!.map((o, i) => (i === oi ? { ...o, label } : o)))}
               />
-              <Button variant="secondary" aria-label={t("moveUp")} disabled={oi === 0} onClick={() => setOptions(moveItem(field.options!, oi, -1))}>↑</Button>
-              <Button variant="secondary" aria-label={t("moveDown")} disabled={oi === field.options!.length - 1} onClick={() => setOptions(moveItem(field.options!, oi, 1))}>↓</Button>
-              <Button variant="secondary" aria-label={t("remove")} disabled={field.options!.length === 1} onClick={() => setOptions(removeAt(field.options!, oi))}>✕</Button>
+              <Button variant="secondary" aria-label={`${t("moveUp")}: ${optionName(option)}`} disabled={oi === 0} onClick={() => setOptions(moveItem(field.options!, oi, -1))}>↑</Button>
+              <Button variant="secondary" aria-label={`${t("moveDown")}: ${optionName(option)}`} disabled={oi === field.options!.length - 1} onClick={() => setOptions(moveItem(field.options!, oi, 1))}>↓</Button>
+              <Button variant="secondary" aria-label={`${t("remove")}: ${optionName(option)}`} disabled={field.options!.length === 1} onClick={() => setOptions(removeAt(field.options!, oi))}>✕</Button>
             </Stack>
           ))}
           <Button

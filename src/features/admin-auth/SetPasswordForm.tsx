@@ -9,6 +9,7 @@ import { Input } from "@/ui/inputs";
 import { Stack } from "@/ui/Stack";
 import { Text } from "@/ui/Text";
 import { setPassword } from "./actions";
+import { MIN_PASSWORD_LENGTH } from "./password";
 
 export function SetPasswordForm({ locale }: { locale: Locale }) {
   const t = useTranslations("admin");
@@ -21,7 +22,7 @@ export function SetPasswordForm({ locale }: { locale: Locale }) {
       <Stack gap="md">
         <input type="hidden" name="locale" value={locale} />
         <Field id="new-password" label={t("setPassword.password")} help={t("setPassword.help")} required errors={errorsFor("password")}>
-          <Input id="new-password" name="password" type="password" autoComplete="new-password" minLength={12} required />
+          <Input id="new-password" name="password" type="password" autoComplete="new-password" minLength={MIN_PASSWORD_LENGTH} required />
         </Field>
         <Field id="confirm-password" label={t("setPassword.confirm")} required errors={errorsFor("confirm")}>
           <Input id="confirm-password" name="confirm" type="password" autoComplete="new-password" required />

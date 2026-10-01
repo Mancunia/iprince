@@ -29,6 +29,7 @@
     }
   },
   "admin": {
+    "acceptInvite": { "title": "Accept your invitation", "text": "Select the button to accept your invitation and choose a password.", "submit": "Accept invite" },
     "inviteExpired": "This invite link has expired or was already used. Ask the owner to invite you again.",
     "setPassword": {
       "title": "Choose your password",

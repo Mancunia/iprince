@@ -72,10 +72,15 @@ export function FormBuilder({ locale, formId, version, initialDefinition, initia
     if (!check.ok) return fail("invalid", check.errors);
     startTransition(async () => {
       const input = { locale, formId, expectedUpdatedAt: updatedAt, definition };
-      if (kind === "save") {
-        accept(await saveFormDraft(input), t("saved"));
-      } else if (accept(await publishFormDraft(input), t("published"))) {
-        router.refresh();
+      try {
+        if (kind === "save") {
+          accept(await saveFormDraft(input), t("saved"));
+        } else if (accept(await publishFormDraft(input), t("published"))) {
+          router.refresh();
+        }
+      } catch {
+        // Network or server failure: keep the user's edits and say so. These actions do not redirect.
+        fail("server_error");
       }
     });
   }
@@ -83,10 +88,14 @@ export function FormBuilder({ locale, formId, version, initialDefinition, initia
   function discard() {
     if (!window.confirm(t("confirmDiscard"))) return;
     startTransition(async () => {
-      const result = await discardFormDraft({ locale, formId });
-      if (!result.ok) return fail(result.formError);
-      setDirty(false);
-      router.refresh();
+      try {
+        const result = await discardFormDraft({ locale, formId });
+        if (!result.ok) return fail(result.formError);
+        setDirty(false);
+        router.refresh();
+      } catch {
+        fail("server_error");
+      }
     });
   }
 
