@@ -288,4 +288,11 @@
   .prose strong { font-weight: var(--weight-semibold); }
   .prose table { width: 100%; border-collapse: collapse; font-size: var(--text-sm); }
   .prose th, .prose td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--border-hairline); }
+  .prose h4 { font-size: var(--text-lg); }
+  .prose blockquote { padding-left: 16px; border-left: 3px solid var(--color-gold-300); color: var(--text-muted); }
+  .prose img { max-width: 100%; height: auto; border-radius: var(--radius-md); }
+  .prose code { padding: 1px 5px; border-radius: var(--radius-sm); background: var(--surface-tint); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9em; }
+  .prose pre { overflow-x: auto; padding: 14px 16px; border-radius: var(--radius-md); background: var(--surface-tint); }
+  .prose pre code { padding: 0; background: none; }
+  .prose hr { border: 0; border-top: 1px solid var(--border-hairline); }
 }

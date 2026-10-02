@@ -11,6 +11,7 @@ export async function SiteHeader() {
     { href: "/#berufe", label: t("navProfessions") },
     { href: "/#ablauf", label: t("navSteps") },
     { href: "/employers", label: t("navEmployers") },
+    { href: "/blog", label: t("navBlog") },
     { href: "/contact", label: t("navContact") },
   ];
   const cta = { href: "/#berufe", label: t("cta") };

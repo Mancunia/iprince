@@ -34,4 +34,6 @@ insert into public.profession_forms (id, profession_id, version, published_at, s
 update public.professions set current_form_id = 'b0000000-0000-4000-8000-000000000001' where slug = 'pflege';
 update public.professions set current_form_id = 'b0000000-0000-4000-8000-000000000002' where slug = 'elektro';
 
-insert into public.blog_categories (slug, name) values ('karriere', '{"de":"Karriere","en":"Careers"}');
+insert into public.blog_categories (slug, name, cta) values
+  ('karriere', '{"de":"Karriere","en":"Careers"}', 'candidates'),
+  ('arbeitgeber', '{"de":"Arbeitgeber","en":"Employers"}', 'employers');

@@ -11,12 +11,16 @@ export async function signIn(page: Page, { email, password } = E2E_ADMIN) {
   await expect(page).toHaveURL(/\/en\/admin$/);
 }
 
-/** Locally every request has IP "unknown", so repeated runs would hit the hourly limit. */
-export async function resetRateLimit(bucket: string) {
-  const supabase = createClient<Database>(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!, {
+/** Service-role client for test setup and cleanup (bypasses RLS). */
+export function serviceDb() {
+  return createClient<Database>(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!, {
     auth: { persistSession: false, autoRefreshToken: false },
   });
-  const { error } = await supabase.from("rate_limits").delete().eq("bucket", bucket);
+}
+
+/** Locally every request has IP "unknown", so repeated runs would hit the hourly limit. */
+export async function resetRateLimit(bucket: string) {
+  const { error } = await serviceDb().from("rate_limits").delete().eq("bucket", bucket);
   if (error) throw error;
 }
 

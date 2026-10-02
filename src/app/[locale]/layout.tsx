@@ -4,6 +4,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { DM_Sans } from "next/font/google";
 import { notFound } from "next/navigation";
 import { locales, type Locale } from "@/i18n/config";
+import { siteUrl } from "@/lib/site-url";
 import "../globals.css";
 
 const dmSans = DM_Sans({
@@ -20,7 +21,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "metadata" });
-  return { title: t("title"), description: t("description") };
+  return { metadataBase: siteUrl(), title: t("title"), description: t("description") };
 }
 
 export default async function LocaleLayout({ children, params }: { children: React.ReactNode; params: Promise<{ locale: string }> }) {
