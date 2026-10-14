@@ -2,6 +2,7 @@
 
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useId, useRef, useState } from "react";
+import { track } from "@/features/analytics/track";
 import { Icon } from "@/ui/Icon";
 import { grantConsent, showConsentBanner, useConsent } from "./consent";
 
@@ -11,6 +12,7 @@ const SCRIPT_ID = "tawk-embed";
 function loadTawk(propertyId: string, widgetId: string, onLoad: () => void) {
   const api = (window.Tawk_API ??= {});
   api.onLoad = onLoad;
+  api.onChatMaximized = () => track("chat_opened", { channel: "tawk" });
   if (document.getElementById(SCRIPT_ID)) return;
   window.Tawk_LoadStart = new Date();
   const script = document.createElement("script");
