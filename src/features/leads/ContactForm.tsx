@@ -1,7 +1,8 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { startTransition, useActionState, type FormEvent } from "react";
+import { startTransition, useActionState, useEffect, type FormEvent } from "react";
+import { track } from "@/features/analytics/track";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/ui/Button";
 import { Field } from "@/ui/Field";
@@ -15,6 +16,10 @@ export function ContactForm() {
   const t = useTranslations("contact");
   const tf = useTranslations("publicForms");
   const [state, dispatch, pending] = useActionState(submitContact, null);
+  const sent = state?.ok === true;
+  useEffect(() => {
+    if (sent) track("contact_message_sent");
+  }, [sent]);
 
   if (state?.ok) {
     return (

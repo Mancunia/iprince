@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { localizePost, storedText } from "./text";
+import { localizePost, postLocales, storedText } from "./text";
 
 const post = (en: { title?: string; excerpt?: string; body?: string } = {}) => ({
   title: { de: "Titel", en: en.title ?? "" },
@@ -11,6 +11,13 @@ describe("storedText", () => {
   it("fills a missing language and survives garbage", () => {
     expect(storedText.parse({ de: "Hallo" })).toEqual({ de: "Hallo", en: "" });
     expect(storedText.parse(null)).toEqual({ de: "", en: "" });
+  });
+});
+
+describe("postLocales", () => {
+  it("lists English only with its own title and body", () => {
+    expect(postLocales({ title: { de: "T", en: "T" }, body: { de: "B", en: "B" } })).toEqual(["de", "en"]);
+    expect(postLocales({ title: { de: "T", en: "T" }, body: { de: "B", en: " " } })).toEqual(["de"]);
   });
 });
 

@@ -21,6 +21,6 @@ export function getIntegrations(): Integrations {
     return readIntegrationsEnv();
   } catch (error) {
     console.error(error);
-    return { cookieScriptId: null, tawk: null };
+    return { cookieScriptId: null, tawk: null, gaId: null, googleVerification: null };
   }
 }

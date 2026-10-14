@@ -8,13 +8,15 @@ import { PostCard } from "@/features/blog/PostCard";
 import { PostCta } from "@/features/blog/PostCta";
 import { PostMeta } from "@/features/blog/PostMeta";
 import { getLivePost, listRelated } from "@/features/blog/queries";
-import { localizePost } from "@/features/blog/text";
+import { localizePost, postLocales } from "@/features/blog/text";
+import { JsonLd } from "@/features/seo/JsonLd";
+import { sitePageMetadata } from "@/features/seo/metadata";
 import { Photo } from "@/features/site/Photo";
 import { localized } from "@/lib/i18n/localized";
 import { Icon } from "@/ui/Icon";
 import { Markdown } from "@/ui/Markdown";
-
-const DEFAULT_OG_IMAGE = "/logo/iprince-mark.png";
+import { DEFAULT_OG_IMAGE, lastModifiedOf } from "@/lib/seo";
+import { siteUrl } from "@/lib/site-url";
 
 type Props = { params: Promise<{ locale: Locale; slug: string }> };
 
@@ -23,21 +25,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = await getLivePost(slug);
   if (!post) return {};
   const text = localizePost(post, locale);
-  const path = `/${locale}/blog/${post.slug}`;
-  const description = text.excerpt || undefined;
-  return {
+  const meta = await sitePageMetadata({
+    locale,
+    path: `/blog/${post.slug}`,
     title: text.title,
-    description,
-    alternates: { canonical: path, languages: { de: `/de/blog/${post.slug}`, en: `/en/blog/${post.slug}` } },
-    openGraph: {
-      type: "article",
-      url: path,
-      title: text.title,
-      description,
-      publishedTime: post.publishedAt,
-      images: [{ url: coverSrc(post.coverPath) ?? DEFAULT_OG_IMAGE }],
-    },
-  };
+    description: text.excerpt || undefined,
+    image: coverSrc(post.coverPath) ?? undefined,
+    type: "article",
+    available: postLocales(post),
+  });
+  const modifiedTime = lastModifiedOf(post.publishedAt, post.updatedAt);
+  return { ...meta, openGraph: { ...meta.openGraph, type: "article", publishedTime: post.publishedAt, modifiedTime } };
 }
 
 export default async function BlogPostPage({ params }: Props) {
@@ -52,9 +50,23 @@ export default async function BlogPostPage({ params }: Props) {
   const text = localizePost(post, locale);
   const lang = text.fallback ? "de" : undefined;
   const cover = coverSrc(post.coverPath);
+  const origin = siteUrl();
+  const posting = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: text.title,
+    ...(text.excerpt ? { description: text.excerpt } : {}),
+    inLanguage: lang ?? locale,
+    datePublished: post.publishedAt,
+    dateModified: lastModifiedOf(post.publishedAt, post.updatedAt),
+    image: new URL(cover ?? DEFAULT_OG_IMAGE, origin).href,
+    author: { "@type": "Person", name: post.authorName },
+    mainEntityOfPage: new URL(`/${lang ?? locale}/blog/${post.slug}`, origin).href,
+  };
 
   return (
     <>
+      <JsonLd data={posting} />
       <article className="container-page grid gap-8 py-14 pb-24 md:py-20">
         <Link href="/blog" className="btn btn-ghost btn-sm -ml-3 max-w-max">
           <Icon name="arrow-left" size={16} />

@@ -1,14 +1,26 @@
+import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import type { Locale } from "@/i18n/config";
 import { Link } from "@/i18n/navigation";
 import { ApplyForm } from "@/features/applications/ApplyForm";
 import { getApplyForm } from "@/features/professions/queries";
+import { sitePageMetadata } from "@/features/seo/metadata";
 import { localized } from "@/lib/i18n/localized";
 import { Card } from "@/ui/Card";
 import { Icon } from "@/ui/Icon";
 
-export default async function ApplyPage({ params }: { params: Promise<{ locale: Locale; slug: string }> }) {
+type Props = { params: Promise<{ locale: Locale; slug: string }> };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale, slug } = await params;
+  const form = await getApplyForm(slug);
+  if (!form) return {};
+  const t = await getTranslations({ locale, namespace: "apply" });
+  return sitePageMetadata({ locale, path: `/apply/${form.slug}`, title: t("title", { profession: localized(form.name, locale) }), description: t("lead") });
+}
+
+export default async function ApplyPage({ params }: Props) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
   const form = await getApplyForm(slug);

@@ -39,6 +39,7 @@ npm run dev                 # http://localhost:3000/en
 - `src/proxy.ts` (Next 16's replacement for middleware) handles locale routing, session refresh and an optimistic admin redirect. `requireAdmin()` is the real guard.
 - Styling: Tailwind 4. Tokens in `src/styles/tokens.css` (`@theme`), design-system classes in `src/styles/components.css` (`@layer components`); primitives in `src/ui` map props to those classes, pages use utilities for layout. `cn()` = clsx + tailwind-merge.
 - Site settings (`site_settings`, one row): the owner picks the chat channel (WhatsApp, tawk.to or none) under Admin → Settings. tawk.to only loads after CookieScript consent (`COOKIESCRIPT_ID`, `TAWK_*` in `.env.example`).
+- SEO and analytics: `src/lib/seo.ts` builds page metadata (canonical, hreflang, Open Graph), `src/app/sitemap.ts` / `robots.ts` (only production is indexable, admin never). Vercel Web Analytics is cookieless and always on for the public site; GA4 (`GA_MEASUREMENT_ID`) loads only after CookieScript "performance" consent. Conversion events go through `track()` in `src/features/analytics/track.ts` and never carry personal data.
 - Site content (`site_content`, one row per section): home copy, contact details, photos and the legal pages are edited under Admin → Content. Keys without a row show the copy in `messages/*.json`. Only the owner edits Impressum and Datenschutz. `npm run check:legal` fails while either still contains `[PLATZHALTER`; run it against production before launch.
 
 ## Production Supabase

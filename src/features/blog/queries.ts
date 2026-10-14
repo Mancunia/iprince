@@ -1,9 +1,11 @@
 import "server-only";
 import { cache } from "react";
+import type { Locale } from "@/i18n/config";
+import { lastModifiedOf } from "@/lib/seo";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { pageRange } from "./paging";
 import { SLUG_PATTERN, type BlogCta } from "./schema";
-import { storedText, type StoredText } from "./text";
+import { postLocales, storedText, type StoredText } from "./text";
 
 export type LiveCategory = { id: string; slug: string; name: StoredText; cta: BlogCta };
 export type LivePost = {
@@ -15,13 +17,14 @@ export type LivePost = {
   coverPath: string | null;
   authorName: string;
   publishedAt: string;
+  updatedAt: string;
   isFeatured: boolean;
   category: LiveCategory | null;
 };
 
 type Supabase = Awaited<ReturnType<typeof createServerSupabase>>;
 
-const COLUMNS = "id, slug, title, excerpt, body, cover_path, author_name, published_at, is_featured, category:blog_categories(id, slug, name, cta)";
+const COLUMNS = "id, slug, title, excerpt, body, cover_path, author_name, published_at, updated_at, is_featured, category:blog_categories(id, slug, name, cta)";
 
 /** Live posts only. Explicit filters: public reads must not depend on the session (RLS shows admins every post). */
 function selectLive(supabase: Supabase, withCount = false) {
@@ -41,6 +44,7 @@ type Row = {
   cover_path: string | null;
   author_name: string;
   published_at: string | null;
+  updated_at: string;
   is_featured: boolean;
   category: { id: string; slug: string; name: unknown; cta: BlogCta } | null;
 };
@@ -55,6 +59,7 @@ function toLivePost(row: Row): LivePost {
     coverPath: row.cover_path,
     authorName: row.author_name,
     publishedAt: row.published_at ?? "",
+    updatedAt: row.updated_at,
     isFeatured: row.is_featured,
     category: row.category ? { ...row.category, name: storedText.parse(row.category.name) } : null,
   };
@@ -117,4 +122,21 @@ export async function listUsedCategories(): Promise<LiveCategory[]> {
   const { data, error: categoryError } = await supabase.from("blog_categories").select("id, slug, name, cta").in("id", ids).order("slug");
   if (categoryError) throw categoryError;
   return data.map((row) => ({ id: row.id, slug: row.slug, name: storedText.parse(row.name), cta: row.cta }));
+}
+
+/** Every live post for sitemap.xml: when it last changed and which languages it has its own text in. */
+export async function listSitemapPosts(): Promise<{ slug: string; lastModified: string; available: Locale[] }[]> {
+  const supabase = await createServerSupabase();
+  const { data, error } = await supabase
+    .from("blog_posts")
+    .select("slug, title, body, published_at, updated_at")
+    .eq("status", "published")
+    .lte("published_at", new Date().toISOString())
+    .order("published_at", { ascending: false });
+  if (error) throw error;
+  return data.map((row) => ({
+    slug: row.slug,
+    lastModified: lastModifiedOf(row.published_at ?? row.updated_at, row.updated_at),
+    available: postLocales({ title: storedText.parse(row.title), body: storedText.parse(row.body) }),
+  }));
 }

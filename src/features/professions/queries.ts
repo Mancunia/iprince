@@ -1,4 +1,5 @@
 import "server-only";
+import { cache } from "react";
 import { formDefinition, type FormDefinition } from "@/features/forms/definition";
 import { localizedText, type LocalizedText } from "@/lib/i18n/localized";
 import { createServerSupabase } from "@/lib/supabase/server";
@@ -27,8 +28,8 @@ export async function listActiveProfessions(): Promise<ProfessionCard[]> {
 
 export type ApplyFormData = { slug: string; name: LocalizedText; icon: string; formId: string; definition: FormDefinition };
 
-/** Active profession plus its current published form (RLS hides everything else from anon). */
-export async function getApplyForm(slug: string): Promise<ApplyFormData | null> {
+/** Active profession plus its current published form (RLS hides everything else from anon). Cached per request: generateMetadata and the page both read it. */
+export const getApplyForm = cache(async (slug: string): Promise<ApplyFormData | null> => {
   const supabase = await createServerSupabase();
   const { data: profession, error: professionError } = await supabase
     .from("professions")
@@ -54,4 +55,4 @@ export async function getApplyForm(slug: string): Promise<ApplyFormData | null> 
     return null;
   }
   return { slug: profession.slug, name: localizedText.parse(profession.name), icon: profession.icon, formId: form.id, definition: definition.data };
-}
+});

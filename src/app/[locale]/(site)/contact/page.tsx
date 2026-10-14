@@ -1,12 +1,22 @@
+import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Locale } from "@/i18n/config";
 import { ContactForm } from "@/features/leads/ContactForm";
 import { whatsappHref } from "@/features/site-content/content";
 import { getSiteContent } from "@/features/site-content/queries";
+import { sitePageMetadata } from "@/features/seo/metadata";
 import { Card } from "@/ui/Card";
 import { Icon } from "@/ui/Icon";
 
-export default async function ContactPage({ params }: { params: Promise<{ locale: Locale }> }) {
+type Props = { params: Promise<{ locale: Locale }> };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "contact" });
+  return sitePageMetadata({ locale, path: "/contact", title: t("title"), description: t("lead") });
+}
+
+export default async function ContactPage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
   const [t, tSite, { contact }] = await Promise.all([getTranslations("contact"), getTranslations("site"), getSiteContent()]);

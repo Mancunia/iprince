@@ -82,6 +82,10 @@ $imprint_en$))),
 
 **Server-Logdateien.** Beim Aufruf der Website verarbeitet unser Hosting-Anbieter technisch notwendige Daten wie IP-Adresse, Zeitpunkt und aufgerufene Seite, um die Website sicher bereitzustellen (Art. 6 Abs. 1 lit. f DSGVO).
 
+**Reichweitenmessung ohne Cookies.** Mit Vercel Web Analytics zählen wir Seitenaufrufe und abgesendete Formulare in zusammengefasster Form. Dabei werden keine Cookies gesetzt und keine Profile gebildet; Besucher werden nur über einen täglich wechselnden Hash erkannt (Art. 6 Abs. 1 lit. f DSGVO).
+
+**Google Analytics.** Nur wenn Sie in den Cookie-Einstellungen der Kategorie „Leistung" zustimmen, nutzen wir Google Analytics 4 (Google Ireland Ltd.), um die Nutzung der Website auszuwerten (Art. 6 Abs. 1 lit. a DSGVO, § 25 Abs. 1 TDDDG). Google Analytics setzt Cookies und kürzt IP-Adressen; Werbefunktionen sind deaktiviert. Daten können an Google LLC in den USA übermittelt werden (EU-US Data Privacy Framework). [PLATZHALTER: Speicherdauer in Google Analytics bestätigen]
+
 ## 3. Speicherdauer
 
 - Begonnene, aber nicht abgesendete Bewerbungen und ihre Dateien löschen wir automatisch innerhalb von 48 Stunden.
@@ -97,12 +101,14 @@ $imprint_en$))),
 - **WhatsApp** (Meta Platforms Ireland Ltd.), nur wenn Sie uns über den WhatsApp-Link schreiben.
 - **tawk.to** (Live-Chat), nur nach Ihrer Einwilligung (Art. 6 Abs. 1 lit. a DSGVO).
 - **CookieScript** (Verwaltung Ihrer Cookie-Einwilligung).
+- **Vercel Web Analytics** (cookielose Reichweitenmessung).
+- **Google Analytics** (Google Ireland Ltd.), nur nach Ihrer Einwilligung.
 
 [PLATZHALTER: nicht genutzte Dienste entfernen]
 
 ## 5. Cookies und Einwilligung
 
-Technisch notwendige Cookies setzen wir ohne Einwilligung. Den Live-Chat laden wir erst, wenn Sie in den Cookie-Einstellungen zugestimmt haben. Ihre Einwilligung können Sie jederzeit über „Cookie-Einstellungen" im Fußbereich der Seite widerrufen.
+Technisch notwendige Cookies setzen wir ohne Einwilligung. Den Live-Chat und Google Analytics laden wir erst, wenn Sie in den Cookie-Einstellungen zugestimmt haben. Ihre Einwilligung können Sie jederzeit über „Cookie-Einstellungen" im Fußbereich der Seite widerrufen.
 
 ## 6. Ihre Rechte
 
@@ -127,6 +133,10 @@ $privacy_de$,
 
 **Server log files.** When you visit the website, our hosting provider processes technically necessary data such as IP address, time and page requested to deliver the website securely (Art. 6(1)(f) GDPR).
 
+**Cookieless audience measurement.** With Vercel Web Analytics we count page views and submitted forms in aggregate. No cookies are set and no profiles are built; visitors are recognised only through a hash that changes daily (Art. 6(1)(f) GDPR).
+
+**Google Analytics.** Only if you agree to the "Performance" category in the cookie settings, we use Google Analytics 4 (Google Ireland Ltd.) to understand how the website is used (Art. 6(1)(a) GDPR, Section 25(1) TDDDG). Google Analytics sets cookies and truncates IP addresses; advertising features are switched off. Data may be transferred to Google LLC in the USA (EU-US Data Privacy Framework). [PLATZHALTER: confirm Google Analytics retention period]
+
 ## 3. How long we keep data
 
 - Applications that were started but not sent, and their files, are deleted automatically within 48 hours.
@@ -142,12 +152,14 @@ $privacy_de$,
 - **WhatsApp** (Meta Platforms Ireland Ltd.), only if you message us through the WhatsApp link.
 - **tawk.to** (live chat), only after your consent (Art. 6(1)(a) GDPR).
 - **CookieScript** (management of your cookie consent).
+- **Vercel Web Analytics** (cookieless audience measurement).
+- **Google Analytics** (Google Ireland Ltd.), only after your consent.
 
 [PLATZHALTER: remove services that are not used]
 
 ## 5. Cookies and consent
 
-We set technically necessary cookies without consent. The live chat only loads after you agree in the cookie settings. You can withdraw your consent at any time through "Cookie settings" in the page footer.
+We set technically necessary cookies without consent. The live chat and Google Analytics only load after you agree in the cookie settings. You can withdraw your consent at any time through "Cookie settings" in the page footer.
 
 ## 6. Your rights
 

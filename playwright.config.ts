@@ -9,5 +9,13 @@ export default defineConfig({
   workers: 1,
   use: { baseURL: "http://localhost:3000", trace: "retain-on-failure" },
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
-  webServer: { command: "npm run dev", url: "http://localhost:3000/en", reuseExistingServer: true, timeout: 120_000 },
+  webServer: {
+    command: "npm run dev",
+    url: "http://localhost:3000/en",
+    reuseExistingServer: true,
+    timeout: 120_000,
+    // Dummy IDs so e2e/seo.spec.ts can prove GA4 waits for consent. Specs block both vendors' scripts.
+    // A dev server you started yourself needs them too: GA_MEASUREMENT_ID=G-E2ETEST1 COOKIESCRIPT_ID=e2etest npm run dev
+    env: { GA_MEASUREMENT_ID: "G-E2ETEST1", COOKIESCRIPT_ID: "e2etest" },
+  },
 });

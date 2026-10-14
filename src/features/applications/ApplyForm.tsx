@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { useState, type FormEvent } from "react";
 import type { Locale } from "@/i18n/config";
+import { track } from "@/features/analytics/track";
 import { collectFiles } from "@/features/forms/collect-files";
 import { formDataToAnswers } from "@/features/forms/answers";
 import type { FormDefinition } from "@/features/forms/definition";
@@ -76,6 +77,7 @@ export function ApplyForm({ professionSlug, formId, definition, locale }: Props)
         paths: submitted.data.uploads.map((u) => u.path),
       });
       if (!finalized.ok) return failWith(finalized.formError, finalized.fieldErrors);
+      track("application_submitted", { profession: professionSlug });
       setPhase("done");
     } catch (error) {
       console.error("application submission failed", error);

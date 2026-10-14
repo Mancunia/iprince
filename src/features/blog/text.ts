@@ -7,9 +7,14 @@ export type StoredText = z.infer<typeof storedText>;
 
 export type PostText = { title: string; excerpt: string; body: string; fallback: boolean };
 
+/** Languages a post has its own text in. German is required; English only with its own title and body. */
+export function postLocales(post: { title: StoredText; body: StoredText }): Locale[] {
+  return post.title.en.trim() && post.body.en.trim() ? ["de", "en"] : ["de"];
+}
+
 /** The post in the visitor's language. Without an English title or body the whole post is shown in German (fallback). */
 export function localizePost(post: { title: StoredText; excerpt: StoredText; body: StoredText }, locale: Locale): PostText {
-  const fallback = locale !== "de" && (!post.title[locale].trim() || !post.body[locale].trim());
+  const fallback = !postLocales(post).includes(locale);
   const lang = fallback ? "de" : locale;
   return {
     title: post.title[lang],
