@@ -1,9 +1,11 @@
 import "server-only";
 import { cache } from "react";
+import type { Locale } from "@/i18n/config";
+import { lastModifiedOf } from "@/lib/seo";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { pageRange } from "./paging";
 import { SLUG_PATTERN, type BlogCta } from "./schema";
-import { storedText, type StoredText } from "./text";
+import { postLocales, storedText, type StoredText } from "./text";
 
 export type LiveCategory = { id: string; slug: string; name: StoredText; cta: BlogCta };
 export type LivePost = {
@@ -122,15 +124,19 @@ export async function listUsedCategories(): Promise<LiveCategory[]> {
   return data.map((row) => ({ id: row.id, slug: row.slug, name: storedText.parse(row.name), cta: row.cta }));
 }
 
-/** Slug and last edit of every live post, for sitemap.xml. */
-export async function listSitemapPosts(): Promise<{ slug: string; updatedAt: string }[]> {
+/** Every live post for sitemap.xml: when it last changed and which languages it has its own text in. */
+export async function listSitemapPosts(): Promise<{ slug: string; lastModified: string; available: Locale[] }[]> {
   const supabase = await createServerSupabase();
   const { data, error } = await supabase
     .from("blog_posts")
-    .select("slug, updated_at")
+    .select("slug, title, body, published_at, updated_at")
     .eq("status", "published")
     .lte("published_at", new Date().toISOString())
     .order("published_at", { ascending: false });
   if (error) throw error;
-  return data.map((row) => ({ slug: row.slug, updatedAt: row.updated_at }));
+  return data.map((row) => ({
+    slug: row.slug,
+    lastModified: lastModifiedOf(row.published_at ?? row.updated_at, row.updated_at),
+    available: postLocales({ title: storedText.parse(row.title), body: storedText.parse(row.body) }),
+  }));
 }

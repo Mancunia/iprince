@@ -25,4 +25,6 @@ interface Window {
   Tawk_LoadStart?: Date;
   dataLayer?: unknown[];
   gtag?: (...args: unknown[]) => void;
+  /** Google's per-property opt-out: true stops every gtag hit. */
+  [optOut: `ga-disable-${string}`]: boolean | undefined;
 }

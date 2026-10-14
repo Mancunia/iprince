@@ -8,14 +8,14 @@ import { PostCard } from "@/features/blog/PostCard";
 import { PostCta } from "@/features/blog/PostCta";
 import { PostMeta } from "@/features/blog/PostMeta";
 import { getLivePost, listRelated } from "@/features/blog/queries";
-import { localizePost } from "@/features/blog/text";
+import { localizePost, postLocales } from "@/features/blog/text";
 import { JsonLd } from "@/features/seo/JsonLd";
 import { sitePageMetadata } from "@/features/seo/metadata";
 import { Photo } from "@/features/site/Photo";
 import { localized } from "@/lib/i18n/localized";
 import { Icon } from "@/ui/Icon";
 import { Markdown } from "@/ui/Markdown";
-import { DEFAULT_OG_IMAGE } from "@/lib/seo";
+import { DEFAULT_OG_IMAGE, lastModifiedOf } from "@/lib/seo";
 import { siteUrl } from "@/lib/site-url";
 
 type Props = { params: Promise<{ locale: Locale; slug: string }> };
@@ -32,8 +32,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: text.excerpt || undefined,
     image: coverSrc(post.coverPath) ?? undefined,
     type: "article",
+    available: postLocales(post),
   });
-  return { ...meta, openGraph: { ...meta.openGraph, type: "article", publishedTime: post.publishedAt, modifiedTime: post.updatedAt } };
+  const modifiedTime = lastModifiedOf(post.publishedAt, post.updatedAt);
+  return { ...meta, openGraph: { ...meta.openGraph, type: "article", publishedTime: post.publishedAt, modifiedTime } };
 }
 
 export default async function BlogPostPage({ params }: Props) {
@@ -56,10 +58,10 @@ export default async function BlogPostPage({ params }: Props) {
     ...(text.excerpt ? { description: text.excerpt } : {}),
     inLanguage: lang ?? locale,
     datePublished: post.publishedAt,
-    dateModified: post.updatedAt,
+    dateModified: lastModifiedOf(post.publishedAt, post.updatedAt),
     image: new URL(cover ?? DEFAULT_OG_IMAGE, origin).href,
     author: { "@type": "Person", name: post.authorName },
-    mainEntityOfPage: new URL(`/${locale}/blog/${post.slug}`, origin).href,
+    mainEntityOfPage: new URL(`/${lang ?? locale}/blog/${post.slug}`, origin).href,
   };
 
   return (

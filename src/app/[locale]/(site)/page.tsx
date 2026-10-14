@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
-import type { Locale } from "@/i18n/config";
+import { defaultLocale, type Locale } from "@/i18n/config";
 import { Link } from "@/i18n/navigation";
 import { listActiveProfessions } from "@/features/professions/queries";
 import { photoSrc, whatsappHref } from "@/features/site-content/content";
@@ -40,7 +40,8 @@ export default async function Home({ params }: Props) {
   const [t, tSite, tMeta, format, professions, content] = await Promise.all([
     getTranslations("home"),
     getTranslations("site"),
-    getTranslations("metadata"),
+    // The company is one entity in every language: its name and URL must not change with the page locale.
+    getTranslations({ locale: defaultLocale, namespace: "metadata" }),
     getFormatter(),
     listActiveProfessions(),
     getSiteContent(),
@@ -63,7 +64,7 @@ export default async function Home({ params }: Props) {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: tMeta("title"),
-    url: new URL(`/${locale}`, origin).href,
+    url: origin.href,
     logo: new URL(DEFAULT_OG_IMAGE, origin).href,
     ...(content.contact.email ? { email: content.contact.email } : {}),
     contactPoint: { "@type": "ContactPoint", contactType: "customer service", telephone: content.contact.whatsapp, availableLanguage: ["de", "en"] },
