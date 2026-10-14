@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { chatProviderInput, resolveChatChannel, tawkMissing } from "./settings";
+import { chatProviderInput, gaEnabled, resolveChatChannel, tawkMissing } from "./settings";
 
 const full = { cookieScriptId: "cs1", tawk: { propertyId: "p1", widgetId: "w1" } };
 
@@ -23,6 +23,14 @@ describe("tawkMissing", () => {
   it("lists what is not configured", () => {
     expect(tawkMissing({ cookieScriptId: null, tawk: null })).toEqual(["cookieScript", "tawk"]);
     expect(tawkMissing(full)).toEqual([]);
+  });
+});
+
+describe("gaEnabled", () => {
+  it("needs both the measurement ID and the consent banner", () => {
+    expect(gaEnabled({ cookieScriptId: "cs1", gaId: "G-ABCD1234" })).toBe(true);
+    expect(gaEnabled({ cookieScriptId: null, gaId: "G-ABCD1234" })).toBe(false);
+    expect(gaEnabled({ cookieScriptId: "cs1", gaId: null })).toBe(false);
   });
 });
 

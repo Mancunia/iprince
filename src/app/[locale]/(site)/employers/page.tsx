@@ -1,14 +1,24 @@
+import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Locale } from "@/i18n/config";
 import { LeadForm } from "@/features/leads/LeadForm";
 import { listActiveProfessions } from "@/features/professions/queries";
 import { localized } from "@/lib/i18n/localized";
+import { sitePageMetadata } from "@/features/seo/metadata";
 import { Card } from "@/ui/Card";
 import { Icon } from "@/ui/Icon";
 
 const BENEFITS = ["selection", "process", "support"] as const;
 
-export default async function EmployersPage({ params }: { params: Promise<{ locale: Locale }> }) {
+type Props = { params: Promise<{ locale: Locale }> };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "employers" });
+  return sitePageMetadata({ locale, path: "/employers", title: t("title"), description: t("lead") });
+}
+
+export default async function EmployersPage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
   const [t, professions] = await Promise.all([getTranslations("employers"), listActiveProfessions()]);

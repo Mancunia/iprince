@@ -1,11 +1,16 @@
+import type { Metadata } from "next";
 import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
 import type { Locale } from "@/i18n/config";
 import { Link } from "@/i18n/navigation";
 import { listActiveProfessions } from "@/features/professions/queries";
 import { photoSrc, whatsappHref } from "@/features/site-content/content";
 import { getSiteContent } from "@/features/site-content/queries";
+import { sitePageMetadata } from "@/features/seo/metadata";
+import { JsonLd } from "@/features/seo/JsonLd";
 import { Photo } from "@/features/site/Photo";
 import { localized, type LocalizedText } from "@/lib/i18n/localized";
+import { DEFAULT_OG_IMAGE } from "@/lib/seo";
+import { siteUrl } from "@/lib/site-url";
 import { Card } from "@/ui/Card";
 import { Icon } from "@/ui/Icon";
 import { cn } from "@/ui/cn";
@@ -21,12 +26,21 @@ const FEATURES = [
 ] as const;
 const STEPS = ["choose", "apply", "contact"] as const;
 
-export default async function Home({ params }: { params: Promise<{ locale: Locale }> }) {
+type Props = { params: Promise<{ locale: Locale }> };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "metadata" });
+  return sitePageMetadata({ locale, path: "", title: t("title"), description: t("description"), absoluteTitle: true });
+}
+
+export default async function Home({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const [t, tSite, format, professions, content] = await Promise.all([
+  const [t, tSite, tMeta, format, professions, content] = await Promise.all([
     getTranslations("home"),
     getTranslations("site"),
+    getTranslations("metadata"),
     getFormatter(),
     listActiveProfessions(),
     getSiteContent(),
@@ -44,8 +58,21 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
     { icon: "badge-check", value: t("statFreeValue"), label: t("statFree") },
   ];
 
+  const origin = siteUrl();
+  const organization = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: tMeta("title"),
+    url: new URL(`/${locale}`, origin).href,
+    logo: new URL(DEFAULT_OG_IMAGE, origin).href,
+    ...(content.contact.email ? { email: content.contact.email } : {}),
+    contactPoint: { "@type": "ContactPoint", contactType: "customer service", telephone: content.contact.whatsapp, availableLanguage: ["de", "en"] },
+    ...(content.contact.address ? { address: content.contact.address } : {}),
+  };
+
   return (
     <>
+      <JsonLd data={organization} />
       <section className="pt-10 pb-16 md:pt-16 md:pb-24">
         <div className="container-page grid items-center gap-12 md:grid-cols-2">
           <div className="grid gap-6">

@@ -8,6 +8,7 @@ import { Pagination } from "@/features/blog/Pagination";
 import { pageCount, parsePage } from "@/features/blog/paging";
 import { PostCard } from "@/features/blog/PostCard";
 import { getFeaturedPost, listLivePosts, listUsedCategories } from "@/features/blog/queries";
+import { sitePageMetadata } from "@/features/seo/metadata";
 import { Icon } from "@/ui/Icon";
 
 type Params = { params: Promise<{ locale: Locale }> };
@@ -16,11 +17,7 @@ type Props = Params & { searchParams: Promise<{ category?: string | string[]; pa
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "blog" });
-  return {
-    title: t("title"),
-    description: t("lead"),
-    alternates: { canonical: `/${locale}/blog`, languages: { de: "/de/blog", en: "/en/blog" } },
-  };
+  return sitePageMetadata({ locale, path: "/blog", title: t("title"), description: t("lead") });
 }
 
 export default async function BlogPage({ params, searchParams }: Props) {

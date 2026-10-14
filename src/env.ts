@@ -41,9 +41,16 @@ const integrationsSchema = z.object({
   COOKIESCRIPT_ID: embedId.optional(),
   TAWK_PROPERTY_ID: embedId.optional(),
   TAWK_WIDGET_ID: embedId.optional(),
+  GA_MEASUREMENT_ID: z.string().regex(/^G-[A-Z0-9]{4,20}$/).optional(),
+  GOOGLE_SITE_VERIFICATION: z.string().regex(/^[A-Za-z0-9_-]{10,100}$/).optional(),
 });
 
-export type Integrations = { cookieScriptId: string | null; tawk: { propertyId: string; widgetId: string } | null };
+export type Integrations = {
+  cookieScriptId: string | null;
+  tawk: { propertyId: string; widgetId: string } | null;
+  gaId: string | null;
+  googleVerification: string | null;
+};
 
 /** Optional embeds for the public site. Read at request time on the server, so changing them needs no rebuild. */
 export function readIntegrationsEnv(): Integrations {
@@ -51,10 +58,14 @@ export function readIntegrationsEnv(): Integrations {
     COOKIESCRIPT_ID: process.env.COOKIESCRIPT_ID || undefined,
     TAWK_PROPERTY_ID: process.env.TAWK_PROPERTY_ID || undefined,
     TAWK_WIDGET_ID: process.env.TAWK_WIDGET_ID || undefined,
+    GA_MEASUREMENT_ID: process.env.GA_MEASUREMENT_ID || undefined,
+    GOOGLE_SITE_VERIFICATION: process.env.GOOGLE_SITE_VERIFICATION || undefined,
   });
   return {
     cookieScriptId: env.COOKIESCRIPT_ID ?? null,
     tawk: env.TAWK_PROPERTY_ID && env.TAWK_WIDGET_ID ? { propertyId: env.TAWK_PROPERTY_ID, widgetId: env.TAWK_WIDGET_ID } : null,
+    gaId: env.GA_MEASUREMENT_ID ?? null,
+    googleVerification: env.GOOGLE_SITE_VERIFICATION ?? null,
   };
 }
 

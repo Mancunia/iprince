@@ -27,20 +27,38 @@ describe("env", () => {
   it("treats unset or empty integrations as off", () => {
     vi.stubEnv("COOKIESCRIPT_ID", "");
     vi.stubEnv("TAWK_PROPERTY_ID", "abc123");
-    expect(readIntegrationsEnv()).toEqual({ cookieScriptId: null, tawk: null });
+    expect(readIntegrationsEnv()).toEqual({ cookieScriptId: null, tawk: null, gaId: null, googleVerification: null });
   });
 
   it("reads complete integrations", () => {
     vi.stubEnv("COOKIESCRIPT_ID", "a1b2c3");
     vi.stubEnv("TAWK_PROPERTY_ID", "64f0aa");
     vi.stubEnv("TAWK_WIDGET_ID", "1h9xyz");
-    expect(readIntegrationsEnv()).toEqual({ cookieScriptId: "a1b2c3", tawk: { propertyId: "64f0aa", widgetId: "1h9xyz" } });
+    vi.stubEnv("GA_MEASUREMENT_ID", "G-AB12CD34EF");
+    vi.stubEnv("GOOGLE_SITE_VERIFICATION", "abc_DEF-123456789");
+    expect(readIntegrationsEnv()).toEqual({
+      cookieScriptId: "a1b2c3",
+      tawk: { propertyId: "64f0aa", widgetId: "1h9xyz" },
+      gaId: "G-AB12CD34EF",
+      googleVerification: "abc_DEF-123456789",
+    });
   });
 
   it("rejects embed IDs that are not plain alphanumerics", () => {
     vi.stubEnv("TAWK_WIDGET_ID", "../evil");
     expect(() => readIntegrationsEnv()).toThrow(/TAWK_WIDGET_ID/);
   });
+
+  it("accepts only GA4 measurement IDs", () => {
+    vi.stubEnv("GA_MEASUREMENT_ID", "UA-1234-1");
+    expect(() => readIntegrationsEnv()).toThrow(/GA_MEASUREMENT_ID/);
+  });
+
+  it("rejects a verification token with markup", () => {
+    vi.stubEnv("GOOGLE_SITE_VERIFICATION", '"><script>');
+    expect(() => readIntegrationsEnv()).toThrow(/GOOGLE_SITE_VERIFICATION/);
+  });
+
   it("turns staff notifications off unless all three variables are set", () => {
     vi.stubEnv("RESEND_API_KEY", "re_test");
     vi.stubEnv("NOTIFY_EMAIL_TO", "");

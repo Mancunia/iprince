@@ -1,5 +1,9 @@
+import type { Metadata } from "next";
 import { BrandLogo } from "@/features/site/Brand";
 import { Card } from "@/ui/Card";
+
+// Staff-only pages stay out of search results (robots.txt also disallows /<locale>/admin).
+export const metadata: Metadata = { robots: { index: false, follow: false } };
 
 /** Sign-in and invite pages: one card on a tinted background. No session exists yet. */
 export default function AdminAuthLayout({ children }: { children: React.ReactNode }) {

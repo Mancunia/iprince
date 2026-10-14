@@ -15,13 +15,14 @@ export type LivePost = {
   coverPath: string | null;
   authorName: string;
   publishedAt: string;
+  updatedAt: string;
   isFeatured: boolean;
   category: LiveCategory | null;
 };
 
 type Supabase = Awaited<ReturnType<typeof createServerSupabase>>;
 
-const COLUMNS = "id, slug, title, excerpt, body, cover_path, author_name, published_at, is_featured, category:blog_categories(id, slug, name, cta)";
+const COLUMNS = "id, slug, title, excerpt, body, cover_path, author_name, published_at, updated_at, is_featured, category:blog_categories(id, slug, name, cta)";
 
 /** Live posts only. Explicit filters: public reads must not depend on the session (RLS shows admins every post). */
 function selectLive(supabase: Supabase, withCount = false) {
@@ -41,6 +42,7 @@ type Row = {
   cover_path: string | null;
   author_name: string;
   published_at: string | null;
+  updated_at: string;
   is_featured: boolean;
   category: { id: string; slug: string; name: unknown; cta: BlogCta } | null;
 };
@@ -55,6 +57,7 @@ function toLivePost(row: Row): LivePost {
     coverPath: row.cover_path,
     authorName: row.author_name,
     publishedAt: row.published_at ?? "",
+    updatedAt: row.updated_at,
     isFeatured: row.is_featured,
     category: row.category ? { ...row.category, name: storedText.parse(row.category.name) } : null,
   };
@@ -117,4 +120,17 @@ export async function listUsedCategories(): Promise<LiveCategory[]> {
   const { data, error: categoryError } = await supabase.from("blog_categories").select("id, slug, name, cta").in("id", ids).order("slug");
   if (categoryError) throw categoryError;
   return data.map((row) => ({ id: row.id, slug: row.slug, name: storedText.parse(row.name), cta: row.cta }));
+}
+
+/** Slug and last edit of every live post, for sitemap.xml. */
+export async function listSitemapPosts(): Promise<{ slug: string; updatedAt: string }[]> {
+  const supabase = await createServerSupabase();
+  const { data, error } = await supabase
+    .from("blog_posts")
+    .select("slug, updated_at")
+    .eq("status", "published")
+    .lte("published_at", new Date().toISOString())
+    .order("published_at", { ascending: false });
+  if (error) throw error;
+  return data.map((row) => ({ slug: row.slug, updatedAt: row.updated_at }));
 }

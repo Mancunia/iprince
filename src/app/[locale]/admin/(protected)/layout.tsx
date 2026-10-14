@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { hasLocale } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -9,6 +10,9 @@ import { AdminDrawer } from "@/features/admin-shell/AdminDrawer";
 import type { NavGroup } from "@/features/admin-shell/AdminNav";
 import { AdminSidebar } from "@/features/admin-shell/AdminSidebar";
 import { BrandLogo } from "@/features/site/Brand";
+
+// Staff-only pages stay out of search results (robots.txt also disallows /<locale>/admin).
+export const metadata: Metadata = { robots: { index: false, follow: false } };
 
 export default async function AdminLayout({ children, params }: { children: React.ReactNode; params: Promise<{ locale: string }> }) {
   const { locale } = await params;
