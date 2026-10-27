@@ -7,15 +7,17 @@ import { coverSrc } from "@/features/blog/cover-url";
 import { PostCard } from "@/features/blog/PostCard";
 import { PostCta } from "@/features/blog/PostCta";
 import { PostMeta } from "@/features/blog/PostMeta";
+import { ShareBar } from "@/features/blog/ShareBar";
 import { getLivePost, listRelated } from "@/features/blog/queries";
 import { localizePost, postLocales } from "@/features/blog/text";
+import { previewImagePath } from "@/features/blog/preview-image";
 import { JsonLd } from "@/features/seo/JsonLd";
 import { sitePageMetadata } from "@/features/seo/metadata";
 import { Photo } from "@/features/site/Photo";
 import { localized } from "@/lib/i18n/localized";
 import { Icon } from "@/ui/Icon";
 import { Markdown } from "@/ui/Markdown";
-import { DEFAULT_OG_IMAGE, lastModifiedOf } from "@/lib/seo";
+import { lastModifiedOf } from "@/lib/seo";
 import { siteUrl } from "@/lib/site-url";
 
 type Props = { params: Promise<{ locale: Locale; slug: string }> };
@@ -30,7 +32,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: `/blog/${post.slug}`,
     title: text.title,
     description: text.excerpt || undefined,
-    image: coverSrc(post.coverPath) ?? undefined,
+    image: coverSrc(post.coverPath) ?? previewImagePath(locale, post.slug),
     type: "article",
     available: postLocales(post),
   });
@@ -51,6 +53,7 @@ export default async function BlogPostPage({ params }: Props) {
   const lang = text.fallback ? "de" : undefined;
   const cover = coverSrc(post.coverPath);
   const origin = siteUrl();
+  const shareUrl = new URL(`/${lang ?? locale}/blog/${post.slug}`, origin).href;
   const posting = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -59,9 +62,9 @@ export default async function BlogPostPage({ params }: Props) {
     inLanguage: lang ?? locale,
     datePublished: post.publishedAt,
     dateModified: lastModifiedOf(post.publishedAt, post.updatedAt),
-    image: new URL(cover ?? DEFAULT_OG_IMAGE, origin).href,
+    image: new URL(cover ?? previewImagePath(locale, post.slug), origin).href,
     author: { "@type": "Person", name: post.authorName },
-    mainEntityOfPage: new URL(`/${lang ?? locale}/blog/${post.slug}`, origin).href,
+    mainEntityOfPage: shareUrl,
   };
 
   return (
@@ -80,6 +83,7 @@ export default async function BlogPostPage({ params }: Props) {
           ) : null}
           <h1 className="text-3xl" lang={lang}>{text.title}</h1>
           <p><PostMeta publishedAt={post.publishedAt} body={text.body} author={post.authorName} /></p>
+          <ShareBar url={shareUrl} title={text.title} compact className="-ml-3" />
         </header>
         {text.fallback ? (
           <p className="notice notice-info max-w-[72ch]">
@@ -91,6 +95,7 @@ export default async function BlogPostPage({ params }: Props) {
         <div lang={lang}>
           <Markdown>{text.body}</Markdown>
         </div>
+        <ShareBar url={shareUrl} title={text.title} className="max-w-[72ch] border-t border-hairline pt-6" />
         <PostCta cta={post.category?.cta ?? "none"} />
       </article>
       {related.length > 0 ? (

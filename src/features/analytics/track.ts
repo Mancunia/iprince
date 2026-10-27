@@ -1,7 +1,8 @@
 import { track as vercelTrack } from "@vercel/analytics";
 
-export type AnalyticsEvent = "application_submitted" | "employer_enquiry_sent" | "contact_message_sent" | "chat_opened";
-export type EventProps = { profession?: string; channel?: "whatsapp" | "tawk" };
+export type AnalyticsEvent = "application_submitted" | "employer_enquiry_sent" | "contact_message_sent" | "chat_opened" | "post_shared";
+export type ShareChannel = "native" | "copy" | "linkedin" | "facebook" | "x" | "xing" | "email";
+export type EventProps = { profession?: string; channel?: "whatsapp" | "tawk" | ShareChannel };
 
 const ALLOWED: (keyof EventProps)[] = ["profession", "channel"];
 

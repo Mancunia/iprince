@@ -426,6 +426,17 @@
     "previous": "Zurück",
     "next": "Weiter",
     "pageOf": "Seite {page} von {pages}",
+    "share": {
+      "title": "Artikel teilen",
+      "native": "Teilen",
+      "copy": "Link kopieren",
+      "copied": "Link kopiert",
+      "linkedin": "Auf LinkedIn teilen",
+      "facebook": "Auf Facebook teilen",
+      "x": "Auf X teilen",
+      "xing": "Auf XING teilen",
+      "email": "Per E-Mail teilen"
+    },
     "cta": {
       "candidates": { "title": "Bereit für Ihren Job in Deutschland?", "text": "Bewerben Sie sich kostenlos. Wir begleiten Sie bei Anerkennung, Visum und Ihren ersten Wochen.", "button": "Beruf auswählen" },
       "employers": { "title": "Sie suchen qualifizierte Fachkräfte?", "text": "Sagen Sie uns, wen Sie brauchen. Wir finden, bereiten vor und begleiten passende Kandidat:innen.", "button": "Personal anfragen" }

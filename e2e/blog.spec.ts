@@ -44,6 +44,9 @@ test("an admin publishes a post with a cover and visitors read it", async ({ pag
   await expect(page.getByRole("heading", { level: 2, name: "Abschnitt" })).toBeVisible();
   await expect(page.getByRole("main").locator("img").first()).toHaveAttribute("src", /public%2Fblog%2Fposts%2F/);
   await expect(page.getByRole("link", { name: "Beruf auswählen" })).toBeVisible();
+  const share = page.getByRole("group", { name: "Artikel teilen" }).last();
+  await expect(share.getByRole("link", { name: "Auf LinkedIn teilen" })).toHaveAttribute("href", new RegExp(encodeURIComponent(`/de/blog/${slug}`)));
+  await expect(share.getByRole("button", { name: "Link kopieren" })).toBeVisible();
 
   await page.goto(`/en/blog/${slug}`);
   await expect(page.getByText("This article is only available in German.")).toBeVisible();
