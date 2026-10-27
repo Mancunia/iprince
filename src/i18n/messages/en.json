@@ -426,6 +426,17 @@
     "previous": "Previous",
     "next": "Next",
     "pageOf": "Page {page} of {pages}",
+    "share": {
+      "title": "Share this article",
+      "native": "Share",
+      "copy": "Copy link",
+      "copied": "Link copied",
+      "linkedin": "Share on LinkedIn",
+      "facebook": "Share on Facebook",
+      "x": "Share on X",
+      "xing": "Share on XING",
+      "email": "Share by email"
+    },
     "cta": {
       "candidates": { "title": "Ready to work in Germany?", "text": "Apply for free. We guide you through recognition, visa and your first weeks.", "button": "Choose your profession" },
       "employers": { "title": "Looking for qualified staff?", "text": "Tell us who you need. We find, prepare and accompany suitable candidates.", "button": "Request staff" }
